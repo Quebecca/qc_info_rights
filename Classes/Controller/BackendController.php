@@ -172,9 +172,9 @@ class BackendController
             //Fill Array of User by Data
             $arrayData = [];
             $arrayData[] = $item->getUid();
-            $arrayData[] = $item->getUserName();
-            $arrayData[] = $item->getRealName();
-            $arrayData[] = $item->getEmail();
+            $arrayData[] = $this->charsetConverter->conv($item->getUserName(), 'utf-8', 'iso-8859-15');
+            $arrayData[] = $this->charsetConverter->conv($item->getRealName(), 'utf-8', 'iso-8859-15');
+            $arrayData[] = $this->charsetConverter->conv($item->getEmail(), 'utf-8', 'iso-8859-15');
             $arrayData[] = $LastLogin;
             $arrayData[] = $item->getIsDisabled() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
             $arrayData[] = $item->getIsAdministrator() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
@@ -222,8 +222,8 @@ class BackendController
             //Fill Array of User by Data
             $arrayData = [];
             $arrayData[] = $item->getUid();
-            $arrayData[] = $item->getTitle();
-            $arrayData[] = $item->getDescription();
+            $arrayData[] = $this->charsetConverter->conv($item->getTitle(), 'utf-8', 'iso-8859-15');
+            $arrayData[] = $this->charsetConverter->conv($item->getDescription(), 'utf-8', 'iso-8859-15');
             $arrayData[] = $item->getHidden() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
             //Write Inside Our CSV File
             fputcsv($fp, $arrayData, $this->delimiter, $this->quote);

@@ -1,0 +1,11 @@
+<div id="qcinforight-modfuncreport">
+    <f:if condition="{title} != '[No title]' && {title} != '' ">
+        <f:then>
+            <h1>{title}</h1>
+        </f:then>
+        <f:else>
+            <h1><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:defaultTitle"/></h1>
+        </f:else>
+    </f:if>
+    {content -> f:format.raw()}
+</div>

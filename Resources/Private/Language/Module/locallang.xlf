@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf" date="2021-09-15T18:22:34Z" product-name="qcinforights">
+		<header/>
+		<body>
+			<trans-unit id="defaultTitle" resname="defaultTitle">
+				<source>Module Qc info rights</source>
+			</trans-unit>
+			<trans-unit id="no.access.title" resname="no.access.title">
+				<source>No access!</source>
+			</trans-unit>
+			<trans-unit id="no.access" resname="no.access">
+				<source>You do not have access to these listings.</source>
+			</trans-unit>
+			<!-- Label Module-->
+			<trans-unit id="accessRights" resname="accessRights">
+				<source>Access and rights</source>
+			</trans-unit>
+			<trans-unit id="beUserGroupsLists" resname="beUserGroupsLists">
+				<source>Backend user groups list</source>
+			</trans-unit>
+			<trans-unit id="beUserLists" resname="beUserLists">
+				<source>Backend users list</source>
+			</trans-unit>
+
+			<!-- Module Header-->
+			<trans-unit id="accessRights.header" resname="accessRights.header">
+				<source>Access and rights Information</source>
+			</trans-unit>
+			<trans-unit id="beUserGroupsLists.header" resname="beUserGroupsLists.header">
+				<source>Backend user groups list information</source>
+			</trans-unit>
+			<trans-unit id="beUserLists.header" resname="beUserLists.header">
+				<source>Backend users list information</source>
+			</trans-unit>
+
+			<!-- Module Backend User list -->
+			<trans-unit id="beUserLists.actif" resname="beUserLists.actif">
+				<source>Active user</source>
+			</trans-unit>
+			<trans-unit id="beUserLists.inactif" resname="beUserLists.inactif">
+				<source>Inactive user</source>
+			</trans-unit>
+
+			<!-- CSV HEADER Fields -->
+			<trans-unit id="csvHeader.uid" resname="csvHeader.uid">
+				<source>UID</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.title" resname="csvHeader.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.description" resname="csvHeader.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.isHidden" resname="csvHeader.isHidden">
+				<source>Disabled</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.isAdmin" resname="csvHeader.isAdmin">
+				<source>Administrator</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.mail" resname="csvHeader.mail">
+				<source>E-mail</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.fullName" resname="csvHeader.fullName">
+				<source>Full name</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.userName" resname="csvHeader.userName">
+				<source>User name</source>
+			</trans-unit>
+			<trans-unit id="csvHeader.lastLogin" resname="csvHeader.lastLogin">
+				<source>Last login</source>
+			</trans-unit>
+
+
+			<!-- Default Item -->
+			<trans-unit id="yes" resname="yes">
+				<source>Yes</source>
+			</trans-unit>
+			<trans-unit id="no" resname="no">
+				<source>No</source>
+			</trans-unit>
+			<trans-unit id="never" resname="never">
+				<source>Never</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:qc_info_rights/Resources/Private/Language/locallang" date="2021-09-13T18:58:22Z" product-name="qc_info_rights">
+		<header/>
+		<body>
+			<trans-unit id="tx_qcinforights_domain_model_qcinforights" resname="tx_qcinforights_domain_model_qcinforights">
+				<source>Qcinforights</source>
+			</trans-unit>
+			<trans-unit id="tx_qcinforights_domain_model_qcinforights.id" resname="tx_qcinforights_domain_model_qcinforights.id">
+				<source>Id</source>
+			</trans-unit>
+			<trans-unit id="mod_qcInfoRight" resname="mod_qcInfoRight">
+				<source>Access and rights</source>
+			</trans-unit>
+			<trans-unit id="export_csv" resname="export_csv">
+				<source>Export CSV</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

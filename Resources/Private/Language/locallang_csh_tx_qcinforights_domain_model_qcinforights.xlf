@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="EXT:qc_info_rights/Resources/Private/Language/locallang_csh" date="2021-09-13T18:58:22Z" product-name="qc_info_rights">
+		<header/>
+		<body>
+			<trans-unit id="id.description" resname="id.description">
+				<source>id</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

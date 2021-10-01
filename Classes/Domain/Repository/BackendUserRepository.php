@@ -1,0 +1,123 @@
+<?php
+namespace Qc\QcInfoRights\Domain\Repository;
+
+use Qc\QcInfoRights\Domain\Model\Demand;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
+use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
+use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Persistence\Repository;
+
+/**
+ * Class BackendUserRepository
+ *
+ * @package \\${NAMESPACE}
+ */
+class BackendUserRepository extends  Repository{
+
+    /**
+     * Overwrite createQuery to don't respect enable fields
+     *
+     * @return QueryInterface
+     */
+    public function createQuery()
+    {
+        $query = parent::createQuery();
+        $query->getQuerySettings()->setIgnoreEnableFields(true);
+        return $query;
+    }
+
+    /**
+     * @return SessionBackendInterface
+     */
+    protected function getSessionBackend(): SessionBackendInterface
+    {
+        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
+    }
+
+    /**
+     * Find Backend Users matching to Demand object properties
+     *
+     * @param Demand $demand
+     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+     */
+    public function findDemanded(Demand $demand)
+    {
+        $constraints = [];
+        $query = $this->createQuery();
+        $query->setOrderings(['userName' => QueryInterface::ORDER_ASCENDING]);
+
+        // Username
+        if ($demand->getUserName() !== '') {
+            $searchConstraints = [];
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+            foreach (['userName', 'realName'] as $field) {
+                $searchConstraints[] = $query->like(
+                    $field,
+                    '%' . $queryBuilder->escapeLikeWildcards($demand->getUserName()) . '%'
+                );
+            }
+            if (MathUtility::canBeInterpretedAsInteger($demand->getUserName())) {
+                $searchConstraints[] = $query->equals('uid', (int)$demand->getUserName());
+            }
+            $constraints[] = $query->logicalOr($searchConstraints);
+        }
+
+        /**Check if reject User start with Special char like "_cli_"*/
+
+        if($demand->getRejectUserStartWith() != ''){
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+            $constraints[] = $query->logicalNot(
+                $query->like('userName',  $queryBuilder->escapeLikeWildcards($demand->getRejectUserStartWith()).'%'),
+            );
+            $constraints[] = $query->logicalNot(
+                $query->like('realName',  $queryBuilder->escapeLikeWildcards($demand->getRejectUserStartWith()).'%')
+            );
+        }
+
+        // Only display admin users
+        if ($demand->getUserType() == Demand::USERTYPE_ADMINONLY) {
+            $constraints[] = $query->equals('admin', 1);
+        }
+        // Only display non-admin users
+        if ($demand->getUserType() == Demand::USERTYPE_USERONLY) {
+            $constraints[] = $query->equals('admin', 0);
+        }
+        // Only display active users
+        if ($demand->getStatus() == Demand::STATUS_ACTIVE) {
+            $constraints[] = $query->equals('disable', 0);
+        }
+        // Only display in-active users
+        if ($demand->getStatus() == Demand::STATUS_INACTIVE) {
+            $constraints[] = $query->logicalOr($query->equals('disable', 1));
+        }
+        // Not logged in before
+        if ($demand->getLogins() == Demand::LOGIN_NONE) {
+            $constraints[] = $query->equals('lastlogin', 0);
+        }
+        // At least one login
+        if ($demand->getLogins() == Demand::LOGIN_SOME) {
+            $constraints[] = $query->logicalNot($query->equals('lastlogin', 0));
+        }
+        // In backend user group
+        // @TODO: Refactor for real n:m relations
+        if ($demand->getBackendUserGroup()) {
+            $constraints[] = $query->logicalOr([
+                $query->equals('usergroup', (int)$demand->getBackendUserGroup()),
+                $query->like('usergroup', (int)$demand->getBackendUserGroup() . ',%'),
+                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()),
+                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup() . ',%')
+            ]);
+        }
+        if ($constraints !== []) {
+            $query->matching($query->logicalAnd($constraints));
+        }
+        /** @var QueryResult $result */
+        $result = $query->execute();
+
+        return $result;
+    }
+}

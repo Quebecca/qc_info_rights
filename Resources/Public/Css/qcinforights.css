@@ -1,0 +1,17 @@
+.typo3-csvLink{
+    float: right;
+    margin-bottom: 20px;
+}
+.mb-10{
+    margin-bottom: 10px;
+}
+
+
+.custom-depth-select select.form-control{
+    width: 100%;
+}
+
+.custom-depth-select .form-group{
+    width: 100%;
+    margin-left: 0;
+}

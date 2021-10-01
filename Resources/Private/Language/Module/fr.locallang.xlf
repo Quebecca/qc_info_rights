@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="fr_CA" datatype="plaintext" original="messages" date="2021-09-16UTC15:45:380">
+		<header>
+			<authorName>Taieb Rekik</authorName>
+		</header>
+		<body>
+			<trans-unit id="no.access.title" resname="no.access.title">
+				<source>No access!</source>
+				<target>Pas d'accès!</target>
+			</trans-unit>
+			<trans-unit id="no.access" resname="no.access">
+				<source>You do not have access to these listings.</source>
+				<target>Vous n'avez pas accès à ces listes.</target>
+			</trans-unit>
+		<!-- Label Module-->
+			<trans-unit id="accessRights" resname="accessRights">
+				<source>Access and rights</source>
+				<target>Accès et droits</target>
+			</trans-unit>
+			<trans-unit id="beUserGroupsLists" resname="beUserGroupsLists">
+				<source>Backend user groups list</source>
+				<target>Liste des groupes d'utilisateurs du backend</target>
+			</trans-unit>
+			<trans-unit id="beUserLists" resname="beUserLists">
+				<source>Backend users list</source>
+				<target>Liste des utilisateurs du backend</target>
+			</trans-unit>
+		<!-- Module Header-->
+			<trans-unit id="accessRights.header" resname="accessRights.header">
+				<source>Access and rights Information</source>
+				<target>Information accès et droits</target>
+			</trans-unit>
+			<trans-unit id="beUserGroupsLists.header" resname="beUserGroupsLists.header">
+				<source>Backend user groups list information</source>
+				<target>Information liste des groupes d'utilisateurs backend</target>
+			</trans-unit>
+			<trans-unit id="beUserLists.header" resname="beUserLists.header">
+				<source>Backend users list information</source>
+				<target>Information liste des utilisateurs du backend.</target>
+			</trans-unit>
+		<!-- Module Backend User list -->
+			<trans-unit id="beUserLists.actif" resname="beUserLists.actif">
+				<source>Active user</source>
+				<target>Utilisateur actif</target>
+			</trans-unit>
+			<trans-unit id="beUserLists.inactif" resname="beUserLists.inactif">
+				<source>Inactive user</source>
+				<target>Utilisateur inactif</target>
+			</trans-unit>
+
+		<!-- CSV HEADER Fields -->
+			<trans-unit id="csvHeader.uid" resname="csvHeader.uid">
+				<source>UID</source>
+				<target>UID</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.title" resname="csvHeader.title">
+				<source>Title</source>
+				<target>Titre</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.description" resname="csvHeader.description">
+				<source>Description</source>
+				<target>Description</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.isHidden" resname="csvHeader.isHidden">
+				<source>Disabled</source>
+				<target>Désactivé</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.isAdmin" resname="csvHeader.isAdmin">
+				<source>Administrator</source>
+				<target>Administrateur</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.mail" resname="csvHeader.mail">
+				<source>E-mail</source>
+				<target>Courriel</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.fullName" resname="csvHeader.fullName">
+				<source>Full Name</source>
+				<target>Nom complet</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.userName" resname="csvHeader.userName">
+				<source>User name</source>
+				<target>Nom d'utilisateur</target>
+			</trans-unit>
+			<trans-unit id="csvHeader.lastLogin" resname="csvHeader.lastLogin">
+				<source>Last Login</source>
+				<target>Dernière connexion</target>
+			</trans-unit>
+
+		<!-- Default Item -->
+			<trans-unit id="yes" resname="yes">
+				<source>Yes</source>
+				<target>Oui</target>
+			</trans-unit>
+			<trans-unit id="no" resname="no">
+				<source>No</source>
+				<target>Non</target>
+			</trans-unit>
+			<trans-unit id="never" resname="never">
+				<source>Never</source>
+				<target>Jamais</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

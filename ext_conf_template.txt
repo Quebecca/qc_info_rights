@@ -1,0 +1,6 @@
+# cat=basic; type=string; label=Quote for CSV Export: This is the quote that we are going to use when we generate the CSV file by default(")
+quote = "
+
+# cat=basic; type=string; label=delimiter CSV file: Delimiter For CSV file By default is (,)
+delimiter = ,
+

@@ -1,0 +1,20 @@
+{namespace be=TYPO3\CMS\Backend\ViewHelpers}
+{namespace core=TYPO3\CMS\Core\ViewHelpers}
+<f:layout name="TabContent" />
+<f:section name="OptionsTitle">
+    <h2 class="mb-10"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserLists.header" /></h2>
+</f:section>
+<f:section name="Main">
+
+    <f:if condition="{showExportUsers}">
+        <div class="typo3-csvLink">
+            <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_list')}">
+                <f:image src="EXT:qc_info_rights/Resources/Public/Icons/csv.svg" width="30" height="30"  title="{f:translate(key: 'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv')}" alt="{f:translate(key: 'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv')}"/>
+                <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv"/>
+            </a>
+        </div>
+    </f:if>
+
+    <f:render partial="BeUserList/PaginatedListWidgetBody" arguments="{_all}" />
+
+</f:section>

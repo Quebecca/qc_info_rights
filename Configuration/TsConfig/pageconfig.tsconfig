@@ -1,0 +1,37 @@
+mod{
+  qcinforights{
+
+    //This settings is to show or hide column under the tab access and right for owner,group, and everybody
+    hideAccessRights{
+      user = 0
+      group = 0
+      everybody = 0
+    }
+
+    //This settings is to show or hide tab (Access and right, Backend users group, and backend user lists)
+    showTabAccess  = 1
+    showTabUsers   = 1
+    showTabGroups  = 1
+
+    //This settings is to show Exportation option for the backend users list or backend user groups list
+    showExportUsers  = 1
+    showExportGroups = 1
+
+    //This settings is to show Administrator inside list of backend user
+    showAdministratorUser = 1
+
+  }
+
+  web_info{
+
+    menu{
+      function {
+        #Disable item "Access and right" from the Menu of Info Module
+        Qc\QcInfoRights\Report\QcInfoRightsReport = 1
+      }
+    }
+  }
+
+}
+
+

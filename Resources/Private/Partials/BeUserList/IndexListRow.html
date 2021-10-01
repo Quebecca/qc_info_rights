@@ -1,0 +1,47 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers">
+
+<f:section name="list_row">
+    <tr>
+        <td>
+            <be:avatar backendUser="{backendUser.uid}" showIcon="TRUE" />
+        </td>
+        <td class="col-title">
+            <b>{backendUser.userName}</b>
+            <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
+                <span class="label label-success"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:online" /></span>
+            </f:if>
+            <br />
+            <f:if condition="{backendUser.realName}">
+                    {backendUser.realName}
+            </f:if>
+        </td>
+        <td>
+            <f:if condition="{backendUser.email}">
+                <f:format.raw>{backendUser.email}</f:format.raw>
+            </f:if>
+        </td>
+        <td>
+            <f:if condition="{backendUser.lastLoginDateAndTime}">
+                <f:then>
+                    <f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>
+                </f:then>
+                <f:else>
+                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:never" />
+                </f:else>
+            </f:if>
+        </td>
+        <td>
+            <f:if condition="{backendUser.isDisabled}">
+                <f:then>
+                    <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserLists.inactif" />
+                </f:then>
+                <f:else>
+                    <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserLists.actif" />
+                </f:else>
+            </f:if>
+        </td>
+    </tr>
+</f:section>
+</html>

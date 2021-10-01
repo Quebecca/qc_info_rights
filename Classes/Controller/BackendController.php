@@ -134,7 +134,7 @@ class BackendController
         $title = 'Backend-user-list-Export-' . date('Y-m-d_H-i');
         $filename = $title . '.' . $format;
 
-        $response = new Response('', 200,
+        $response = new Response('php://output', 200,
             ['Content-Type' => 'text/csv; charset=utf-8',
                 'Content-Description' => 'File transfer',
                 'Content-Disposition' => 'attachment; filename="' . $filename . '"'
@@ -197,7 +197,7 @@ class BackendController
         $title = 'Backend-user-group-list-Export-' . date('Y-m-d_H-i');
         $filename = $title . '.' . $format;
 
-        $response = new Response('', 200,
+        $response = new Response('php://output', 200,
             ['Content-Type' => 'text/csv; charset=utf-8',
                 'Content-Description' => 'File transfer',
                 'Content-Disposition' => 'attachment; filename="' . $filename . '"'

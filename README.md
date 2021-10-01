@@ -1,0 +1,1 @@
+# qc_info_rights

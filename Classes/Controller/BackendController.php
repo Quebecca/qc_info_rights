@@ -3,6 +3,7 @@
 namespace Qc\QcInfoRights\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcInfoRights\Domain\Model\ModuleData;
 use Qc\QcInfoRights\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -12,6 +13,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -124,10 +126,11 @@ class BackendController
 
     /**
      * This Action is to export Backend user as a CSV Files
+     * @param \Psr\Http\Message\ServerRequestInterface $request
      *
-     * @return ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    public function exportBackendUserListAction(): ResponseInterface
+    public function exportBackendUserListAction(ServerRequestInterface $request): ResponseInterface
     {
         //Initialize Response and create Name of Our FIle CSV
         $format = 'csv';
@@ -154,6 +157,28 @@ class BackendController
         if(!$this->showAdministratorUser){
             $demand->setUserType(Demand::USERTYPE_USERONLY);
         }
+
+        /**Verification of Filter Element*/
+        $UriParam= $request->getQueryParams();
+
+        /**Check if exist Params to execute Instruction*/
+        if(is_array($UriParam)){
+            //Filter for user name
+            if(!empty($UriParam['username'])){
+                $demand->setUserName($UriParam['username']);
+            }
+
+            //Filter for address mail
+            if(!empty($UriParam['mail'])){
+                $demand->setEmail($UriParam['mail']);
+            }
+
+            //Filter if user want to hide inactive User
+            if(!empty($UriParam['hideInactif']) && (int)($UriParam['hideInactif']) == 1){
+                $demand->setStatus(Demand::STATUS_ACTIVE);
+            }
+        }
+
         //Render All Backend User
         $beUser = $this->backendUserRepository->findDemanded($demand);
 

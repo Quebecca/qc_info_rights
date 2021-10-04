@@ -2,10 +2,6 @@
     float: right;
     margin-bottom: 20px;
 }
-.mb-10{
-    margin-bottom: 10px;
-}
-
 
 .custom-depth-select select.form-control{
     width: 100%;
@@ -15,3 +11,25 @@
     width: 100%;
     margin-left: 0;
 }
+
+/**spacing*/
+.mb-10{
+    margin-bottom: 10px !important;
+}
+.mb-15{
+    margin-bottom: 15px !important;
+}
+.mb-20{
+    margin-bottom: 20px !important;
+}
+.mb-25{
+    margin-bottom: 25px !important;
+}
+.mb-30{
+    margin-bottom: 30px !important;
+}
+
+.w-100{
+    width: 100% !important;
+}
+

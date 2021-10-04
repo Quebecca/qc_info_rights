@@ -5,6 +5,7 @@ use Qc\QcInfoRights\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -19,6 +20,15 @@ use TYPO3\CMS\Extbase\Persistence\Repository;
 class BackendUserRepository extends  Repository{
 
     /**
+     * @var array Default order is by LastLogin ascending
+     */
+    protected $defaultOrderings = [
+        'lastlogin' => QueryInterface::ORDER_DESCENDING,
+        'userName' => QueryInterface::ORDER_ASCENDING
+    ];
+
+
+    /**
      * Overwrite createQuery to don't respect enable fields
      *
      * @return QueryInterface
@@ -27,6 +37,7 @@ class BackendUserRepository extends  Repository{
     {
         $query = parent::createQuery();
         $query->getQuerySettings()->setIgnoreEnableFields(true);
+        $query->setOrderings($this->defaultOrderings);
         return $query;
     }
 
@@ -47,13 +58,13 @@ class BackendUserRepository extends  Repository{
     public function findDemanded(Demand $demand)
     {
         $constraints = [];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $query = $this->createQuery();
-        $query->setOrderings(['userName' => QueryInterface::ORDER_ASCENDING]);
+        $query->setOrderings($this->defaultOrderings);
 
         // Username
         if ($demand->getUserName() !== '') {
             $searchConstraints = [];
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             foreach (['userName', 'realName'] as $field) {
                 $searchConstraints[] = $query->like(
                     $field,
@@ -69,13 +80,16 @@ class BackendUserRepository extends  Repository{
         /**Check if reject User start with Special char like "_cli_"*/
 
         if($demand->getRejectUserStartWith() != ''){
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
             $constraints[] = $query->logicalNot(
                 $query->like('userName',  $queryBuilder->escapeLikeWildcards($demand->getRejectUserStartWith()).'%'),
             );
             $constraints[] = $query->logicalNot(
                 $query->like('realName',  $queryBuilder->escapeLikeWildcards($demand->getRejectUserStartWith()).'%')
             );
+        }
+
+        if($demand->getEmail() != ''){
+            $constraints[] = $query->like('email', '%' . $queryBuilder->escapeLikeWildcards(str_replace(' ', '', $demand->getEmail())) . '%');
         }
 
         // Only display admin users
@@ -109,7 +123,7 @@ class BackendUserRepository extends  Repository{
                 $query->equals('usergroup', (int)$demand->getBackendUserGroup()),
                 $query->like('usergroup', (int)$demand->getBackendUserGroup() . ',%'),
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()),
-                $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup() . ',%')
+                $query->like('usergroup', '%' . (int)$demand->getBackendUserGroup() . ',%')
             ]);
         }
         if ($constraints !== []) {
@@ -117,7 +131,6 @@ class BackendUserRepository extends  Repository{
         }
         /** @var QueryResult $result */
         $result = $query->execute();
-
         return $result;
     }
 }

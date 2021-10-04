@@ -6,14 +6,18 @@
 </f:section>
 <f:section name="Main">
 
+    <f:render partial="BeUserList/Filter" arguments="{_all}"/>
+
     <f:if condition="{showExportUsers}">
+       <f:variable name="params" value="{f:if(condition: args, then:args, else:'{0:\'\'}')}"/>
         <div class="typo3-csvLink">
-            <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_list')}">
+            <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_list',  parameters: '{params}')}">
                 <f:image src="EXT:qc_info_rights/Resources/Public/Icons/csv.svg" width="30" height="30"  title="{f:translate(key: 'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv')}" alt="{f:translate(key: 'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv')}"/>
                 <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv"/>
             </a>
         </div>
     </f:if>
+
 
     <f:render partial="BeUserList/PaginatedListWidgetBody" arguments="{_all}" />
 

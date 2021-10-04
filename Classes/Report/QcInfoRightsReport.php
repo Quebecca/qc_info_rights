@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
@@ -364,6 +365,8 @@ class QcInfoRightsReport
      */
     protected function createViewForBeUserListTab()
     {
+        $prefix = "user";
+
         $this->setPageInfo();
         $view = $this->createView('BeUserList');
 
@@ -371,8 +374,26 @@ class QcInfoRightsReport
 
         $demand->setRejectUserStartWith('_');
 
+        //Render input value from the backend form
+        $set = GeneralUtility::_GP($prefix . '_SET');
+
         if(!$this->showAdministratorUser){
             $demand->setUserType(Demand::USERTYPE_USERONLY);
+        }
+
+        //Filter for user name
+        if(!empty($set['username'])){
+            $demand->setUserName($set['username']);
+        }
+
+        //Filter for address mail
+        if(!empty($set['mail'])){
+            $demand->setEmail($set['mail']);
+        }
+
+        //Filter if user want to hide inactive User
+        if(!empty($set['hideInactif']) && (int)($set['hideInactif']) == 1){
+            $demand->setStatus(Demand::STATUS_ACTIVE);
         }
 
         $view->assignMultiple([
@@ -380,7 +401,8 @@ class QcInfoRightsReport
             'backendUsers' => $this->backendUserRepository->findDemanded($demand),
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
-            'showExportUsers' => $this->showExportUsers
+            'showExportUsers' => $this->showExportUsers,
+            'args' => $set
         ]);
         return $view;
     }

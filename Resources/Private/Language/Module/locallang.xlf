@@ -71,6 +71,13 @@
 				<source>Last login</source>
 			</trans-unit>
 
+			<!-- Filter Backend user-->
+			<trans-unit id="label_refresh-filter-user" resname="label_refresh-filter-user">
+				<source>Refreshing backend users list, please stand by.</source>
+			</trans-unit>
+			<trans-unit id="beUserListsFilter.hideInactif" resname="beUserListsFilter.hideInactif">
+				<source>Hide Inactive users</source>
+			</trans-unit>
 
 			<!-- Default Item -->
 			<trans-unit id="yes" resname="yes">

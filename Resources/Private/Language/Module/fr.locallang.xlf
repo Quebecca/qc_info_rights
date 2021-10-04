@@ -87,6 +87,17 @@
 				<target>Dernière connexion</target>
 			</trans-unit>
 
+		<!-- Filter Backend user-->
+			<trans-unit id="label_refresh-filter-user" resname="label_refresh-filter-user">
+				<source>Refreshing backend users list, please stand by.</source>
+				<target>Rafraîchissement de la liste des utilisateurs du backend, veuillez patienter.</target>
+			</trans-unit>
+			<trans-unit id="beUserListsFilter.hideInactif" resname="beUserListsFilter.hideInactif">
+				<source>Hide Inactive users</source>
+				<target>Cacher les utilisateurs inactifs</target>
+			</trans-unit>
+
+
 		<!-- Default Item -->
 			<trans-unit id="yes" resname="yes">
 				<source>Yes</source>

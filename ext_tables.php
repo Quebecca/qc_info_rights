@@ -1,16 +1,15 @@
 <?php
 defined('TYPO3_MODE') || die();
 
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use Qc\QcInfoRights\Report\QcInfoRightsReport;
 
 call_user_func(static function() {
-    ExtensionManagementUtility::addLLrefForTCAdescr('tx_qcinforights_domain_model_qcinforights', 'EXT:qc_info_rights/Resources/Private/Language/locallang_csh_tx_qcinforights_domain_model_qcinforights.xlf');
-    ExtensionManagementUtility::allowTableOnStandardPages('tx_qcinforights_domain_model_qcinforights');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_qcinforights_domain_model_qcinforights', 'EXT:qc_info_rights/Resources/Private/Language/locallang_csh_tx_qcinforights_domain_model_qcinforights.xlf');
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_qcinforights_domain_model_qcinforights');
 });
 
 // Extend Module INFO with new Element
-ExtensionManagementUtility::insertModuleFunction(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     QcInfoRightsReport::class,
     '',
@@ -18,7 +17,7 @@ ExtensionManagementUtility::insertModuleFunction(
 );
 
 // Initialize Context Sensitive Help (CSH)
-ExtensionManagementUtility::addLLrefForTCAdescr(
+\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(
     'qcinforights',
     'EXT:qc_info_rights/Resources/Private/Language/Module/locallang_csh.xlf'
 );

@@ -38,7 +38,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
 
 /**
- * Module 'Link validator' as sub module of Web -> Info
+ * Module 'Qc info rights' as sub module of Web -> Info
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */

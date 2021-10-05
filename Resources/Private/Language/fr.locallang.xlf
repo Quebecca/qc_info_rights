@@ -5,7 +5,7 @@
 		<body>
 			<trans-unit id="tx_qcinforights_domain_model_qcinforights" resname="tx_qcinforights_domain_model_qcinforights">
 				<source>Qcinforights</source>
-				<source>Qcinforights</source>
+				<target>Qcinforights</target>
 			</trans-unit>
 			<trans-unit id="tx_qcinforights_domain_model_qcinforights.id" resname="tx_qcinforights_domain_model_qcinforights.id">
 				<source>Id</source>

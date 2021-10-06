@@ -9,6 +9,13 @@ This extension add a new item to the Info Module in the BE with those features:
 2. Show a list of all BE Users (except if it begins with a "_" like "\_cli\_") with a filter and export as CSV(hidden by default)
 3. Show a list of all BE User Groups with a filter and export to CSV (hidden by default)
 
+Main function is to show the actual BE right to non-admins:
+![Main functionnality](Documentation/Images/access-and-rights.jpg)
+
+BE users list with filters and CSV export button:
+![BE users list with CSV button](Documentation/Images/backend-users-tab.jpg)
+
+
 The extension has many options to hide columns or features.
 
 We decided to hide the 2 tabs containing the lists of users and groups by default. See the TSconfig below to activate the tabs.

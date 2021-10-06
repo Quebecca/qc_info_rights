@@ -1,6 +1,6 @@
 # Info Rights
 
-*La version française de la documentation suit le texte anglais*
+*La [version française](#documentation-info-rights) de la documentation suit le texte anglais*
 
 ### About
 This extension add a new item to the Info Module in the BE with those features:

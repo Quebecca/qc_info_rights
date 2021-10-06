@@ -3,10 +3,30 @@
         <thead>
         <tr>
             <th></th>
-            <th class="col-title"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName" /> / <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:realName" /></th>
-            <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:email" /></th>
-            <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:lastLogin" /></th>
-            <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:disable_compare" /></th>
+            <th class="col-title">
+                <f:format.raw>{tabHeader.userName.header}</f:format.raw>
+                <f:if condition="{tabHeader.userName.icon}">
+                    <core:icon identifier="{tabHeader.userName.icon}"/>
+                </f:if>
+            </th>
+            <th>
+                <f:format.raw>{tabHeader.email.header}</f:format.raw>
+                <f:if condition="{tabHeader.email.icon}">
+                    <core:icon identifier="{tabHeader.email.icon}"/>
+                </f:if>
+            </th>
+            <th>
+                <f:format.raw>{tabHeader.lastLogin.header}</f:format.raw>
+                <f:if condition="{tabHeader.lastLogin.icon}">
+                    <core:icon identifier="{tabHeader.lastLogin.icon}"/>
+                </f:if>
+            </th>
+            <th>
+                <f:format.raw>{tabHeader.disable_compare.header}</f:format.raw>
+                <f:if condition="{tabHeader.disable_compare.icon}">
+                    <core:icon identifier="{tabHeader.disable_compare.icon}"/>
+                </f:if>
+            </th>
         </tr>
         </thead>
         <tbody>

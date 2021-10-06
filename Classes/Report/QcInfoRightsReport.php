@@ -50,6 +50,51 @@ class QcInfoRightsReport
     const KEY = 'tx_beuser';
 
     /**
+     * @var string
+     */
+    const prefix_be_user_lang = 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:';
+
+    /**
+     * @var string
+     */
+    const prefix_core_lang = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:';
+
+    /***
+     * @var  string
+     */
+    const prefix_filter = 'user';
+
+    /**
+     * Array configuration for the order of Table backend user list
+     */
+    protected const ORDER_BY_VALUES = [
+        'lastLogin' => [
+            ['lastlogin', 'ASC'],
+        ],
+        'lastLogin_reverse' => [
+            ['lastlogin', 'DESC'],
+        ],
+        'userName' => [
+            ['userName', 'ASC'],
+        ],
+        'userName_reverse' => [
+            ['userName', 'DESC'],
+        ],
+        'email' => [
+            ['email' , 'ASC'],
+        ],
+        'email_reverse' => [
+            ['email' , 'DESC'],
+        ],
+        'disable_compare' => [
+            ['disable' , 'ASC'],
+        ],
+        'disable_compare_reverse' => [
+            ['disable' , 'DESC'],
+        ],
+    ];
+
+    /**
      * @var \Qc\QcInfoRights\Domain\Model\ModuleData
      */
     protected $moduleData;
@@ -91,6 +136,11 @@ class QcInfoRightsReport
      * @var int Value of the GET/POST var 'id'
      */
     protected $id;
+
+    /**
+     * @var string Value of the GET/POST var orderBy
+     */
+    protected $orderBy;
 
     /**
      * @var InfoModuleController Contains a reference to the parent calling object
@@ -165,6 +215,13 @@ class QcInfoRightsReport
     protected $modTSconfig;
 
     /**
+     * all params pass with 'prefix_user._SET'
+     *
+     * @var array
+     */
+    protected $set = [];
+
+    /**
      * QcInfoRightsReport constructor.
      *
      * @param \TYPO3\CMS\Core\Domain\Repository\PageRepository|null               $pagesRepository
@@ -216,6 +273,8 @@ class QcInfoRightsReport
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
         $this->view = $this->createView('InfoModule');
+        $this->orderBy = (string)(GeneralUtility::_GP('orderBy'));
+        $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
     }
 
     protected function createView(string $templateName): StandaloneView
@@ -368,33 +427,45 @@ class QcInfoRightsReport
         $prefix = "user";
 
         $this->setPageInfo();
+
         $view = $this->createView('BeUserList');
 
         $demand = $this->moduleData->getDemand();
 
         $demand->setRejectUserStartWith('_');
 
-        //Render input value from the backend form
-        $set = GeneralUtility::_GP($prefix . '_SET');
+           // DebugUtility::debug($this->set);
+        /*Check if we need to Set order Dynamic for the List*/
+        $orderArray = self::ORDER_BY_VALUES[$this->orderBy] ?? [];
+
+        if(!empty($orderArray)){
+            $demand->setOrderArray($orderArray);
+        }
 
         if(!$this->showAdministratorUser){
             $demand->setUserType(Demand::USERTYPE_USERONLY);
         }
 
         //Filter for user name
-        if(!empty($set['username'])){
-            $demand->setUserName($set['username']);
+        if(!empty($this->set['username'])){
+            $demand->setUserName($this->set['username']);
         }
 
         //Filter for address mail
-        if(!empty($set['mail'])){
-            $demand->setEmail($set['mail']);
+        if(!empty($this->set['mail'])){
+            $demand->setEmail($this->set['mail']);
         }
 
         //Filter if user want to hide inactive User
-        if(!empty($set['hideInactif']) && (int)($set['hideInactif']) == 1){
+        if(!empty($this->set['hideInactif']) && (int)($this->set['hideInactif']) == 1){
             $demand->setStatus(Demand::STATUS_ACTIVE);
         }
+
+        /**Implement tableau Header withDynamically order By Field*/
+        foreach (array_keys(self::ORDER_BY_VALUES) as $key) {
+            $sortActions[$key] = $this->constructBackendUri(['orderBy' => $key]);
+        }
+        $tabHeaders = $this->getVariablesForTableHeader($sortActions);
 
         $view->assignMultiple([
             'prefix' => 'beUserList',
@@ -402,7 +473,8 @@ class QcInfoRightsReport
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'showExportUsers' => $this->showExportUsers,
-            'args' => $set
+            'args' => $this->set,
+            'tabHeader' => $tabHeaders
         ]);
         return $view;
     }
@@ -434,12 +506,12 @@ class QcInfoRightsReport
         $menu = [
             'pages' => [],
             'depth' => [
-                0 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_0'),
-                1 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_1'),
-                2 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_2'),
-                3 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_3'),
-                4 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_4'),
-                999 => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.depth_infi')
+                0 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_0'),
+                1 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_1'),
+                2 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_2'),
+                3 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_3'),
+                4 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_4'),
+                999 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_infi')
             ]
         ];
 
@@ -586,4 +658,88 @@ class QcInfoRightsReport
         return '';
     }
 
+    /**
+     * @param array<string,mixed> $additionalQueryParameters
+     * @param string $route
+     * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
+     */
+    protected function constructBackendUri(array $additionalQueryParameters = [], string $route = 'web_info'): string
+    {
+        $parameters = [
+            'id' => $this->id,
+            'depth' => $this->depth,
+            'orderBy' => $this->orderBy,
+            self::prefix_filter.'_SET[username]' => $this->set['username'],
+            self::prefix_filter.'_SET[mail]' => $this->set['mail'],
+            self::prefix_filter.'_SET[hideInactif]' => $this->set['hideInactif'],
+            'paginationPage', $this->paginationCurrentPage,
+        ];
+
+        // if same key, additionalQueryParameters should overwrite parameters
+        $parameters = array_merge($parameters, $additionalQueryParameters);
+
+        /**
+         * @var UriBuilder $uriBuilder
+         */
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uri = (string)$uriBuilder->buildUriFromRoute($route, $parameters);
+
+        return $uri;
+    }
+    /**
+     * Sets variables for the Fluid Template of the table with the Backend User List
+     * @param array<string,string> $sortActions
+     * @return mixed[] variables
+     */
+    protected function getVariablesForTableHeader(array $sortActions): array
+    {
+        $languageService = $this->getLanguageService();
+
+        $headers = [
+            'userName',
+            'email',
+            'lastLogin',
+            'disable_compare'
+        ];
+
+        $tableHeadData = [];
+
+        foreach ($headers as $key) {
+            $tableHeadData[$key]['label'] = $languageService->sL(self::prefix_be_user_lang.$key);
+            if (isset($sortActions[$key])) {
+                // sorting available, add url
+                if ($this->orderBy === $key) {
+                    $tableHeadData[$key]['url'] = $sortActions[$key . '_reverse'] ?? '';
+                } else {
+                    $tableHeadData[$key]['url'] = $sortActions[$key] ?? '';
+                }
+
+                // add icon only if this is the selected sort order
+                if ($this->orderBy === $key) {
+                    $tableHeadData[$key]['icon'] = 'status-status-sorting-asc';
+                }elseif ($this->orderBy === $key . '_reverse') {
+                    $tableHeadData[$key]['icon'] = 'status-status-sorting-desc';
+                }
+            }
+        }
+
+        $tableHeaderHtml = [];
+        foreach ($tableHeadData as $key => $values) {
+            if (isset($values['url'])) {
+                $tableHeaderHtml[$key]['header'] = sprintf(
+                    '<a href="%s" style="text-decoration: underline;">%s</a>',
+                    $values['url'],
+                    $values['label']
+                );
+            } else {
+                $tableHeaderHtml[$key]['header'] = $values['label'];
+            }
+
+            if (($values['icon'] ?? '') !== '') {
+                $tableHeaderHtml[$key]['icon'] = $values['icon'];
+            }
+        }
+        return $tableHeaderHtml;
+    }
 }

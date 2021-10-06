@@ -9,6 +9,11 @@ class Demand extends \TYPO3\CMS\Beuser\Domain\Model\Demand{
      */
     protected $rejectUserStartWith = '';
 
+    /**
+     * @var array
+     */
+    protected $orderArray = [];
+
     /*
      * @var string
      */
@@ -45,6 +50,22 @@ class Demand extends \TYPO3\CMS\Beuser\Domain\Model\Demand{
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOrderArray(): array
+    {
+        return $this->orderArray;
+    }
+
+    /**
+     * @param array $orderArray
+     */
+    public function setOrderArray(array $orderArray): void
+    {
+        $this->orderArray = $orderArray;
     }
 
 }

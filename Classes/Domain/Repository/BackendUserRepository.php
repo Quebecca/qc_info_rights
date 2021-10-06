@@ -27,7 +27,6 @@ class BackendUserRepository extends  Repository{
         'userName' => QueryInterface::ORDER_ASCENDING
     ];
 
-
     /**
      * Overwrite createQuery to don't respect enable fields
      *
@@ -61,6 +60,15 @@ class BackendUserRepository extends  Repository{
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $query = $this->createQuery();
         $query->setOrderings($this->defaultOrderings);
+
+        if(!empty($demand->getOrderArray())){
+            $orderConfig = $demand->getOrderArray();
+            $newOrderArray = [];
+            for($i = 0; $i< count($orderConfig); $i++){
+                $newOrderArray[$orderConfig[$i][0]] = $orderConfig[$i][1];
+            }
+            $query->setOrderings($newOrderArray);
+        }
 
         // Username
         if ($demand->getUserName() !== '') {

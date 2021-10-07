@@ -121,7 +121,7 @@ page.mod.web_info.menu.function {
 ```
 ### Options globales - CSV
 
-Avec le module "Réglages", dans "Configure extensions" se trouvent 2 options relativesd à l'exportation CSV.
+Avec le module "Réglages", dans "Configure extensions" se trouvent 2 options relatives à l'exportation CSV.
 
 Les valeurs par défaut sont:
 

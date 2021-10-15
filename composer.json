@@ -7,6 +7,8 @@
 		"TYPO3 CMS",
 		"Backend Users",
 		"Backend groups users",
+		"Security",
+		"Backend",
 		"Pages"
 	   ],
     "license": "GPL-2.0-or-later",
@@ -27,7 +29,6 @@
         }
     },
     "replace": {
-		"qc-info-rights": "self.version",
         "typo3-ter/qc-info-rights": "self.version"
     },
     "config": {

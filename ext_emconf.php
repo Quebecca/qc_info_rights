@@ -12,13 +12,13 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'qc_info_rights',
-    'description' => 'This Extension is to help user to check user and group list with possibility to Export into CSV file.',
+    'description' => 'Gives editors a view of BE users and group rights like the Access module but in read-only. Also provides BE users and BE User Groups list with CSV export.',
     'category' => 'plugin',
-    'author' => '',
+    'author' => 'Quebec.ca/',
     'author_email' => '',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
-    'version' => '1.0.0',
+    'version' => '1.0.2',
     'autoload' => [
         'psr-4' => [
             'Qc\QcInfoRights\\' => 'Classes',
@@ -26,7 +26,7 @@ $EM_CONF[$_EXTKEY] = [
     ],
     'constraints' => [
         'depends' => [
-            'typo3' => '10.4.0-11.4.99',
+            'typo3' => '10.4.0-11.5.99',
         ],
         'conflicts' => [],
         'suggests' => [],

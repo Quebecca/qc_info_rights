@@ -495,7 +495,8 @@ class QcInfoRightsReport
         $view->assignMultiple([
             'prefix' => 'beUserGroupList',
             'backendUserGroups' => $this->backendUserGroupRepository->findAll(),
-            'showExportGroups' => $this->showExportGroups
+            'showExportGroups' => $this->showExportGroups,
+            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn')
         ]);
         return $view;
     }

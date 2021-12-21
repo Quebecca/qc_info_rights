@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
@@ -37,7 +38,7 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
-
+use Psr\Http\Message\ResponseInterface;
 /**
  * Module 'Qc info rights' as sub module of Web -> Info
  *
@@ -750,13 +751,12 @@ class QcInfoRightsReport
     /**
      * This Function is delete the selected excluded link
      * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return ResponseInterface
      */
-    public function showMembers(ServerRequestInterface $request): Response{
+    public function showMembers(ServerRequestInterface $request): ResponseInterface{
         $urlParam = $request->getQueryParams();
         $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
-        $response = new Response('php://output', 200);
-        $response->getBody()->write(json_encode($members));
-        return $response;
+        return new JsonResponse($members);
     }
 
 }

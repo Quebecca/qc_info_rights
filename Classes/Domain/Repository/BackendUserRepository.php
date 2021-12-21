@@ -142,15 +142,25 @@ class BackendUserRepository extends  Repository{
         return $result;
     }
 
-    
+    /**
+     * This Function is used to render the members of the selected group
+     * @param string $selectedColumn
+     * @param  int $groupUid
+     * @return array
+     */
     public function getGroupMembers(int $groupUid, string $selectedColumn = 'username'){
+        $allowedColumns = ['username', 'email', 'realName'];
+        // make sur that the selected Column is allowed
+        if(!in_array($selectedColumn, $allowedColumns)){
+            $selectedColumn = 'username';
+        }
         $groupMembers = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $statement = $queryBuilder
             ->select('uid',$selectedColumn)
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->eq('usergroup', $groupUid)
+                $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupUid, \PDO::PARAM_INT))
             )
             ->orderBy($selectedColumn)
             ->execute();

@@ -34,7 +34,8 @@ function showMembers(e, groupUid) {
       .withQueryArguments({groupUid: groupUid, selectedColumn : $("#selectColumn :selected").val()})
       .get()
       .then(async function (response) {
-        var resolved = await response.resolve();
+        console.log(response.resolve());
+       /* var resolved = await response.resolve();
         var arrayOfMembers = JSON.parse(resolved)
         if(arrayOfMembers == 0){
          $('.noMembers'+groupUid).show()
@@ -47,7 +48,7 @@ function showMembers(e, groupUid) {
             node.appendChild(textnode);
             groupElement.appendChild(node);
           })
-        }
+        }*/
       });
   });
 }

@@ -141,4 +141,23 @@ class BackendUserRepository extends  Repository{
         $result = $query->execute();
         return $result;
     }
+
+    
+    public function getGroupMembers(int $groupUid, string $selectedColumn = 'username'){
+        $groupMembers = [];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $statement = $queryBuilder
+            ->select('uid',$selectedColumn)
+            ->from('be_users')
+            ->where(
+                $queryBuilder->expr()->eq('usergroup', $groupUid)
+            )
+            ->orderBy($selectedColumn)
+            ->execute();
+        while ($row = $statement->fetch()) {
+            // Do something with that single row
+            array_push($groupMembers, ['uid' => $row['uid'], 'name' => $row[$selectedColumn]]);
+        }
+        return $groupMembers;
+    }
 }

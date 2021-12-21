@@ -11,6 +11,15 @@
             <b>{backendUserGroup.title}</b><br />
             {backendUser.realName}
         </td>
+        <td>
+            <button class="btn btn-default" onclick="showMembers(event, '{backendUserGroup.uid}')" value="{backendUserGroup.uid}"><f:image src="EXT:qc_info_rights/Resources/Public/Icons/actions-users.svg" class="qc-fleche-icon"/></button>
+            <br>
+            <div  class="members-hide" id="group{backendUserGroup.uid}">
+            </div>
+            <div class="noMembers{backendUserGroup.uid} nom_members_hide">
+                <span><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:noMembers" /></span>
+            </div>
+        </td>
         <td class="nowrap-disabled">
             <f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
                 <be:link.editRecord table="be_groups" uid="{subgroup.uid}" title="edit">

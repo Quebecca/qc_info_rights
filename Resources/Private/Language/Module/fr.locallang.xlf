@@ -86,7 +86,30 @@
 				<source>Last Login</source>
 				<target>Dernière connexion</target>
 			</trans-unit>
-
+			<trans-unit id="members" resname="members">
+				<source>Members</source>
+				<target>Membres</target>
+			</trans-unit>
+			<trans-unit id="column.option.username">
+				<source>Username</source>
+				<target>Utilisateur </target>
+			</trans-unit>
+			<trans-unit id="column.option.realName">
+				<source>Name</source>
+				<target>Nom complet</target>
+			</trans-unit>
+			<trans-unit id="column.option.email">
+				<source>Email</source>
+				<target>Courriel </target>
+			</trans-unit>
+			<trans-unit id="selectMembersInfo">
+				<source>Members information</source>
+				<target>Information sur les membres</target>
+			</trans-unit>
+			<trans-unit id="noMembers">
+				<source>No members</source>
+				<target>Aucun membre</target>
+			</trans-unit>
 		<!-- Filter Backend user-->
 			<trans-unit id="label_refresh-filter-user" resname="label_refresh-filter-user">
 				<source>Refreshing backend users list, please stand by.</source>

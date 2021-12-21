@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -365,6 +366,8 @@ class QcInfoRightsReport
         }
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
         $pageRenderer->addCssFile(GeneralUtility::getFileAbsFileName('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css'), 'stylesheet', 'all');
+        $pageRenderer->addCssFile(GeneralUtility::getFileAbsFileName('EXT:qc_info_rights/Resources/Public/Css/showMembers.css'));
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
 
@@ -742,4 +745,18 @@ class QcInfoRightsReport
         }
         return $tableHeaderHtml;
     }
+
+       // show members
+    /**
+     * This Function is delete the selected excluded link
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     */
+    public function showMembers(ServerRequestInterface $request): Response{
+        $urlParam = $request->getQueryParams();
+        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
+        $response = new Response('php://output', 200);
+        $response->getBody()->write(json_encode($members));
+        return $response;
+    }
+
 }

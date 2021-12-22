@@ -367,7 +367,6 @@ class QcInfoRightsReport
         }
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
         $pageRenderer->addCssFile(GeneralUtility::getFileAbsFileName('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css'), 'stylesheet', 'all');
-        $pageRenderer->addCssFile(GeneralUtility::getFileAbsFileName('EXT:qc_info_rights/Resources/Public/Css/showMembers.css'));
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
@@ -756,7 +755,7 @@ class QcInfoRightsReport
      */
     public function showMembers(ServerRequestInterface $request): ResponseInterface{
         $urlParam = $request->getQueryParams();
-        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
+        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn'], $this->getLanguageService());
         return new JsonResponse($members);
     }
 

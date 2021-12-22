@@ -13,11 +13,12 @@
         </td>
         <f:if condition="{showMembersColumn} == 1">
             <td>
-                <button class="btn btn-default" onclick="showMembers(event, '{backendUserGroup.uid}')" value="{backendUserGroup.uid}"><f:image src="EXT:qc_info_rights/Resources/Public/Icons/actions-users.svg" class="qc-fleche-icon"/></button>
+                <button class="btn btn-default" onclick="showMembers(event, '{backendUserGroup.uid}')" ><f:image src="EXT:qc_info_rights/Resources/Public/Icons/actions-users.svg" class="qc-fleche-icon"/></button>
                 <br>
-                <div  class="members-hide" id="group{backendUserGroup.uid}">
+                <div class="hidden" id="group{backendUserGroup.uid}">
+
                 </div>
-                <div class="noMembers{backendUserGroup.uid} nom_members_hide">
+                <div class="noMembers{backendUserGroup.uid} hidden">
                     <span><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:noMembers" /></span>
                 </div>
             </td>

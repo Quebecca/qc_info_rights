@@ -3,6 +3,7 @@ namespace Qc\QcInfoRights\Domain\Repository;
 
 use Qc\QcInfoRights\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\DebugUtility;
@@ -148,7 +149,8 @@ class BackendUserRepository extends  Repository{
      * @param  int $groupUid
      * @return array
      */
-    public function getGroupMembers(int $groupUid, string $selectedColumn = 'username'){
+    public function getGroupMembers(int $groupUid, string $selectedColumn = 'username', LanguageService  $languageService){
+        $languageService->includeLLFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
         $allowedColumns = ['username', 'email', 'realName'];
         // make sur that the selected Column is allowed
         if(!in_array($selectedColumn, $allowedColumns)){
@@ -157,7 +159,7 @@ class BackendUserRepository extends  Repository{
         $groupMembers = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $statement = $queryBuilder
-            ->select('uid',$selectedColumn)
+            ->select('uid','username','email','realName')
             ->from('be_users')
             ->where(
                 $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupUid, \PDO::PARAM_INT))
@@ -165,9 +167,21 @@ class BackendUserRepository extends  Repository{
             ->orderBy($selectedColumn)
             ->execute();
         while ($row = $statement->fetch()) {
-            // Do something with that single row
-            array_push($groupMembers, ['uid' => $row['uid'], 'name' => $row[$selectedColumn]]);
+            // show this message if the realName or the email doesn't exist
+            if($row['realName'] == ''){
+                $row['realName'] = '(' . $languageService->getLL('realName_notProvided') . ')';
+            }
+            if($row['email'] == ''){
+                $row['email'] = '(' . $languageService->getLL('email_notProvided') . ')';
+            }
+            array_push($groupMembers, [
+                'uid' => $row['uid'],
+                'username' => $row['username'],
+                'realName' => $row['realName'],
+                'email' => $row['email']
+            ]);
         }
         return $groupMembers;
     }
+
 }

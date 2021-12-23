@@ -100,11 +100,11 @@
 			</trans-unit>
 			<trans-unit id="realName_notProvided">
 				<source>Real name not provided</source>
-				<target>Nom réel non fourni</target>
+				<target> - Nom réel non fourni</target>
 			</trans-unit>
 			<trans-unit id="email_notProvided">
 				<source>Email not provided</source>
-				<target>Courriel non fourni</target>
+				<target> - Courriel non fourni</target>
 			</trans-unit>
 		<!-- Filter Backend user-->
 			<trans-unit id="label_refresh-filter-user" resname="label_refresh-filter-user">

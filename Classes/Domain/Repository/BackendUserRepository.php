@@ -3,10 +3,8 @@ namespace Qc\QcInfoRights\Domain\Repository;
 
 use Qc\QcInfoRights\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -149,8 +147,8 @@ class BackendUserRepository extends  Repository{
      * @param  int $groupUid
      * @return array
      */
-    public function getGroupMembers(int $groupUid, string $selectedColumn = 'username', LanguageService  $languageService){
-        $languageService->includeLLFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
+    public function getGroupMembers(int $groupUid, string $selectedColumn = 'username'): array
+    {
         $allowedColumns = ['username', 'email', 'realName'];
         // make sur that the selected Column is allowed
         if(!in_array($selectedColumn, $allowedColumns)){
@@ -167,13 +165,6 @@ class BackendUserRepository extends  Repository{
             ->orderBy($selectedColumn)
             ->execute();
         while ($row = $statement->fetch()) {
-            // show this message if the realName or the email doesn't exist
-            if($row['realName'] == ''){
-                $row['realName'] = '(' . $languageService->getLL('realName_notProvided') . ')';
-            }
-            if($row['email'] == ''){
-                $row['email'] = '(' . $languageService->getLL('email_notProvided') . ')';
-            }
             array_push($groupMembers, [
                 'uid' => $row['uid'],
                 'username' => $row['username'],

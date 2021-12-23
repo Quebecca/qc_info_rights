@@ -37,11 +37,19 @@ function showMembers(e, groupUid) {
       .then(async function (response) {
         response.resolve().then(function (result){
           if(result != null){
+            // get the translation messages for non provided value
+            var realNameNotProvidedElement = $('#realNameNotProvided').data('tr-label')
+            var emailNotProvidedElement = $('#emailNotProvided').data('tr-label')
             result.forEach(member => {
               var memberValue = member[selectedColumn]
               // if the column value doesn't exists
-              if(memberValue.includes('(') && memberValue.includes(')')){
-                memberValue = member['username'] + ' ' +memberValue
+              if(memberValue === '' && selectedColumn === 'email'){
+                memberValue = member['username'] +  emailNotProvidedElement
+              }
+              else {
+                if(memberValue === '' && selectedColumn === 'realName'){
+                  memberValue = member['username'] + realNameNotProvidedElement
+                }
               }
               // generate li element for each row
               var node = document.createElement("li");

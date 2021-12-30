@@ -46,10 +46,8 @@ function showMembers(e, groupUid) {
               if(memberValue === '' && selectedColumn === 'email'){
                 memberValue = member['username'] +  emailNotProvidedElement
               }
-              else {
-                if(memberValue === '' && selectedColumn === 'realName'){
+              else if(memberValue === '' && selectedColumn === 'realName'){
                   memberValue = member['username'] + realNameNotProvidedElement
-                }
               }
               // generate li element for each row
               var node = document.createElement("li");

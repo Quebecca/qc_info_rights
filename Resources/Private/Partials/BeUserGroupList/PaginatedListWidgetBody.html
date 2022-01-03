@@ -4,12 +4,15 @@
         <tr>
             <th class="col-icon"></th>
             <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUserGroup" /></th>
+            <f:if condition="{showMembersColumn} == 1">
+                <th><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:members" /></th>
+            </f:if>
             <th><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:subGroups" /></th>
         </tr>
         </thead>
         <tbody>
         <f:for each="{backendUserGroups}" as="backendUserGroup">
-            <f:render partial="BeUserGroupList/IndexListRow" section="list_row" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, currentUserUid: currentUserUid, compareGroupUidList: compareGroupUidList,}" />
+            <f:render partial="BeUserGroupList/IndexListRow" section="list_row" arguments="{demand: demand, backendUserGroup: backendUserGroup, dateFormat: dateFormat, timeFormat: timeFormat, currentUserUid: currentUserUid, compareGroupUidList: compareGroupUidList,showMembersColumn: showMembersColumn}" />
         </f:for>
         <tr>
             <td colspan="4">

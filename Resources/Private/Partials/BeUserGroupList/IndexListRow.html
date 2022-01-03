@@ -11,6 +11,20 @@
             <b>{backendUserGroup.title}</b><br />
             {backendUser.realName}
         </td>
+        <f:if condition="{showMembersColumn} == 1">
+            <td>
+                <button class="btn btn-default" onclick="showMembers(event, '{backendUserGroup.uid}')" ><f:image src="EXT:qc_info_rights/Resources/Public/Icons/actions-users.svg" class="qc-fleche-icon"/></button>
+                <br>
+                <div class="hidden" id="group{backendUserGroup.uid}">
+                    <!-- Generate translated labels -->
+                    <div id="realNameNotProvided" data-tr-label="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:realName_notProvided')}"></div>
+                    <div id="emailNotProvided" data-tr-label="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:email_notProvided')}"></div>
+                </div>
+                <div class="noMembers{backendUserGroup.uid} hidden">
+                    <span><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:noMembers" /></span>
+                </div>
+            </td>
+        </f:if>
         <td class="nowrap-disabled">
             <f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
                 <be:link.editRecord table="be_groups" uid="{subgroup.uid}" title="edit">

@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -30,13 +31,12 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
-
+use Psr\Http\Message\ResponseInterface;
 /**
  * Module 'Qc info rights' as sub module of Web -> Info
  *
@@ -365,6 +365,7 @@ class QcInfoRightsReport
         }
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
         $pageRenderer->addCssFile(GeneralUtility::getFileAbsFileName('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css'), 'stylesheet', 'all');
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
 
@@ -491,7 +492,8 @@ class QcInfoRightsReport
         $view->assignMultiple([
             'prefix' => 'beUserGroupList',
             'backendUserGroups' => $this->backendUserGroupRepository->findAll(),
-            'showExportGroups' => $this->showExportGroups
+            'showExportGroups' => $this->showExportGroups,
+            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn')
         ]);
         return $view;
     }
@@ -742,4 +744,17 @@ class QcInfoRightsReport
         }
         return $tableHeaderHtml;
     }
+
+       // show members
+    /**
+     * This Function is delete the selected excluded link
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function showMembers(ServerRequestInterface $request): ResponseInterface{
+        $urlParam = $request->getQueryParams();
+        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
+        return new JsonResponse($members);
+    }
+
 }

@@ -70,7 +70,21 @@
 			<trans-unit id="csvHeader.lastLogin" resname="csvHeader.lastLogin">
 				<source>Last login</source>
 			</trans-unit>
-
+			<trans-unit id="members" resname="members">
+				<source>Members</source>
+			</trans-unit>
+			<trans-unit id="selectMembersInfo">
+				<source>Members information</source>
+			</trans-unit>
+			<trans-unit id="noMembers">
+				<source>No members</source>
+			</trans-unit>
+			<trans-unit id="realName_notProvided">
+				<source> - Real name not provided </source>
+			</trans-unit>
+			<trans-unit id="email_notProvided">
+				<source> - Email not provided</source>
+			</trans-unit>
 			<!-- Filter Backend user-->
 			<trans-unit id="label_refresh-filter-user" resname="label_refresh-filter-user">
 				<source>Refreshing backend users list, please stand by.</source>

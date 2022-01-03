@@ -5,7 +5,6 @@ use Qc\QcInfoRights\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
@@ -141,4 +140,39 @@ class BackendUserRepository extends  Repository{
         $result = $query->execute();
         return $result;
     }
+
+    /**
+     * This Function is used to render the members of the selected group
+     * @param string $selectedColumn
+     * @param  int $groupUid
+     * @return array
+     */
+    public function getGroupMembers(int $groupUid, string $selectedColumn = 'username'): array
+    {
+        $allowedColumns = ['username', 'email', 'realName'];
+        // make sur that the selected Column is allowed
+        if(!in_array($selectedColumn, $allowedColumns)){
+            $selectedColumn = 'username';
+        }
+        $groupMembers = [];
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $statement = $queryBuilder
+            ->select('uid','username','email','realName')
+            ->from('be_users')
+            ->where(
+                $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupUid, \PDO::PARAM_INT))
+            )
+            ->orderBy($selectedColumn)
+            ->execute();
+        while ($row = $statement->fetch()) {
+            array_push($groupMembers, [
+                'uid' => $row['uid'],
+                'username' => $row['username'],
+                'realName' => $row['realName'],
+                'email' => $row['email']
+            ]);
+        }
+        return $groupMembers;
+    }
+
 }

@@ -8,7 +8,7 @@ this functionality will make the user able to show the username, the email or th
 this column is displayed by default in the Backend.
 to hide this column, the following tsconfig option is used.
 
-    mod.qcinforights.showTabGroups = 0
+    mod.qcinforights.showMembersColumn = 0
 
 ![Main functionality](Documentation/Images/show-groups-members.jpg)
 
@@ -20,6 +20,6 @@ cette fonctionnalité permettra à l’utilisateur d’afficher le nom d’utili
 cette colonne est affichée par défaut dans le Backend.
 pour masquer cette colonne, l'option tsconfig suivante est utilisée :
 
-    mod.qcinforights.showTabGroups = 0
+    mod.qcinforights.showMembersColumn = 0
 
 ![Main functionality](Documentation/Images/show-members-groups-fr.jpg)

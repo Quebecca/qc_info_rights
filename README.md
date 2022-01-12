@@ -38,7 +38,7 @@ qcinforights{
     showTabUsers   = 0
     showTabGroups  = 0
 
-    // This option is to display the members column in the Backend user groups list for each group
+    // This option is to display the members column in the ( Backend user groups list )
     showMembersColumn = 1
 
     //This settings is to show Exportation option for the backend users list or backend user groups list

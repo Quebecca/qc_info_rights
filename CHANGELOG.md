@@ -15,6 +15,7 @@ to hide this column, the following tsconfig option is used.
 -----------
 [Version française]
 ## Documentation Info Rights
+### Ajout de la colonne Membres dans l’onglet Backend Users Group
 En ajoutant cette colonne, l’utilisateur peut maintenant voir pour chaque groupe dans cet onglet, les membres actuels du groupe sélectionné en cliquant sur l'icon des membres,
 cette fonctionnalité permettra à l’utilisateur d’afficher le nom d’utilisateur, le courriel ou le nom réel des membres.
 cette colonne est affichée par défaut dans le Backend.

@@ -1,5 +1,5 @@
 # Info Rights
-## Change log
+## Change log  v1.1.0
 
 *La [version française](#documentation-info-rights) de la documentation suit le texte anglais*
 ### Add Members Column in Backend users group tab

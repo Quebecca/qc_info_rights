@@ -7,7 +7,9 @@ This extension add a new item to the Info Module in the BE with those features:
 
 1. Shows BE rights for the pages (like in the Access Module) but for editors (as read-only)
 2. Show a list of all BE Users (except if it begins with a "_" like "\_cli\_") with a filter and export as CSV(hidden by default)
-3. Show a list of all BE User Groups with a filter and export to CSV (hidden by default)
+3. Show a list of all BE User Groups with a filter and export to CSV (hidden by default),with an option that will return the list of members that are contained in these groups.
+
+![Main functionnality](Documentation/Images/show-groups-members.jpg)
 
 Main function is to show the actual BE right to non-admins:
 ![Main functionnality](Documentation/Images/access-and-rights.jpg)
@@ -37,6 +39,9 @@ qcinforights{
     showTabAccess  = 1
     showTabUsers   = 0
     showTabGroups  = 0
+
+    // This option is to display the members column in the ( Backend user groups list )
+    showMembersColumn = 1
 
     //This settings is to show Exportation option for the backend users list or backend user groups list
     showExportUsers  = 1
@@ -76,7 +81,9 @@ L'extension ajoute un nouvel item de menu au module Info en BE avec les fonction
 
 1. Affichage des droits BE des pages (comme dans le module Access) mais pour les édimestres (lecture seulement)
 2. Affichage des Utilisateurs BE (sauf si le nom débute par "_" comme "\_cli\_) avec filtre et exportation en CSV (masqué par défaut)
-3. Affichage des Groupes BE avec filtre et exportation en CSV (masqué par défaut)
+3. Affichage des Groupes BE avec filtre et exportation en CSV (masqué par défaut), avec l'option qui permet d'afficher la liste des membres de groupe selectionné.
+
+![Main functionnality](Documentation/Images/show-groups-members.jpg)
 
 L'extension offre plusieurs options pour masquer les colonnes ou les fonctionnalités désirées.
 
@@ -99,6 +106,9 @@ qcinforights{
     showTabAccess  = 1
     showTabUsers   = 0
     showTabGroups  = 0
+
+    // Masquer ou afficher la colonne qui sert à afficher les memebres de chaque groupe dans l'onglet ( Liste des groupes BE)
+    showMembersColumn = 1
 
     //Masquer ou afficher les boutons d'exportation CSV. Ils sont visibles par défaut mais l'onglet qui les contient est masqué
     showExportUsers  = 1

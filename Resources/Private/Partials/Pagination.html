@@ -1,0 +1,103 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+
+<f:if condition="{pagination.lastPageNumber} > 1">
+    <nav class="pagination-wrap">
+        <ul class="pagination pagination-block">
+            <f:if condition="{pagination.previousPageNumber}">
+                <f:then>
+                    <li class="page-item">
+						<span class="page-link">
+                            <f:if condition="{currentTab} == 'BeUserList'">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, userPaginationPage: 1}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
+                                                    <core:icon identifier="actions-view-paging-first" />
+                                                </a>
+                            </f:if>
+                            <f:if condition="{currentTab} == 'BeGroupUserList'">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, groupPaginationPage: 1}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
+								    <core:icon identifier="actions-view-paging-first" />
+							    </a>
+                            </f:if>
+						</span>
+                    </li>
+                    <li class="page-item">
+						<span class="page-link">
+                            <f:if condition="{currentTab} == 'BeUserList'">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, userPaginationPage: pagination.previousPageNumber}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}">
+								<core:icon identifier="actions-view-paging-previous" />
+							</a>
+                            </f:if>
+                            <f:if condition="{currentTab} == 'BeGroupUserList'">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, groupPaginationPage: pagination.previousPageNumber}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.previous')}">
+								<core:icon identifier="actions-view-paging-previous" />
+							</a>
+                            </f:if>
+						</span>
+                    </li>
+                </f:then>
+                <f:else>
+                    <li class="disabled page-item">
+							<span class="page-link">
+								<core:icon identifier="empty-empty" />
+							</span>
+                    </li>
+                    <li class="disabled page-item">
+							<span class="page-link">
+								<core:icon identifier="empty-empty" />
+							</span>
+                    </li>
+                </f:else>
+            </f:if>
+            <li class="page-item">
+					<span class="page-link">
+						{pagination.startRecordNumber} - {pagination.endRecordNumber}
+					</span>
+            </li>
+            <f:if condition="{pagination.nextPageNumber}">
+                <f:then>
+                    <li class="page-item">
+						<span class="page-link">
+                             <f:if condition="{currentTab} == 'BeUserList'">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, currentTab: currentTab, userPaginationPage: pagination.nextPageNumber}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}">
+								<core:icon identifier="actions-view-paging-next" />
+							</a>
+                            </f:if>
+                            <f:if condition="{currentTab} == 'BeGroupUserList'">
+                               <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, currentTab: currentTab, groupPaginationPage: pagination.nextPageNumber}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.next')}">
+								<core:icon identifier="actions-view-paging-next" />
+							    </a>
+                            </f:if>
+						</span>
+                    </li>
+                    <li class="page-item">
+						<span class="page-link">
+                             <f:if condition="{currentTab} == 'BeUserList'">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, currentTab: currentTab, userPaginationPage: pagination.lastPageNumber}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}">
+								<core:icon identifier="actions-view-paging-last" />
+							</a>
+                            </f:if>
+                            <f:if condition="{currentTab} == 'BeGroupUserList'">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, currentTab: currentTab, groupPaginationPage: pagination.lastPageNumber}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.last')}">
+								    <core:icon identifier="actions-view-paging-last" />
+							    </a>
+                            </f:if>
+						</span>
+                    </li>
+                </f:then>
+                <f:else>
+                    <li class="disabled page-item">
+							<span class="page-link">
+								<core:icon identifier="empty-empty" />
+							</span>
+                    </li>
+                    <li class="disabled page-item">
+							<span class="page-link">
+								<core:icon identifier="empty-empty" />
+							</span>
+                    </li>
+                </f:else>
+            </f:if>
+        </ul>
+    </nav>
+</f:if>
+</html>

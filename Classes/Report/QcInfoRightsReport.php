@@ -15,8 +15,10 @@
 namespace Qc\QcInfoRights\Report;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Qc\QcInfoRights\BackendSession\BackendSession;
 use Qc\QcInfoRights\Domain\Model\ModuleData;
 use Qc\QcInfoRights\Domain\Repository\BackendUserRepository;
+use Qc\QcInfoRights\Filter\Filter;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
@@ -30,6 +32,8 @@ use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Pagination\ArrayPaginator;
+use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -222,6 +226,19 @@ class QcInfoRightsReport
     protected $set = [];
 
     /**
+     * @var Filter
+     */
+    protected Filter $filter;
+
+    /**
+     * @var BackendSession
+     */
+    protected BackendSession $backendSession;
+
+    protected int  $usersPerPage = 5;
+    protected int  $groupsPerPage = 5;
+
+    /**
      * QcInfoRightsReport constructor.
      *
      * @param \TYPO3\CMS\Core\Domain\Repository\PageRepository|null               $pagesRepository
@@ -258,6 +275,9 @@ class QcInfoRightsReport
 
         /*Initialize variable of access from TsConfig Array*/
         $this->updateAccessByTsConfig();
+        $this->filter = $filter ?? GeneralUtility::makeInstance(Filter::class);
+        $this->backendSession = $backendSession ?? GeneralUtility::makeInstance(BackendSession::class);
+
     }
 
     /**
@@ -275,6 +295,19 @@ class QcInfoRightsReport
         $this->view = $this->createView('InfoModule');
         $this->orderBy = (string)(GeneralUtility::_GP('orderBy'));
         $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
+        if($this->backendSession->get('myFilter') != null)
+            $this->filter = $this->backendSession->get('myFilter');
+        else{
+            $this->filter = $this->updateFilter();
+        }
+
+    }
+    /**
+     * This function is used to manage filter and pagination
+     */
+    public function updateFilter(){
+        $this->backendSession->store('myFilter', $this->filter);
+        return $this->backendSession->get('myFilter');
     }
 
     protected function createView(string $templateName): StandaloneView
@@ -428,54 +461,61 @@ class QcInfoRightsReport
         $prefix = "user";
 
         $this->setPageInfo();
-
+        $userPaginationCurrentPage = 1;
+        if (GeneralUtility::_GP('userPaginationPage') != null ){
+            $userPaginationCurrentPage = (int)GeneralUtility::_GP('userPaginationPage');
+            // Store the current page on session
+            $this->filter->setCurrentUsersTabPage($userPaginationCurrentPage);
+            $this->updateFilter();
+        }
+        else{
+            // read from Session
+            $userPaginationCurrentPage = $this->filter->getCurrentUsersTabPage();
+        }
+       // debug($this->backendSession);
         $view = $this->createView('BeUserList');
 
         $demand = $this->moduleData->getDemand();
-
         $demand->setRejectUserStartWith('_');
 
-           // DebugUtility::debug($this->set);
-        /*Check if we need to Set order Dynamic for the List*/
         $orderArray = self::ORDER_BY_VALUES[$this->orderBy] ?? [];
 
         if(!empty($orderArray)){
-            $demand->setOrderArray($orderArray);
+            $this->filter->setOrderArray($orderArray);
         }
 
         if(!$this->showAdministratorUser){
             $demand->setUserType(Demand::USERTYPE_USERONLY);
         }
 
-        //Filter for user name
-        if(!empty($this->set['username'])){
-            $demand->setUserName($this->set['username']);
-        }
+        $this->filter->setUsername($this->set['username'] ?? '');
 
-        //Filter for address mail
-        if(!empty($this->set['mail'])){
-            $demand->setEmail($this->set['mail']);
-        }
+        $this->filter->setMail($this->set['mail'] ?? '');
 
-        //Filter if user want to hide inactive User
         if(!empty($this->set['hideInactif']) && (int)($this->set['hideInactif']) == 1){
-            $demand->setStatus(Demand::STATUS_ACTIVE);
+            $this->filter->setHideInactiveUsers(Demand::STATUS_ACTIVE);
         }
-
+        $this->updateFilter();
+        $demand = $this->mapFilterToDemand($this->backendSession->get('myFilter'));
         /**Implement tableau Header withDynamically order By Field*/
         foreach (array_keys(self::ORDER_BY_VALUES) as $key) {
             $sortActions[$key] = $this->constructBackendUri(['orderBy' => $key]);
         }
         $tabHeaders = $this->getVariablesForTableHeader($sortActions);
+        $pagination = $this->getPagination($this->backendUserRepository->findDemanded($demand), $userPaginationCurrentPage,$this->usersPerPage );// we assign the groupsCurrentPaginationPage and usersCurrentPaginationPage to keep the pagination for each tab separated
 
         $view->assignMultiple([
             'prefix' => 'beUserList',
-            'backendUsers' => $this->backendUserRepository->findDemanded($demand),
+            'backendUsers' => $pagination['paginatedData'],
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'showExportUsers' => $this->showExportUsers,
-            'args' => $this->set,
-            'tabHeader' => $tabHeaders
+            'args' => $this->filter,
+            'tabHeader' => $tabHeaders,
+            'pagination' => $pagination['pagination'],
+            'currentPage' => $this->id,
+          //  'groupsCurrentPaginationPage' => $this->groupPaginationCurrentPage,
+         //   'usersCurrentPaginationPage' => $this->userPaginationCurrentPage
         ]);
         return $view;
     }
@@ -487,15 +527,49 @@ class QcInfoRightsReport
      */
     protected function createViewForBeUserGroupListTab()
     {
+
+        if (GeneralUtility::_GP('groupPaginationPage') != null ){
+            $groupPaginationCurrentPage = (int)GeneralUtility::_GP('groupPaginationPage');
+            // Store the current page on session
+            $this->filter->setCurrentGroupsTabPage($groupPaginationCurrentPage);
+            $this->updateFilter();
+        }
+        else{
+            // read from Session
+            $groupPaginationCurrentPage = $this->filter->getCurrentGroupsTabPage();
+        }
         $view = $this->createView('BeUserGroupList');
+        $pagination = $this->getPagination($this->backendUserGroupRepository->findAll(), $groupPaginationCurrentPage,$this->groupsPerPage );
 
         $view->assignMultiple([
             'prefix' => 'beUserGroupList',
-            'backendUserGroups' => $this->backendUserGroupRepository->findAll(),
+            'backendUserGroups' => $pagination['paginatedData'],
             'showExportGroups' => $this->showExportGroups,
-            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn')
+            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn'),
+            'pagination' => $pagination['pagination'],
+            'currentPage' => $this->id,
+            'args' => $this->set,
+            //'groupsCurrentPaginationPage' => $this->groupPaginationCurrentPage,
+            //'usersCurrentPaginationPage' => $this->userPaginationCurrentPage
+
         ]);
         return $view;
+    }
+
+    public function getPagination($data, int $currentPage, int $itemsPerPage): array
+    {
+        $items = [];
+        // convert data to array
+        foreach ($data as $row) {
+            array_push($items, $row);
+        }
+        $paginator = GeneralUtility::makeInstance(ArrayPaginator::class, $items, $currentPage, $itemsPerPage);
+        $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);
+        return [
+            'paginatedData' => $paginator->getPaginatedItems(),
+            'pagination' => $pagination,
+            'numberOfPages' => $paginator->getNumberOfPages()
+        ];
     }
 
     /**
@@ -756,5 +830,22 @@ class QcInfoRightsReport
         $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
         return new JsonResponse($members);
     }
+
+    public function mapFilterToDemand(Filter  $filter) {
+        debug($filter);
+        $demand = new \Qc\QcInfoRights\Domain\Model\Demand();
+        $demand->setRejectUserStartWith($filter->getRejectUserStartWith());
+        /*Check if we need to Set order Dynamic for the List*/
+        $demand->setOrderArray($filter->getOrderArray());
+        // $demand->setUserType($filter->getUserType());
+        //Filter for user name
+        $demand->setUserName($filter->getUsername());
+        //Filter for address mail
+        $demand->setEmail($filter->getMail());
+        //Filter if user want to hide inactive User
+        $demand->setStatus($filter->getHideInactiveUsers());
+        return $demand;
+    }
+
 
 }

@@ -20,6 +20,6 @@
 
 
     <f:render partial="BeUserList/PaginatedListWidgetBody" arguments="{_all}" />
-    <f:render partial="Pagination" arguments="{pagination: pagination, currentPage: currentPage, currentTab : 'BeUserList'}"/>
+    <f:render partial="Pagination" arguments="{pagination: pagination, currentPage: currentPage, currentTab : 'BeUserList', args : _all}"/>
 
 </f:section>

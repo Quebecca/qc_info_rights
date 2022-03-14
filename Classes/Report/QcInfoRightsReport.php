@@ -488,9 +488,26 @@ class QcInfoRightsReport
             $demand->setUserType(Demand::USERTYPE_USERONLY);
         }
 
-        $this->filter->setUsername($this->set['username'] ?? '');
+        if (GeneralUtility::_GP('user_SET')['username'] != null ){
+            $this->filter->setUsername($this->set['username']);
+        }
+        if (GeneralUtility::_GP('username') != null ){
+            $this->filter->setUsername(GeneralUtility::_GP('username'));
+        }
+        else if ( GeneralUtility::_GP('user_SET')['username'] == '' ){
+            $this->filter->setUsername('');
+        }
 
-        $this->filter->setMail($this->set['mail'] ?? '');
+        /*if($this->set['username'] != null){
+            $this->filter->setUsername($this->set['username'] );
+        }
+        if($this->set['username'] == ''){
+            $this->filter->setUsername('');
+        }*/
+
+        if($this->set['mail'] != null){
+            $this->filter->setMail($this->set['mail'] );
+        }
 
         if(!empty($this->set['hideInactif']) && (int)($this->set['hideInactif']) == 1){
             $this->filter->setHideInactiveUsers(Demand::STATUS_ACTIVE);
@@ -510,7 +527,9 @@ class QcInfoRightsReport
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'showExportUsers' => $this->showExportUsers,
-            'args' => $this->filter,
+            'args' => $this->set,
+            'username' => $this->filter->getUsername(),
+            'mail' => $this->filter->getMail(),
             'tabHeader' => $tabHeaders,
             'pagination' => $pagination['pagination'],
             'currentPage' => $this->id,
@@ -832,7 +851,7 @@ class QcInfoRightsReport
     }
 
     public function mapFilterToDemand(Filter  $filter) {
-        debug($filter);
+       // debug($filter);
         $demand = new \Qc\QcInfoRights\Domain\Model\Demand();
         $demand->setRejectUserStartWith($filter->getRejectUserStartWith());
         /*Check if we need to Set order Dynamic for the List*/

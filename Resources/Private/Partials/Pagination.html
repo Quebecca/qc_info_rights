@@ -1,6 +1,5 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
       data-namespace-typo3-fluid="true">
-
 <f:if condition="{pagination.lastPageNumber} > 1">
     <nav class="pagination-wrap">
         <ul class="pagination pagination-block">
@@ -9,12 +8,12 @@
                     <li class="page-item">
 						<span class="page-link">
                             <f:if condition="{currentTab} == 'BeUserList'">
-                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, userPaginationPage: 1}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, userPaginationPage: 1, username : args.username}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
                                                     <core:icon identifier="actions-view-paging-first" />
                                                 </a>
                             </f:if>
                             <f:if condition="{currentTab} == 'BeGroupUserList'">
-                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, groupPaginationPage: 1}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
+                                <a href="{f:be.uri(route:'web_info', parameters: '{currentPage: currentPage, id: currentPage, groupPaginationPage: 1, username : args.username}')}" title="{f:translate(extensionName: 'fluid', key:'widget.pagination.first')}">
 								    <core:icon identifier="actions-view-paging-first" />
 							    </a>
                             </f:if>

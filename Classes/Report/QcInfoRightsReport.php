@@ -235,8 +235,8 @@ class QcInfoRightsReport
      */
     protected BackendSession $backendSession;
 
-    protected int  $usersPerPage = 5;
-    protected int  $groupsPerPage = 5;
+    protected int  $usersPerPage = 100;
+    protected int  $groupsPerPage = 100;
 
     /**
      * QcInfoRightsReport constructor.
@@ -295,10 +295,17 @@ class QcInfoRightsReport
         $this->view = $this->createView('InfoModule');
         $this->orderBy = (string)(GeneralUtility::_GP('orderBy'));
         $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
-        if($this->backendSession->get('myFilter') != null)
-            $this->filter = $this->backendSession->get('myFilter');
+
+        // get iterms per page number
+        $this->groupsPerPage = $this->checkShowTsConfig('groupsPerPage');
+        $this->usersPerPage = $this->checkShowTsConfig('usersPerPage');
+
+        if($this->backendSession->get('qc_info_rights_key') != null){
+            $this->filter = $this->backendSession->get('qc_info_rights_key');
+        }
         else{
-            $this->filter = $this->updateFilter();
+            // initialize the filter
+            $this->updateFilter();
         }
 
     }
@@ -306,8 +313,8 @@ class QcInfoRightsReport
      * This function is used to manage filter and pagination
      */
     public function updateFilter(){
-        $this->backendSession->store('myFilter', $this->filter);
-        return $this->backendSession->get('myFilter');
+        $this->backendSession->store('qc_info_rights_key', $this->filter);
+        return $this->backendSession->get('qc_info_rights_key');
     }
 
     protected function createView(string $templateName): StandaloneView
@@ -459,20 +466,8 @@ class QcInfoRightsReport
     protected function createViewForBeUserListTab()
     {
         $prefix = "user";
-
         $this->setPageInfo();
-        $userPaginationCurrentPage = 1;
-        if (GeneralUtility::_GP('userPaginationPage') != null ){
-            $userPaginationCurrentPage = (int)GeneralUtility::_GP('userPaginationPage');
-            // Store the current page on session
-            $this->filter->setCurrentUsersTabPage($userPaginationCurrentPage);
-            $this->updateFilter();
-        }
-        else{
-            // read from Session
-            $userPaginationCurrentPage = $this->filter->getCurrentUsersTabPage();
-        }
-       // debug($this->backendSession);
+
         $view = $this->createView('BeUserList');
 
         $demand = $this->moduleData->getDemand();
@@ -488,32 +483,49 @@ class QcInfoRightsReport
             $demand->setUserType(Demand::USERTYPE_USERONLY);
         }
 
-        if (GeneralUtility::_GP('user_SET')['username'] != null ){
+        // Filter
+        if($this->set['username'] != null && !empty($this->set['username'])){
             $this->filter->setUsername($this->set['username']);
+            $this->filter->setCurrentUsersTabPage(1);
         }
-        if (GeneralUtility::_GP('username') != null ){
-            $this->filter->setUsername(GeneralUtility::_GP('username'));
+        if($this->set['mail'] != null && !empty($this->set['mail'])){
+            $this->filter->setMail($this->set['mail']);
+            $this->filter->setCurrentUsersTabPage(1);
         }
-        else if ( GeneralUtility::_GP('user_SET')['username'] == '' ){
-            $this->filter->setUsername('');
-        }
-
-        /*if($this->set['username'] != null){
-            $this->filter->setUsername($this->set['username'] );
-        }
-        if($this->set['username'] == ''){
-            $this->filter->setUsername('');
-        }*/
-
-        if($this->set['mail'] != null){
-            $this->filter->setMail($this->set['mail'] );
-        }
-
         if(!empty($this->set['hideInactif']) && (int)($this->set['hideInactif']) == 1){
             $this->filter->setHideInactiveUsers(Demand::STATUS_ACTIVE);
         }
+        // Reset from form
+        if($this->set['filterSearch'] == 1){
+            if(empty($this->set['username'])){
+                $this->filter->setUsername('');
+            }
+            if(empty($this->set['mail'])){
+                $this->filter->setMail('');
+            }
+            if(empty($this->set['hideInactif'])){
+                $this->filter->setHideInactiveUsers(0);
+            }
+            $this->filter->setCurrentUsersTabPage(1);
+        }
+
+        if (GeneralUtility::_GP('userPaginationPage') != null ){
+            $userPaginationCurrentPage = (int)GeneralUtility::_GP('userPaginationPage');
+            // Store the current page on session
+            $this->filter->setCurrentUsersTabPage($userPaginationCurrentPage);
+        }
+        else{
+            // read from Session
+            $userPaginationCurrentPage = $this->filter->getCurrentUsersTabPage();
+        }
+
         $this->updateFilter();
-        $demand = $this->mapFilterToDemand($this->backendSession->get('myFilter'));
+        $filterArgs = [
+            'username' => $this->backendSession->get('qc_info_rights_key')->getUsername(),
+            'mail' => $this->backendSession->get('qc_info_rights_key')->getMail(),
+            'hideInactif' => $this->backendSession->get('qc_info_rights_key')->getHideInactiveUsers()
+        ];
+        $demand = $this->mapFilterToDemand($this->backendSession->get('qc_info_rights_key'));
         /**Implement tableau Header withDynamically order By Field*/
         foreach (array_keys(self::ORDER_BY_VALUES) as $key) {
             $sortActions[$key] = $this->constructBackendUri(['orderBy' => $key]);
@@ -527,14 +539,10 @@ class QcInfoRightsReport
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'showExportUsers' => $this->showExportUsers,
-            'args' => $this->set,
-            'username' => $this->filter->getUsername(),
-            'mail' => $this->filter->getMail(),
+            'args' => $filterArgs,
             'tabHeader' => $tabHeaders,
             'pagination' => $pagination['pagination'],
-            'currentPage' => $this->id,
-          //  'groupsCurrentPaginationPage' => $this->groupPaginationCurrentPage,
-         //   'usersCurrentPaginationPage' => $this->userPaginationCurrentPage
+            'currentPage' => $this->id
         ]);
         return $view;
     }
@@ -546,10 +554,11 @@ class QcInfoRightsReport
      */
     protected function createViewForBeUserGroupListTab()
     {
-
+        $this->filter = $this->backendSession->get('qc_info_rights_key');
         if (GeneralUtility::_GP('groupPaginationPage') != null ){
             $groupPaginationCurrentPage = (int)GeneralUtility::_GP('groupPaginationPage');
             // Store the current page on session
+            $this->filter = $this->backendSession->get('qc_info_rights_key');
             $this->filter->setCurrentGroupsTabPage($groupPaginationCurrentPage);
             $this->updateFilter();
         }
@@ -567,10 +576,7 @@ class QcInfoRightsReport
             'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn'),
             'pagination' => $pagination['pagination'],
             'currentPage' => $this->id,
-            'args' => $this->set,
-            //'groupsCurrentPaginationPage' => $this->groupPaginationCurrentPage,
-            //'usersCurrentPaginationPage' => $this->userPaginationCurrentPage
-
+            'args' => $this->set
         ]);
         return $view;
     }
@@ -768,6 +774,7 @@ class QcInfoRightsReport
             self::prefix_filter.'_SET[username]' => $this->set['username'],
             self::prefix_filter.'_SET[mail]' => $this->set['mail'],
             self::prefix_filter.'_SET[hideInactif]' => $this->set['hideInactif'],
+            self::prefix_filter.'_SET[filterSearch]' => $this->set['filterSearch'],
             'paginationPage', $this->paginationCurrentPage,
         ];
 

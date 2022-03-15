@@ -39,6 +39,10 @@ class BackendSession
         $this->sessionObject = $GLOBALS['BE_USER'];
     }
 
+    /**
+     * This function is used to store the session key
+     * @param string $storageKey
+     */
     public function setStorageKey(string $storageKey): void
     {
         $this->storageKey = $storageKey;

@@ -235,7 +235,14 @@ class QcInfoRightsReport
      */
     protected BackendSession $backendSession;
 
+    /**
+     * @var int
+     */
     protected int  $usersPerPage = 100;
+
+    /**
+     * @var int
+     */
     protected int  $groupsPerPage = 100;
 
     /**
@@ -296,7 +303,7 @@ class QcInfoRightsReport
         $this->orderBy = (string)(GeneralUtility::_GP('orderBy'));
         $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
 
-        // get iterms per page number
+        // get number of items per page
         $this->groupsPerPage = $this->checkShowTsConfig('groupsPerPage');
         $this->usersPerPage = $this->checkShowTsConfig('usersPerPage');
 
@@ -314,7 +321,6 @@ class QcInfoRightsReport
      */
     public function updateFilter(){
         $this->backendSession->store('qc_info_rights_key', $this->filter);
-        return $this->backendSession->get('qc_info_rights_key');
     }
 
     protected function createView(string $templateName): StandaloneView
@@ -581,10 +587,17 @@ class QcInfoRightsReport
         return $view;
     }
 
+    /**
+     * This function is used to get the pagination items
+     * @param $data
+     * @param int $currentPage
+     * @param int $itemsPerPage
+     * @return array
+     */
     public function getPagination($data, int $currentPage, int $itemsPerPage): array
     {
-        $items = [];
         // convert data to array
+        $items = [];
         foreach ($data as $row) {
             array_push($items, $row);
         }
@@ -845,7 +858,7 @@ class QcInfoRightsReport
         return $tableHeaderHtml;
     }
 
-       // show members
+    // show members
     /**
      * This Function is delete the selected excluded link
      * @param ServerRequestInterface $request
@@ -857,21 +870,19 @@ class QcInfoRightsReport
         return new JsonResponse($members);
     }
 
-    public function mapFilterToDemand(Filter  $filter) {
-       // debug($filter);
+    /**
+     * This function is used to map the filter to Demand object
+     * @param Filter $filter
+     * @return Demand
+     */
+    public function mapFilterToDemand(Filter  $filter) : Demand {
         $demand = new \Qc\QcInfoRights\Domain\Model\Demand();
         $demand->setRejectUserStartWith($filter->getRejectUserStartWith());
-        /*Check if we need to Set order Dynamic for the List*/
         $demand->setOrderArray($filter->getOrderArray());
-        // $demand->setUserType($filter->getUserType());
-        //Filter for user name
         $demand->setUserName($filter->getUsername());
-        //Filter for address mail
         $demand->setEmail($filter->getMail());
-        //Filter if user want to hide inactive User
         $demand->setStatus($filter->getHideInactiveUsers());
         return $demand;
     }
-
 
 }

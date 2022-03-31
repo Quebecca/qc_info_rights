@@ -103,6 +103,12 @@
 			<trans-unit id="never" resname="never">
 				<source>Never</source>
 			</trans-unit>
+			<trans-unit id="show" resname="show">
+				<source>(show)</source>
+			</trans-unit>
+			<trans-unit id="hide" resname="hide">
+				<source>(hide)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

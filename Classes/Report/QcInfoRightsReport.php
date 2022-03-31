@@ -364,7 +364,7 @@ class QcInfoRightsReport
             $this->isAccessibleForCurrentUser = false;
         }
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $pageRenderer->addCssFile(GeneralUtility::getFileAbsFileName('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css'), 'stylesheet', 'all');
+        $pageRenderer->addCssFile('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css', 'stylesheet', 'all');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
@@ -488,10 +488,18 @@ class QcInfoRightsReport
     protected function createViewForBeUserGroupListTab()
     {
         $view = $this->createView('BeUserGroupList');
+        $groupsWithNumberOfUsers = [];
+        $groups = $this->backendUserGroupRepository->findAll();
+        foreach ($groups as $group){
+            array_push($groupsWithNumberOfUsers, [
+                'group' => $group,
+                'numberOfUsers' => count($this->backendUserRepository->getGroupMembers($group->getUid()))
+            ]);
+        }
 
         $view->assignMultiple([
             'prefix' => 'beUserGroupList',
-            'backendUserGroups' => $this->backendUserGroupRepository->findAll(),
+            'backendUserGroups' => $groupsWithNumberOfUsers,
             'showExportGroups' => $this->showExportGroups,
             'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn')
         ]);

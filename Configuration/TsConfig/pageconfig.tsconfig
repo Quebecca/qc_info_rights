@@ -10,8 +10,8 @@ mod{
 
     //This settings is to show or hide tab (Access and right, Backend users group, and backend user lists)
     showTabAccess  = 1
-    showTabUsers   = 0
-    showTabGroups  = 0
+    showTabUsers   = 1
+    showTabGroups  = 1
 
     // This option is to display the members column in the Backend user groups list for each group
     showMembersColumn = 1

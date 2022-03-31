@@ -30,12 +30,10 @@ function showMembers(e, groupUid) {
   }
 
   if(show){
-
     // get the selected row
     var groupElement = document.getElementById('group'+groupUid);
     // show the selected members
     groupElement.className ='group'+groupUid+ " d-block";
-
     // to refresh the rendering data, we delete the previous rendering
     var child = groupElement.lastElementChild;
     while (child) {
@@ -71,8 +69,6 @@ function showMembers(e, groupUid) {
                 groupElement.appendChild(node);
               })
             }
-          }).catch(function(e){
-            console.log(e)
           });
         });
     });

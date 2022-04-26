@@ -74,20 +74,20 @@ Default values:
 
 -----------
 [Version française]
-## Documentation Info Rights
+## Documentation Info Droits
 
 ### À propos
 L'extension ajoute un nouvel item de menu au module Info en BE avec les fonctionnalités suivantes:
 
 1. Affichage des droits BE des pages (comme dans le module Access) mais pour les édimestres (lecture seulement)
 2. Affichage des Utilisateurs BE (sauf si le nom débute par "_" comme "\_cli\_) avec filtre et exportation en CSV (masqué par défaut)
-3. Affichage des Groupes BE avec filtre et exportation en CSV (masqué par défaut), avec l'option qui permet d'afficher la liste des membres de groupe selectionné.
+3. Affichage des Groupes BE avec filtre et exportation en CSV (masqué par défaut), avec l'option qui permet d'afficher la liste des membres de groupes sélectionnés.
 
 ![Main functionnality](Documentation/Images/show-groups-members.jpg)
 
-L'extension offre plusieurs options pour masquer les colonnes ou les fonctionnalités désirées.
+L'extension offre plusieurs options pour masquer des colonnes ou fonctionnalités.
 
-Nous avons décidé de masquer les onglets qui listent les utilisateurs et les groupes par défaut. Voir le TSconfig qui suit pour activer ces onglets.
+Les onglets qui listent les utilisateurs et les groupes sont masqués par défaut. Voir le TSconfig qui suit pour activer ces onglets.
 
 ### Page TSconfig - valeurs par défaut
 
@@ -107,7 +107,7 @@ qcinforights{
     showTabUsers   = 0
     showTabGroups  = 0
 
-    // Masquer ou afficher la colonne qui sert à afficher les memebres de chaque groupe dans l'onglet ( Liste des groupes BE)
+    // Masquer ou afficher la colonne qui sert à afficher les membres de chaque groupe dans l'onglet ( Liste des groupes BE)
     showMembersColumn = 1
 
     //Masquer ou afficher les boutons d'exportation CSV. Ils sont visibles par défaut mais l'onglet qui les contient est masqué
@@ -121,7 +121,7 @@ qcinforights{
 
 ### Masquer le module à un utilisateur ou un groupe
 
-Pour masquer Info Rights par utilisateur ou par groupe, insérer le code TSconfig suivant:
+Pour masquer Info Droits par utilisateur ou par groupe, insérer le code TSconfig suivant:
 
 ```
 page.mod.web_info.menu.function {
@@ -131,7 +131,7 @@ page.mod.web_info.menu.function {
 ```
 ### Options globales - CSV
 
-Avec le module "Réglages", dans "Configure extensions" se trouvent 2 options relatives à l'exportation CSV.
+Dans le module «Réglages», sous «Configure extensions» se trouvent 2 options relatives à l'exportation CSV.
 
 Les valeurs par défaut sont:
 

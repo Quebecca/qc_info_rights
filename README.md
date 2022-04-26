@@ -125,7 +125,7 @@ Pour masquer Info Droits par utilisateur ou par groupe, insérer le code TSconfi
 
 ```
 page.mod.web_info.menu.function {
-        #Désactiver Infio right du menu du Module Info en indiquant zero (1 par défaut)
+        #Désactiver Info Droits du menu du Module Info en indiquant zéro (1 par défaut)
         Qc\QcInfoRights\Report\QcInfoRightsReport = 0
 }
 ```

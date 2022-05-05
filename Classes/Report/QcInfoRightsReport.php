@@ -10,7 +10,7 @@
  * LICENSE.txt file that was distributed with this source code.
  *
  * The TYPO3 project - inspiring people to share!
- */
+*/
 
 namespace Qc\QcInfoRights\Report;
 
@@ -67,7 +67,7 @@ class QcInfoRightsReport
 
 
     /**
-     * @var \Qc\QcInfoRights\Domain\Model\ModuleData
+     * @var ModuleData
      */
     protected $moduleData;
 
@@ -216,11 +216,11 @@ class QcInfoRightsReport
     /**
      * QcInfoRightsReport constructor.
      *
-     * @param \TYPO3\CMS\Core\Domain\Repository\PageRepository|null               $pagesRepository
-     * @param \TYPO3\CMS\Backend\Routing\UriBuilder|null                          $uriBuilder
-     * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository|null $backendUserGroupRepository
-     * @param \TYPO3\CMS\Extbase\Utility\LocalizationUtility|null                 $localizationUtility
-     * @param \TYPO3\CMS\Core\Charset\CharsetConverter|null                       $charsetConverter
+     * @param PageRepository|null               $pagesRepository
+     * @param UriBuilder|null                          $uriBuilder
+     * @param BackendUserGroupRepository|null $backendUserGroupRepository
+     * @param LocalizationUtility|null                 $localizationUtility
+     * @param CharsetConverter|null                       $charsetConverter
      */
     public function __construct(
         PageRepository $pagesRepository = null,
@@ -339,7 +339,6 @@ class QcInfoRightsReport
         }
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
         $pageRenderer->addCssFile('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css', 'stylesheet', 'all');
-        $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
 
@@ -529,9 +528,6 @@ class QcInfoRightsReport
         }
         return '';
     }
-
-
-
 
     /**
      * This function is used to map the filter to Demand object

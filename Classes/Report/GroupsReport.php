@@ -1,15 +1,42 @@
 <?php
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+*/
 namespace Qc\QcInfoRights\Report;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Template\ModuleTemplate;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Info\Controller\InfoModuleController;
 
-class GroupsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
+class GroupsReport extends QcInfoRightsReport
 {
+
+    /**
+     * Initializes the Module
+     */
+    protected function initialize()
+    {
+        parent::initialize();
+        $pageRenderer = $this->moduleTemplate->getPageRenderer();
+        $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
+    }
 
     /**
      * Create tabs to split the report and the checkLink functions

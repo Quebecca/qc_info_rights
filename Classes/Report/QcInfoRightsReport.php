@@ -21,17 +21,14 @@ use Qc\QcInfoRights\Domain\Repository\BackendUserRepository;
 use Qc\QcInfoRights\Filter\Filter;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
-use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
-use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -40,7 +37,6 @@ use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
-use Psr\Http\Message\ResponseInterface;
 /**
  * Module 'Qc info rights' as sub module of Web -> Info
  *
@@ -68,35 +64,7 @@ class QcInfoRightsReport
      */
     const prefix_filter = 'user';
 
-    /**
-     * Array configuration for the order of Table backend user list
-     */
-    protected const ORDER_BY_VALUES = [
-        'lastLogin' => [
-            ['lastlogin', 'ASC'],
-        ],
-        'lastLogin_reverse' => [
-            ['lastlogin', 'DESC'],
-        ],
-        'userName' => [
-            ['userName', 'ASC'],
-        ],
-        'userName_reverse' => [
-            ['userName', 'DESC'],
-        ],
-        'email' => [
-            ['email' , 'ASC'],
-        ],
-        'email_reverse' => [
-            ['email' , 'DESC'],
-        ],
-        'disable_compare' => [
-            ['disable' , 'ASC'],
-        ],
-        'disable_compare_reverse' => [
-            ['disable' , 'DESC'],
-        ],
-    ];
+
 
     /**
      * @var \Qc\QcInfoRights\Domain\Model\ModuleData
@@ -354,46 +322,6 @@ class QcInfoRightsReport
         return $this->view->render();
     }
 
-    /**
-     * Create tabs to split the report and the checkLink functions
-     */
-    protected function renderContent(): string
-    {
-        if (!$this->isAccessibleForCurrentUser) {
-            // If no access or if ID == zero
-            $this->moduleTemplate->addFlashMessage(
-                $this->getLanguageService()->getLL('no.access'),
-                $this->getLanguageService()->getLL('no.access.title'),
-                FlashMessage::ERROR
-            );
-            return '';
-        }
-
-        $menuItems = [];
-
-        if ($this->showTabAccess) {
-            $menuItems[] = [
-                'label' => $this->getLanguageService()->getLL('accessRights'),
-                'content' => $this->createViewForAccessRightsTab()->render()
-            ];
-        }
-
-        if ($this->showTabGroups) {
-            $menuItems[] = [
-                'label' => $this->getLanguageService()->getLL('beUserGroupsLists'),
-                'content' => $this->createViewForBeUserGroupListTab()->render()
-            ];
-        }
-
-        if ($this->showTabUsers) {
-            $menuItems[] = [
-                'label' => $this->getLanguageService()->getLL('beUserLists'),
-                'content' => $this->createViewForBeUserListTab()->render()
-            ];
-        }
-
-        return $this->moduleTemplate->getDynamicTabMenu($menuItems, 'report-qcinforights');
-    }
 
     /**
      * Initializes the Module
@@ -415,185 +343,7 @@ class QcInfoRightsReport
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
 
-    /**
-     * Displays the View of Access and Rights
-     *
-     * @return StandaloneView
-     */
-    protected function createViewForAccessRightsTab()
-    {
-        $view = $this->createView('AccessRightsTab');
-        $selectBox = BackendUtility::getDropdownMenu($this->id, 'SET[depth]', $this->pObj->MOD_SETTINGS['depth'], $this->pObj->MOD_MENU['depth']);
 
-        /*Render Tree View For the Access Page with His Depth*/
-        /** @var PageTreeView $tree */
-        $tree = GeneralUtility::makeInstance(PageTreeView::class);
-        $tree->init();
-        $tree->addField('perms_user', true);
-        $tree->addField('perms_group', true);
-        $tree->addField('perms_everybody', true);
-        $tree->addField('perms_userid', true);
-        $tree->addField('perms_groupid', true);
-        $tree->addField('hidden');
-        $tree->addField('fe_group');
-        $tree->addField('starttime');
-        $tree->addField('endtime');
-        $tree->addField('editlock');
-
-        if ($this->id) {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getIcon($this->id)];
-        } else {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getRootIcon($this->pageInfo)];
-        }
-        $tree->getTree($this->id, $this->pObj->MOD_SETTINGS['depth']);
-
-        $beUserArray = BackendUtility::getUserNames();
-        $beGroupArray = BackendUtility::getGroupNames();
-
-        $view->assignMultiple([
-            'prefix' => 'accessRights',
-            'viewTree' => $tree->tree,
-            'depthSelect' => $selectBox,
-            'hideUser' => $this->checkShowColumnTsConfig('user'),
-            'hideGroup' => $this->checkShowColumnTsConfig('group'),
-            'hideEveryBody' => $this->checkShowColumnTsConfig('everybody'),
-            'beUsers' => $beUserArray,
-            'beGroups' => $beGroupArray
-        ]);
-
-        return $view;
-    }
-
-    /**
-     * Displays the View for the Backend User List
-     *
-     * @return StandaloneView
-     */
-    protected function createViewForBeUserListTab()
-    {
-        $prefix = "user";
-        $this->setPageInfo();
-
-        $view = $this->createView('BeUserList');
-
-        $demand = $this->moduleData->getDemand();
-        $demand->setRejectUserStartWith('_');
-
-        $orderArray = self::ORDER_BY_VALUES[$this->orderBy] ?? [];
-
-        if(!empty($orderArray)){
-            $this->filter->setOrderArray($orderArray);
-        }
-
-        if(!$this->showAdministratorUser){
-            $demand->setUserType(Demand::USERTYPE_USERONLY);
-        }
-
-        // Filter
-        if($this->set['username'] != null && !empty($this->set['username'])){
-            $this->filter->setUsername($this->set['username']);
-            $this->filter->setCurrentUsersTabPage(1);
-        }
-        if($this->set['mail'] != null && !empty($this->set['mail'])){
-            $this->filter->setMail($this->set['mail']);
-            $this->filter->setCurrentUsersTabPage(1);
-        }
-        if(!empty($this->set['hideInactif']) && (int)($this->set['hideInactif']) == 1){
-            $this->filter->setHideInactiveUsers(Demand::STATUS_ACTIVE);
-        }
-        // Reset from form
-        if($this->set['filterSearch'] == 1){
-            if(empty($this->set['username'])){
-                $this->filter->setUsername('');
-            }
-            if(empty($this->set['mail'])){
-                $this->filter->setMail('');
-            }
-            if(empty($this->set['hideInactif'])){
-                $this->filter->setHideInactiveUsers(0);
-            }
-            $this->filter->setCurrentUsersTabPage(1);
-        }
-
-        if (GeneralUtility::_GP('userPaginationPage') != null ){
-            $userPaginationCurrentPage = (int)GeneralUtility::_GP('userPaginationPage');
-            // Store the current page on session
-            $this->filter->setCurrentUsersTabPage($userPaginationCurrentPage);
-        }
-        else{
-            // read from Session
-            $userPaginationCurrentPage = $this->filter->getCurrentUsersTabPage();
-        }
-
-        $this->updateFilter();
-        $filterArgs = [
-            'username' => $this->backendSession->get('qc_info_rights_key')->getUsername(),
-            'mail' => $this->backendSession->get('qc_info_rights_key')->getMail(),
-            'hideInactif' => $this->backendSession->get('qc_info_rights_key')->getHideInactiveUsers()
-        ];
-        $demand = $this->mapFilterToDemand($this->backendSession->get('qc_info_rights_key'));
-        /**Implement tableau Header withDynamically order By Field*/
-        foreach (array_keys(self::ORDER_BY_VALUES) as $key) {
-            $sortActions[$key] = $this->constructBackendUri(['orderBy' => $key]);
-        }
-        $tabHeaders = $this->getVariablesForTableHeader($sortActions);
-        $pagination = $this->getPagination($this->backendUserRepository->findDemanded($demand), $userPaginationCurrentPage,$this->usersPerPage );// we assign the groupsCurrentPaginationPage and usersCurrentPaginationPage to keep the pagination for each tab separated
-
-        $view->assignMultiple([
-            'prefix' => 'beUserList',
-            'backendUsers' => $pagination['paginatedData'],
-            'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
-            'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
-            'showExportUsers' => $this->showExportUsers,
-            'args' => $filterArgs,
-            'tabHeader' => $tabHeaders,
-            'pagination' => $pagination['pagination'],
-            'currentPage' => $this->id
-        ]);
-        return $view;
-    }
-
-
-    /**
-     * Displays the View for the Backend User List
-     *
-     * @return StandaloneView
-     */
-    protected function createViewForBeUserGroupListTab()
-    {
-        $this->filter = $this->backendSession->get('qc_info_rights_key');
-        if (GeneralUtility::_GP('groupPaginationPage') != null ){
-            $groupPaginationCurrentPage = (int)GeneralUtility::_GP('groupPaginationPage');
-            // Store the current page on session
-            $this->filter = $this->backendSession->get('qc_info_rights_key');
-            $this->filter->setCurrentGroupsTabPage($groupPaginationCurrentPage);
-            $this->updateFilter();
-        }
-        else{
-            // read from Session
-            $groupPaginationCurrentPage = $this->filter->getCurrentGroupsTabPage();
-        }
-        $view = $this->createView('BeUserGroupList');
-        $groupsWithNumberOfUsers = [];
-        $pagination = $this->getPagination($this->backendUserGroupRepository->findAll(), $groupPaginationCurrentPage,$this->groupsPerPage );
-        $groups = $pagination['paginatedData'];
-        foreach ($groups as $group){
-            array_push($groupsWithNumberOfUsers, [
-                'group' => $group,
-                'numberOfUsers' => count($this->backendUserRepository->getGroupMembers($group->getUid()))
-            ]);
-        }
-        $view->assignMultiple([
-            'prefix' => 'beUserGroupList',
-            'backendUserGroups' => $groupsWithNumberOfUsers,
-            'showExportGroups' => $this->showExportGroups,
-            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn'),
-            'pagination' => $pagination['pagination'],
-            'currentPage' => $this->id,
-            'args' => $this->set
-        ]);
-        return $view;
-    }
 
     /**
      * This function is used to get the pagination items
@@ -649,7 +399,7 @@ class QcInfoRightsReport
     /**
      * Generate configuration for field selection
      *
-     * @param int                    $pageId current page id
+     * @param int $pageId current page id
      * @param ServerRequestInterface $request
      */
     protected function fillFieldConfiguration(int $pageId, ServerRequestInterface $request)
@@ -780,103 +530,8 @@ class QcInfoRightsReport
         return '';
     }
 
-    /**
-     * @param array<string,mixed> $additionalQueryParameters
-     * @param string $route
-     * @return string
-     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
-     */
-    protected function constructBackendUri(array $additionalQueryParameters = [], string $route = 'web_info'): string
-    {
-        $parameters = [
-            'id' => $this->id,
-            'depth' => $this->depth,
-            'orderBy' => $this->orderBy,
-            self::prefix_filter.'_SET[username]' => $this->set['username'],
-            self::prefix_filter.'_SET[mail]' => $this->set['mail'],
-            self::prefix_filter.'_SET[hideInactif]' => $this->set['hideInactif'],
-            self::prefix_filter.'_SET[filterSearch]' => $this->set['filterSearch'],
-            'paginationPage', $this->paginationCurrentPage,
-        ];
 
-        // if same key, additionalQueryParameters should overwrite parameters
-        $parameters = array_merge($parameters, $additionalQueryParameters);
 
-        /**
-         * @var UriBuilder $uriBuilder
-         */
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uri = (string)$uriBuilder->buildUriFromRoute($route, $parameters);
-
-        return $uri;
-    }
-    /**
-     * Sets variables for the Fluid Template of the table with the Backend User List
-     * @param array<string,string> $sortActions
-     * @return mixed[] variables
-     */
-    protected function getVariablesForTableHeader(array $sortActions): array
-    {
-        $languageService = $this->getLanguageService();
-
-        $headers = [
-            'userName',
-            'email',
-            'lastLogin',
-            'disable_compare'
-        ];
-
-        $tableHeadData = [];
-
-        foreach ($headers as $key) {
-            $tableHeadData[$key]['label'] = $languageService->sL(self::prefix_be_user_lang.$key);
-            if (isset($sortActions[$key])) {
-                // sorting available, add url
-                if ($this->orderBy === $key) {
-                    $tableHeadData[$key]['url'] = $sortActions[$key . '_reverse'] ?? '';
-                } else {
-                    $tableHeadData[$key]['url'] = $sortActions[$key] ?? '';
-                }
-
-                // add icon only if this is the selected sort order
-                if ($this->orderBy === $key) {
-                    $tableHeadData[$key]['icon'] = 'status-status-sorting-asc';
-                }elseif ($this->orderBy === $key . '_reverse') {
-                    $tableHeadData[$key]['icon'] = 'status-status-sorting-desc';
-                }
-            }
-        }
-
-        $tableHeaderHtml = [];
-        foreach ($tableHeadData as $key => $values) {
-            if (isset($values['url'])) {
-                $tableHeaderHtml[$key]['header'] = sprintf(
-                    '<a href="%s" style="text-decoration: underline;">%s</a>',
-                    $values['url'],
-                    $values['label']
-                );
-            } else {
-                $tableHeaderHtml[$key]['header'] = $values['label'];
-            }
-
-            if (($values['icon'] ?? '') !== '') {
-                $tableHeaderHtml[$key]['icon'] = $values['icon'];
-            }
-        }
-        return $tableHeaderHtml;
-    }
-
-    // show members
-    /**
-     * This Function is delete the selected excluded link
-     * @param ServerRequestInterface $request
-     * @return ResponseInterface
-     */
-    public function showMembers(ServerRequestInterface $request): ResponseInterface{
-        $urlParam = $request->getQueryParams();
-        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
-        return new JsonResponse($members);
-    }
 
     /**
      * This function is used to map the filter to Demand object

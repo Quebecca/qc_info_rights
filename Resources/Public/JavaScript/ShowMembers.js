@@ -3,39 +3,33 @@
  *
  * @exports TYPO3/CMS/QcInforights/ShowMembers
  */
+function submitSelectedColumn(){
+  var  showingElements =[];
+  showingElements = $('.d-block');
+  for(var i = 0; i < showingElements.length; i++){
+    const classStr = showingElements[i].className.split(' ');
+    classStr.forEach(item => {
+      let groupUid;
+      if (item.startsWith('group')) {
+        groupUid = item.substr(5);
+        resetShowMemberVisibility(groupUid)
+      }
+    })
+  }
+}
+
+
 
 function showMembers(e, groupUid) {
   e.preventDefault()
-
-  var membersElement = $('#group'+groupUid)
-  var hideControlSpan = $('#hideMembersControl'+groupUid);
-  var showMembersControlSpan = $('#showMembersControl'+groupUid);
-  var show = true;
-  if(showMembersControlSpan.attr('class') === undefined || showMembersControlSpan.attr('class') === ''){
-    // request to show users
-    showMembersControlSpan.attr('class', 'hidden');
-    hideControlSpan.attr('class', '');
-    membersElement.attr('class', 'd-block')
-
-  }
-  else{
-    // request to hide users
-    if(showMembersControlSpan.attr('class') === 'hidden'){
-      showMembersControlSpan.attr('class', '');
-      hideControlSpan.attr('class', 'hidden');
-      membersElement.attr('class', 'hidden')
-
-    }
-    show = false;
-  }
-
+  const show = resetShowMemberVisibility(groupUid);
   if(show){
     // get the selected row
-    var groupElement = document.getElementById('group'+groupUid);
+    const groupElement = document.getElementById('group' + groupUid);
     // show the selected members
     groupElement.className ='group'+groupUid+ " d-block";
     // to refresh the rendering data, we delete the previous rendering
-    var child = groupElement.lastElementChild;
+    let child = groupElement.lastElementChild;
     while (child) {
       groupElement.removeChild(child);
       child = groupElement.lastElementChild;
@@ -64,7 +58,7 @@ function showMembers(e, groupUid) {
                 var node = document.createElement("li");
                 node.className = 'list-unstyled'
                 node.style.marginTop = '5px'
-                var textnode = document.createTextNode(memberValue);
+                const textnode = document.createTextNode(memberValue);
                 node.appendChild(textnode);
                 groupElement.appendChild(node);
               })
@@ -73,5 +67,28 @@ function showMembers(e, groupUid) {
         });
     });
   }
+}
 
+function resetShowMemberVisibility(groupUid){
+  const membersElement = $('#group' + groupUid);
+  const hideControlSpan = $('#hideMembersControl' + groupUid);
+  const showMembersControlSpan = $('#showMembersControl' + groupUid);
+
+  if (showMembersControlSpan.attr('class') === undefined || showMembersControlSpan.attr('class') === '') {
+    // request to show users
+    showMembersControlSpan.attr('class', 'hidden');
+    hideControlSpan.attr('class', '');
+    membersElement.attr('class', 'd-block')
+
+  } else {
+    // request to hide users
+    if (showMembersControlSpan.attr('class') === 'hidden') {
+      showMembersControlSpan.attr('class', '');
+      hideControlSpan.attr('class', 'hidden');
+      membersElement.attr('class', 'hidden')
+
+    }
+    return false;
+  }
+  return true;
 }

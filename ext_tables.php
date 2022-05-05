@@ -11,7 +11,7 @@ call_user_func(static function() {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_qcinforights_domain_model_qcinforights');
 });
 
-// Extend Module INFO with new Element
+// Extend Module INFO with new Element for access and rights tab
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     AccessRightsReport::class,
@@ -19,20 +19,20 @@ call_user_func(static function() {
     'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_qcInfoRight'
 );
 
-// Extend Module INFO with new Element
+// Extend Module INFO for Groups tab
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     GroupsReport::class,
     '',
-    'Groups'
+    'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_groups'
 );
 
-// Extend Module INFO with new Element
+// Extend Module INFO For Users tab
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
     'web_info',
     UsersReport::class,
     '',
-    'Users'
+    'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_users'
 );
 
 

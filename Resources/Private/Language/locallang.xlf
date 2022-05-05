@@ -12,6 +12,12 @@
 			<trans-unit id="mod_qcInfoRight" resname="mod_qcInfoRight">
 				<source>Access and rights</source>
 			</trans-unit>
+			<trans-unit id="mod_users" resname="mod_users">
+				<source>Users</source>
+			</trans-unit>
+			<trans-unit id="mod_groups" resname="mod_groups">
+				<source>Groups</source>
+			</trans-unit>
 			<trans-unit id="export_csv" resname="export_csv">
 				<source>Export CSV</source>
 			</trans-unit>

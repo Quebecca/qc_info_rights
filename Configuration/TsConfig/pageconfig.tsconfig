@@ -10,11 +10,15 @@ mod{
 
     //This settings is to show or hide tab (Access and right, Backend users group, and backend user lists)
     showTabAccess  = 1
-    showTabUsers   = 0
-    showTabGroups  = 0
+    showTabUsers   = 1
+    showTabGroups  = 1
 
     // This option is to display the members column in the Backend user groups list for each group
     showMembersColumn = 1
+
+    // This option is to set the number of items per page for the "Backend user groups list" tab and the "Backend users list" tab
+    groupsPerPage = 100
+    usersPerPage = 100
 
     //This settings is to show Exportation option for the backend users list or backend user groups list
     showExportUsers  = 1

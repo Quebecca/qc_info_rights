@@ -410,7 +410,7 @@ class QcInfoRightsReport
             $this->isAccessibleForCurrentUser = false;
         }
         $pageRenderer = $this->moduleTemplate->getPageRenderer();
-        $pageRenderer->addCssFile(GeneralUtility::getFileAbsFileName('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css'), 'stylesheet', 'all');
+        $pageRenderer->addCssFile('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css', 'stylesheet', 'all');
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
@@ -553,6 +553,7 @@ class QcInfoRightsReport
         return $view;
     }
 
+
     /**
      * Displays the View for the Backend User List
      *
@@ -573,16 +574,20 @@ class QcInfoRightsReport
             $groupPaginationCurrentPage = $this->filter->getCurrentGroupsTabPage();
         }
         $view = $this->createView('BeUserGroupList');
-        $pagination = $this->getPagination($this->backendUserGroupRepository->findAll(), $groupPaginationCurrentPage,$this->groupsPerPage );
+        $groupsWithNumberOfUsers = [];
+        $groups = $this->backendUserGroupRepository->findAll();
+        foreach ($groups as $group){
+            array_push($groupsWithNumberOfUsers, [
+                'group' => $group,
+                'numberOfUsers' => count($this->backendUserRepository->getGroupMembers($group->getUid()))
+            ]);
+        }
 
         $view->assignMultiple([
             'prefix' => 'beUserGroupList',
-            'backendUserGroups' => $pagination['paginatedData'],
+            'backendUserGroups' => $groupsWithNumberOfUsers,
             'showExportGroups' => $this->showExportGroups,
-            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn'),
-            'pagination' => $pagination['pagination'],
-            'currentPage' => $this->id,
-            'args' => $this->set
+            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn')
         ]);
         return $view;
     }

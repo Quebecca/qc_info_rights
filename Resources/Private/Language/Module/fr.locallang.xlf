@@ -130,6 +130,14 @@
 				<source>Never</source>
 				<target>Jamais</target>
 			</trans-unit>
+			<trans-unit id="show" resname="show">
+				<source>(show)</source>
+				<target>(afficher)</target>
+			</trans-unit>
+			<trans-unit id="hide" resname="hide">
+				<source>(hide)</source>
+				<target>(masquer)</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

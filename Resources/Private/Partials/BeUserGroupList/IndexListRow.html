@@ -3,30 +3,47 @@
       xmlns:bu="http://typo3.org/ns/TYPO3/CMS/Beuser/ViewHelpers">
 
 <f:section name="list_row">
+    <f:variable name="group">{backendUserGroup.group}</f:variable>
     <tr>
         <td class="col-icon">
-            <bu:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
+            <bu:spriteIconForRecord table="be_groups" object="{group}" />
         </td>
         <td class="title">
-            <b>{backendUserGroup.title}</b><br />
+            <b>{group.title}</b><br />
             {backendUser.realName}
         </td>
         <f:if condition="{showMembersColumn} == 1">
             <td>
-                <button class="btn btn-default" onclick="showMembers(event, '{backendUserGroup.uid}')" ><f:image src="EXT:qc_info_rights/Resources/Public/Icons/actions-users.svg" class="qc-fleche-icon"/></button>
-                <br>
-                <div class="hidden" id="group{backendUserGroup.uid}">
+                <div class="hidden">
+                    <!-- Generate translated labels -->
+                    <div id="show" data-tr-label="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:show')}"></div>
+                    <div id="hide" data-tr-label="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:hide')}"></div>
+                </div>
+                <f:if condition="{backendUserGroup.numberOfUsers} != 0">
+                    <f:then>
+                        <br>
+                        <a href="#" class="showUsersLink" onclick="showMembers(event, '{group.uid}')" >
+                            {backendUserGroup.numberOfUsers} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:users" />
+                            <span id="showMembersControl{group.uid}"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:show" /></span>
+                            <span id="hideMembersControl{group.uid}" class="hidden"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:hide" /></span>
+                        </a>
+
+                        <br>
+                        <br>
+                    </f:then>
+                    <f:else>
+                        <span><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:noMembers" /></span>
+                    </f:else>
+                </f:if>
+                <div class="hidden" id="group{group.uid}">
                     <!-- Generate translated labels -->
                     <div id="realNameNotProvided" data-tr-label="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:realName_notProvided')}"></div>
                     <div id="emailNotProvided" data-tr-label="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:email_notProvided')}"></div>
                 </div>
-                <div class="noMembers{backendUserGroup.uid} hidden">
-                    <span><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:noMembers" /></span>
-                </div>
             </td>
         </f:if>
         <td class="nowrap-disabled">
-            <f:for each="{backendUserGroup.subgroups}" as="subgroup" iteration="subGroupIterator">
+            <f:for each="{group.subgroups}" as="subgroup" iteration="subGroupIterator">
                 <be:link.editRecord table="be_groups" uid="{subgroup.uid}" title="edit">
                     {subgroup.title}
                 </be:link.editRecord>
@@ -36,4 +53,5 @@
 
     </tr>
 </f:section>
+
 </html>

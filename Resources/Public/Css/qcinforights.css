@@ -33,3 +33,7 @@
     width: 100% !important;
 }
 
+.showUsersLink {
+    text-decoration: underline;
+}
+

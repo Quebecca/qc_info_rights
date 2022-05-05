@@ -21,8 +21,8 @@ mod{
     usersPerPage = 100
 
     //This settings is to show Exportation option for the backend users list or backend user groups list
-    showExportUsers  = 1
-    showExportGroups = 1
+    showExportUsers  = 0
+    showExportGroups = 0
 
     //This settings is to show Administrator inside list of backend user
     showAdministratorUser = 1

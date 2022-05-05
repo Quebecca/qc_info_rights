@@ -575,19 +575,22 @@ class QcInfoRightsReport
         }
         $view = $this->createView('BeUserGroupList');
         $groupsWithNumberOfUsers = [];
-        $groups = $this->backendUserGroupRepository->findAll();
+        $pagination = $this->getPagination($this->backendUserGroupRepository->findAll(), $groupPaginationCurrentPage,$this->groupsPerPage );
+        $groups = $pagination['paginatedData'];
         foreach ($groups as $group){
             array_push($groupsWithNumberOfUsers, [
                 'group' => $group,
                 'numberOfUsers' => count($this->backendUserRepository->getGroupMembers($group->getUid()))
             ]);
         }
-
         $view->assignMultiple([
             'prefix' => 'beUserGroupList',
             'backendUserGroups' => $groupsWithNumberOfUsers,
             'showExportGroups' => $this->showExportGroups,
-            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn')
+            'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn'),
+            'pagination' => $pagination['pagination'],
+            'currentPage' => $this->id,
+            'args' => $this->set
         ]);
         return $view;
     }

@@ -152,21 +152,6 @@ class QcInfoRightsReport
     /**
      * @var boolean
      */
-    protected $showTabAccess;
-
-    /**
-     * @var boolean
-     */
-    protected $showTabUsers;
-
-    /**
-     * @var boolean
-     */
-    protected $showTabGroups;
-
-    /**
-     * @var boolean
-     */
     protected $showExportUsers;
 
     /**

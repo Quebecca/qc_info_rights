@@ -52,16 +52,11 @@ class GroupsReport extends QcInfoRightsReport
             );
             return '';
         }
-
         $menuItems = [];
-
-        if ($this->showTabGroups) {
-            $menuItems[] = [
-                'label' => $this->getLanguageService()->getLL('beUserGroupsLists'),
-                'content' => $this->createViewForBeUserGroupListTab()->render()
-            ];
-        }
-
+        $menuItems[] = [
+            'label' => $this->getLanguageService()->getLL('beUserGroupsLists'),
+            'content' => $this->createViewForBeUserGroupListTab()->render()
+        ];
         return $this->moduleTemplate->getDynamicTabMenu($menuItems, 'report-qcinforights');
     }
 

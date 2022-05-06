@@ -487,9 +487,6 @@ class QcInfoRightsReport
 
     protected function updateAccessByTsConfig()
     {
-        $this->showTabAccess = $this->checkShowTsConfig('showTabAccess');
-        $this->showTabUsers = $this->checkShowTsConfig('showTabUsers');
-        $this->showTabGroups = $this->checkShowTsConfig('showTabGroups');
         $this->showExportUsers = $this->checkShowTsConfig('showExportUsers');
         $this->showExportGroups = $this->checkShowTsConfig('showExportGroups');
         $this->showAdministratorUser = $this->checkShowTsConfig('showAdministratorUser');

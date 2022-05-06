@@ -36,15 +36,11 @@ class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
             );
             return '';
         }
-
         $menuItems = [];
-
-        if ($this->showTabAccess) {
-            $menuItems[] = [
-                'label' => $this->getLanguageService()->getLL('accessRights'),
-                'content' => $this->createViewForAccessRightsTab()->render()
-            ];
-        }
+        $menuItems[] = [
+            'label' => $this->getLanguageService()->getLL('accessRights'),
+            'content' => $this->createViewForAccessRightsTab()->render()
+        ];
 
         return $this->moduleTemplate->getDynamicTabMenu($menuItems, 'report-qcinforights');
     }

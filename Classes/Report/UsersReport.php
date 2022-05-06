@@ -67,15 +67,11 @@ class UsersReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
             );
             return '';
         }
-
         $menuItems = [];
-        if ($this->showTabUsers) {
-            $menuItems[] = [
-                'label' => $this->getLanguageService()->getLL('beUserLists'),
-                'content' => $this->createViewForBeUserListTab()->render()
-            ];
-        }
-
+        $menuItems[] = [
+            'label' => $this->getLanguageService()->getLL('beUserLists'),
+            'content' => $this->createViewForBeUserListTab()->render()
+        ];
         return $this->moduleTemplate->getDynamicTabMenu($menuItems, 'report-qcinforights');
     }
 

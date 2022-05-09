@@ -14,7 +14,7 @@ call_user_func(static function() {
 
 $modTSconfig = BackendUtility::getPagesTSconfig(1)['mod.']['qcinforights.'];
 
-if($modTSconfig['showTabAccess'] == 1) {
+if($modTSconfig['showTabAccess'] == 1 && $modTSconfig['showMenuAccess']) {
     // Extend Module INFO with new Element for access and rights tab
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_info',
@@ -25,7 +25,7 @@ if($modTSconfig['showTabAccess'] == 1) {
 }
 
 // Extend Module INFO for Groups tab
-if($modTSconfig['showTabGroups'] == 1) {
+if($modTSconfig['showTabGroups'] == 1 && $modTSconfig['showMenuGroups'] == 1) {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_info',
         GroupsReport::class,
@@ -34,7 +34,7 @@ if($modTSconfig['showTabGroups'] == 1) {
     );
 }
 
-if($modTSconfig['showTabUsers'] == 1){
+if($modTSconfig['showTabUsers'] == 1 && $modTSconfig['showMenuUsers'] == 1){
 // Extend Module INFO For Users tab
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
         'web_info',

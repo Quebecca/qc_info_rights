@@ -357,7 +357,7 @@ class QcInfoRightsReport
      *
      * @return array
      */
-    protected function modMenu()
+    protected function modMenu(): array
     {
         $menu = [
             'pages' => [],

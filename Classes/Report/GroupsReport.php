@@ -66,7 +66,7 @@ class GroupsReport extends QcInfoRightsReport
      *
      * @return StandaloneView
      */
-    protected function createViewForBeUserGroupListTab()
+    protected function createViewForBeUserGroupListTab(): StandaloneView
     {
         $this->filter = $this->backendSession->get('qc_info_rights_key');
         if (GeneralUtility::_GP('groupPaginationPage') != null ){

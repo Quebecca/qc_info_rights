@@ -80,9 +80,9 @@ class UsersReport extends QcInfoRightsReport
     {
         parent::__construct();
         //Initialize Repository Backend user
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $this->objectManager);
+        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $objectManager);
         $this->backendUserRepository->injectPersistenceManager($persistenceManager);
     }
 
@@ -92,8 +92,6 @@ class UsersReport extends QcInfoRightsReport
         $this->orderBy = (string)(GeneralUtility::_GP('orderBy'));
         $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
         $this->usersPerPage = $this->checkShowTsConfig('usersPerPage');
-
-
     }
 
 
@@ -128,14 +126,9 @@ class UsersReport extends QcInfoRightsReport
      */
     protected function createViewForBeUserListTab(): StandaloneView
     {
-        $prefix = "user";
-        $this->setPageInfo();
-
         $view = $this->createView('BeUserList');
-
         $demand = $this->moduleData->getDemand();
         $demand->setRejectUserStartWith('_');
-
         $orderArray = self::ORDER_BY_VALUES[$this->orderBy] ?? [];
 
         if(!empty($orderArray)){
@@ -158,6 +151,7 @@ class UsersReport extends QcInfoRightsReport
         if(!empty($this->set['hideInactif']) && (int)($this->set['hideInactif']) == 1){
             $this->filter->setHideInactiveUsers(Demand::STATUS_ACTIVE);
         }
+
         // Reset from form
         if($this->set['filterSearch'] == 1){
             if(empty($this->set['username'])){
@@ -190,6 +184,7 @@ class UsersReport extends QcInfoRightsReport
         ];
         $demand = $this->mapFilterToDemand($this->backendSession->get('qc_info_rights_key'));
         /**Implement tableau Header withDynamically order By Field*/
+        $sortActions = [];
         foreach (array_keys(self::ORDER_BY_VALUES) as $key) {
             $sortActions[$key] = $this->constructBackendUri(['orderBy' => $key]);
         }
@@ -235,9 +230,7 @@ class UsersReport extends QcInfoRightsReport
          * @var UriBuilder $uriBuilder
          */
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $uri = (string)$uriBuilder->buildUriFromRoute($route, $parameters);
-
-        return $uri;
+        return (string)$uriBuilder->buildUriFromRoute($route, $parameters);
     }
 
     /**
@@ -295,7 +288,5 @@ class UsersReport extends QcInfoRightsReport
         }
         return $tableHeaderHtml;
     }
-
-
 
 }

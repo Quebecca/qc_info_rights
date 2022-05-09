@@ -14,7 +14,6 @@
 
 namespace Qc\QcInfoRights\Report;
 
-use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcInfoRights\BackendSession\BackendSession;
 use Qc\QcInfoRights\Domain\Model\ModuleData;
 use Qc\QcInfoRights\Filter\Filter;
@@ -34,7 +33,7 @@ use TYPO3\CMS\Info\Controller\InfoModuleController;
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-class QcInfoRightsReport
+abstract class QcInfoRightsReport
 {
     /**
      * @var string
@@ -169,10 +168,8 @@ class QcInfoRightsReport
      */
     public function init($pObj)
     {
-        $this->pObj = $pObj;
         $this->id = (int)GeneralUtility::_GP('id');
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
-        $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
         $this->view = $this->createView('InfoModule');
         if($this->backendSession->get('qc_info_rights_key') != null){
             $this->filter = $this->backendSession->get('qc_info_rights_key');
@@ -206,7 +203,7 @@ class QcInfoRightsReport
      *
      * @return string Module content
      */
-    public function main()
+    public function main(): string
     {
         $this->moduleData = $this->loadModuleData();
         $this->getLanguageService()->includeLLFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
@@ -227,7 +224,6 @@ class QcInfoRightsReport
      */
     protected function initialize()
     {
-        $this->setPageInfo();
         $this->pageRecord = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
         if (($this->id && is_array($this->pageRecord)) || (!$this->id && $this->getBackendUser()->isAdmin())) {
             $this->isAccessibleForCurrentUser = true;
@@ -240,8 +236,6 @@ class QcInfoRightsReport
         $pageRenderer->addCssFile('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css', 'stylesheet', 'all');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }
-
-
 
     /**
      * This function is used to get the pagination items
@@ -266,84 +260,6 @@ class QcInfoRightsReport
         ];
     }
 
-    /**
-     * Returns the menu array
-     *
-     * @return array
-     */
-    protected function modMenu(): array
-    {
-        $menu = [
-            'pages' => [],
-            'depth' => [
-                0 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_0'),
-                1 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_1'),
-                2 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_2'),
-                3 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_3'),
-                4 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_4'),
-                999 => $this->getLanguageService()->sL(self::prefix_core_lang.'labels.depth_infi')
-            ]
-        ];
-
-        // Using $GLOBALS['TYPO3_REQUEST'] since $request is not available at this point
-        // @todo: Refactor mess and have $request available
-        $this->fillFieldConfiguration($this->id, $GLOBALS['TYPO3_REQUEST']);
-        foreach ($this->fieldConfiguration as $key => $item) {
-            $menu['pages'][$key] = $item['label'];
-        }
-        return $menu;
-    }
-
-    /**
-     * Generate configuration for field selection
-     *
-     * @param int $pageId current page id
-     * @param ServerRequestInterface $request
-     */
-    protected function fillFieldConfiguration(int $pageId, ServerRequestInterface $request)
-    {
-        $modTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_info.']['fieldDefinitions.'] ?? [];
-        foreach ($modTSconfig as $key => $item) {
-            $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
-            $fields = GeneralUtility::trimExplode(',', $fieldList, true);
-            $key = trim($key, '.');
-            $this->fieldConfiguration[$key] = [
-                'label' => $item['label'] ? $this->getLanguageService()->sL($item['label']) : $key,
-                'fields' => $fields
-            ];
-        }
-    }
-
-    /**
-     * Function, which returns all tables to
-     * which the user has access. Also a set of standard tables (pages, sys_filemounts, etc...)
-     * are filtered out. So what is left is basically all tables which makes sense to list content from.
-     *
-     * @return string
-     */
-    protected function cleanTableNames(): string
-    {
-        // Get all table names:
-        $tableNames = array_flip(array_keys($GLOBALS['TCA']));
-        // Unset common names:
-        unset($tableNames['pages']);
-        unset($tableNames['sys_filemounts']);
-        unset($tableNames['sys_action']);
-        unset($tableNames['sys_workflows']);
-        unset($tableNames['be_users']);
-        unset($tableNames['be_groups']);
-        $allowedTableNames = [];
-        // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
-        if (is_array($tableNames)) {
-            foreach ($tableNames as $k => $v) {
-                if (!$GLOBALS['TCA'][$k]['ctrl']['hideTable'] && $this->getBackendUser()->check('tables_select', $k)) {
-                    $allowedTableNames['table_' . $k] = $k;
-                }
-            }
-        }
-        return implode(',', array_keys($allowedTableNames));
-    }
-
     /*
      * This Function is used to generate Demand Model from the Backend User Model Instance
      * */
@@ -366,14 +282,6 @@ class QcInfoRightsReport
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
-    }
-
-    /**
-     * Check if page record exists and set pageInfo
-     */
-    protected function setPageInfo(): void
-    {
-        $this->pageInfo = BackendUtility::readPageAccess(BackendUtility::getRecord('pages', $this->id) ? $this->id : 0, ' 1=1');
     }
 
     /**
@@ -404,23 +312,6 @@ class QcInfoRightsReport
             return $this->userTS['qcinforights.'][$value];
         } else if (is_array($this->modTSconfig['properties']) && array_key_exists($value, $this->modTSconfig['properties'])) {
             return $this->modTSconfig['properties'][$value];
-        }
-        return '';
-    }
-
-    /**
-     * This function to check if get default or Custom Value
-     *
-     * @param string $value
-     *
-     * @return string
-     */
-    protected function checkShowColumnTsConfig(string $value): string
-    {
-        if (is_array($this->userTS['qcinforights.']) && array_key_exists($value, $this->userTS['qcinforights.']['hideAccessRights.'])) {
-            return $this->userTS['qcinforights.']['hideAccessRights.'][$value];
-        } else if (is_array($this->modTSconfig['properties']) && array_key_exists($value, $this->modTSconfig['properties']['hideAccessRights.'])) {
-            return $this->modTSconfig['properties']['hideAccessRights.'][$value];
         }
         return '';
     }

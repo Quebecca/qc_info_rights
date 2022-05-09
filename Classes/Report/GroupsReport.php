@@ -51,9 +51,9 @@ class GroupsReport extends QcInfoRightsReport
         parent::__construct();
         $this->backendUserGroupRepository = $backendUserGroupRepository ?? GeneralUtility::makeInstance(BackendUserGroupRepository::class);
         //Initialize Repository Backend user
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $this->objectManager);
+        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $objectManager);
         $this->backendUserRepository->injectPersistenceManager($persistenceManager);
     }
 

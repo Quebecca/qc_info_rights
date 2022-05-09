@@ -17,24 +17,16 @@ namespace Qc\QcInfoRights\Report;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcInfoRights\BackendSession\BackendSession;
 use Qc\QcInfoRights\Domain\Model\ModuleData;
-use Qc\QcInfoRights\Domain\Repository\BackendUserRepository;
 use Qc\QcInfoRights\Filter\Filter;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
-use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
-use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
-use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
 /**
@@ -63,8 +55,6 @@ class QcInfoRightsReport
      * @var  string
      */
     const prefix_filter = 'user';
-
-
 
     /**
      * @var ModuleData
@@ -100,29 +90,14 @@ class QcInfoRightsReport
     protected $userTS = [];
 
     /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
      * @var int Value of the GET/POST var 'id'
      */
     protected $id;
 
     /**
-     * @var string Value of the GET/POST var orderBy
-     */
-    protected $orderBy;
-
-    /**
      * @var InfoModuleController Contains a reference to the parent calling object
      */
     protected $pObj;
-
-    /**
-     * @var PageRepository
-     */
-    protected $pagesRepository;
 
     /**
      * @var ModuleTemplate
@@ -133,21 +108,6 @@ class QcInfoRightsReport
      * @var StandaloneView
      */
     protected $view;
-
-    /**
-     * @var UriBuilder
-     */
-    protected $uriBuilder;
-
-    /**
-     * @var BackendUserRepository
-     */
-    protected $backendUserRepository;
-
-    /**
-     * @var BackendUserGroupRepository
-     */
-    protected $backendUserGroupRepository;
 
     /**
      * @var boolean
@@ -172,13 +132,6 @@ class QcInfoRightsReport
     protected $modTSconfig;
 
     /**
-     * all params pass with 'prefix_user._SET'
-     *
-     * @var array
-     */
-    protected $set = [];
-
-    /**
      * @var Filter
      */
     protected Filter $filter;
@@ -189,44 +142,13 @@ class QcInfoRightsReport
     protected BackendSession $backendSession;
 
     /**
-     * @var int
-     */
-    protected int  $usersPerPage = 100;
-
-    /**
-     * @var int
-     */
-    protected int  $groupsPerPage = 100;
-
-    /**
      * QcInfoRightsReport constructor.
      *
-     * @param PageRepository|null               $pagesRepository
-     * @param UriBuilder|null                          $uriBuilder
-     * @param BackendUserGroupRepository|null $backendUserGroupRepository
-     * @param LocalizationUtility|null                 $localizationUtility
-     * @param CharsetConverter|null                       $charsetConverter
      */
     public function __construct(
-        PageRepository $pagesRepository = null,
-        UriBuilder $uriBuilder = null,
-        BackendUserGroupRepository $backendUserGroupRepository = null,
-        LocalizationUtility $localizationUtility = null,
-        CharsetConverter $charsetConverter = null
+
     )
     {
-        $this->pagesRepository = $pagesRepository ?? GeneralUtility::makeInstance(PageRepository::class);
-        $this->uriBuilder = $uriBuilder ?? GeneralUtility::makeInstance(UriBuilder::class);
-        $this->backendUserGroupRepository = $backendUserGroupRepository ?? GeneralUtility::makeInstance(BackendUserGroupRepository::class);
-        $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->charsetConverter = $charsetConverter ?? GeneralUtility::makeInstance(CharsetConverter::class);
-
-        //Initialize Repository Backend user
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
-        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $this->objectManager);
-        $this->backendUserRepository->injectPersistenceManager($persistenceManager);
-
         /*Initialize the TsConfig Array*/
         $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['qcinforights.'] ?? [];
 
@@ -249,17 +171,9 @@ class QcInfoRightsReport
     {
         $this->pObj = $pObj;
         $this->id = (int)GeneralUtility::_GP('id');
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
         $this->pObj->MOD_MENU = array_merge($this->pObj->MOD_MENU, $this->modMenu());
         $this->view = $this->createView('InfoModule');
-        $this->orderBy = (string)(GeneralUtility::_GP('orderBy'));
-        $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
-
-        // get number of items per page
-        $this->groupsPerPage = $this->checkShowTsConfig('groupsPerPage');
-        $this->usersPerPage = $this->checkShowTsConfig('usersPerPage');
-
         if($this->backendSession->get('qc_info_rights_key') != null){
             $this->filter = $this->backendSession->get('qc_info_rights_key');
         }

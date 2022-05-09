@@ -22,8 +22,8 @@ mod{
     showMembersColumn = 1
 
     // This option is to set the number of items per page for the "Backend user groups list" tab and the "Backend users list" tab
-    groupsPerPage = 100
-    usersPerPage = 100
+    groupsPerPage = 10
+    usersPerPage = 10
 
     //This settings is to show Exportation option for the backend users list or backend user groups list
     showExportUsers  = 1

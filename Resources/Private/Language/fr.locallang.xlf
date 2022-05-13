@@ -16,12 +16,12 @@
 				<target>Accès et droits</target>
 			</trans-unit>
 			<trans-unit id="mod_users" resname="mod_users">
-				<source>Users</source>
-				<target>Utilisateurs</target>
+				<source>Users (For the all site)</source>
+				<target>Utilisateurs (Pour tout le site)</target>
 			</trans-unit>
 			<trans-unit id="mod_groups" resname="mod_groups">
-				<source>Groups</source>
-				<target>Groupes</target>
+				<source>Groups (For the all site)</source>
+				<target>Groupes (Pour tout le site)</target>
 			</trans-unit>
 			<trans-unit id="export_csv" resname="export_csv">
 				<source>Export CSV</source>

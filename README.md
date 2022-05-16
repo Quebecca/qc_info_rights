@@ -2,6 +2,10 @@
 
 *La [version française](#documentation-info-rights) de la documentation suit le texte anglais*
 
+**IMPORTANT:**   
+We moved tabs to menus and changed TSconfig options accordingly but the old one is still working(but on menu items). The old TSconfig compatibility will be removed in next version: 1.3.
+
+
 ### About
 This extension add a new items to the Info Module in the BE with those features:
 
@@ -36,28 +40,29 @@ qcinforights{
       everybody = 0
     }
 
-    //This settings is to show or hide tab (Access and right, Backend users group, and backend user lists)
-    showTabAccess  = 1
-    showTabUsers   = 0
-    showTabGroups  = 0
-
-    //This options will replace the previous options, for show or hide the menu elements
+    //Show or hide the menu items in Info module. Only Access is visible by default.
     showMenuAccess  = 1
     showMenuUsers   = 0
     showMenuGroups  = 0
 
-    //This option is to display the members column in the ( Backend user groups list )
+    //OLD, will be removed in 1.3: This settings is to show or hide tab (Access and right, Backend users group, and backend user lists)
+    showTabAccess  = 1
+    showTabUsers   = 0
+    showTabGroups  = 0
+
+
+    //Display the Members column in the Backend user groups list  
     showMembersColumn = 1
 
-    //These options are used to specify the number of elements per page successively for the list of BE groups and the list of BE users
+    //Specify the number of elements per page for the list of BE groups and BE users
     groupsPerPage = 100
     usersPerPage = 100
 
-    //This settings is to show Exportation option for the backend users list or backend user groups list
+    //To show Export option for the backend users list or backend user groups list
     showExportUsers  = 1
     showExportGroups = 1
 
-    //This settings is to show Administrator inside list of backend user
+    //To show Administrator in the list of backend user
     showAdministratorUser = 1
 }
 
@@ -73,6 +78,9 @@ Default values:
 -----------
 [Version française]
 ## Documentation Info Droits
+
+**IMPORTANT:**   
+Nous avons déplacé les écrans d'onglets vers des menus et avons changé le TSconfig pour reflèter ce changement. L'ancien TSconfig est encore valide (pour les menus) pour cette version mais sera retiré dans la prochaine version: 1.3.
 
 ### À propos
 L'extension ajoute des nouveaux items de menu au module Info en BE avec les fonctionnalités suivantes:
@@ -97,16 +105,15 @@ qcinforights{
       everybody = 0
     }
 
-    //Masquer ou afficher chacun des éléments de menu d'Info module (Accès et droits, Utilisateurs BE et Groupes BE)
-    showTabAccess  = 1
-    showTabUsers   = 0
-    showTabGroups  = 0
-
-    //Ces trois options vont remplacer les options utilisées pour masquer ou afficher les éléments de menu de Info module
+    //Masquer ou afficher les éléments de menu dans le module Info. Seul le menu pour les droits est visible par défaut
     showMenuAccess  = 1
     showMenuUsers   = 0
     showMenuGroups  = 0
 
+    //ANCIEN: Masquer ou afficher les onglets. Sera retiré dans la version 1.3
+    showTabAccess  = 1
+    showTabUsers   = 0
+    showTabGroups  = 0
 
     // Masquer ou afficher la colonne qui sert à afficher les membres de chaque groupe dans l'onglet ( Liste des groupes BE)
     showMembersColumn = 1

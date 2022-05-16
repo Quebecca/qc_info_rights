@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
 /**
@@ -58,28 +59,28 @@ abstract class QcInfoRightsReport
     /**
      * @var ModuleData
      */
-    protected $moduleData;
+    protected ModuleData $moduleData;
 
     /**
      * Information about the current page record
      *
      * @var array
      */
-    protected $pageRecord = [];
+    protected array $pageRecord = [];
 
     /**
      * Information, if the module is accessible for the current user or not
      *
      * @var bool
      */
-    protected $isAccessibleForCurrentUser = false;
+    protected bool $isAccessibleForCurrentUser = false;
 
     /**
      * TSconfig of the current module
      *
      * @var array
      */
-    protected $modTS = [];
+    protected array $modTS = [];
 
     /**
      * TSconfig of the current User Backend
@@ -96,39 +97,39 @@ abstract class QcInfoRightsReport
     /**
      * @var InfoModuleController Contains a reference to the parent calling object
      */
-    protected $pObj;
+    protected InfoModuleController $pObj;
 
     /**
      * @var ModuleTemplate
      */
-    protected $moduleTemplate;
+    protected ModuleTemplate $moduleTemplate;
 
     /**
      * @var StandaloneView
      */
-    protected $view;
+    protected StandaloneView $view;
 
     /**
      * @var boolean
      */
-    protected $showExportUsers;
+    protected bool $showExportUsers;
 
     /**
      * @var boolean
      */
-    protected $showExportGroups;
+    protected bool $showExportGroups;
 
     /**
      * @var boolean
      */
-    protected $showAdministratorUser;
+    protected bool $showAdministratorUser;
 
     /**
      * Module TSconfig based on PAGE TSconfig / USER TSconfig
      *
      * @var array
      */
-    protected $modTSconfig;
+    protected array $modTSconfig;
 
     /**
      * @var Filter
@@ -144,9 +145,7 @@ abstract class QcInfoRightsReport
      * QcInfoRightsReport constructor.
      *
      */
-    public function __construct(
-
-    )
+    public function __construct()
     {
         /*Initialize the TsConfig Array*/
         $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['qcinforights.'] ?? [];
@@ -156,8 +155,8 @@ abstract class QcInfoRightsReport
 
         /*Initialize variable of access from TsConfig Array*/
         $this->updateAccessByTsConfig();
-        $this->filter = $filter ?? GeneralUtility::makeInstance(Filter::class);
-        $this->backendSession = $backendSession ?? GeneralUtility::makeInstance(BackendSession::class);
+        $this->filter = GeneralUtility::makeInstance(Filter::class);
+        $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
 
     }
 
@@ -166,7 +165,7 @@ abstract class QcInfoRightsReport
      *
      * @param InfoModuleController $pObj A reference to the parent (calling) object
      */
-    public function init($pObj)
+    public function init(InfoModuleController $pObj)
     {
         $this->id = (int)GeneralUtility::_GP('id');
         $this->moduleTemplate = GeneralUtility::makeInstance(ModuleTemplate::class);
@@ -187,6 +186,10 @@ abstract class QcInfoRightsReport
         $this->backendSession->store('qc_info_rights_key', $this->filter);
     }
 
+    /**
+     * @param string $templateName
+     * @return StandaloneView
+     */
     protected function createView(string $templateName): StandaloneView
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
@@ -218,6 +221,11 @@ abstract class QcInfoRightsReport
         return $this->view->render();
     }
 
+    /**
+     * Create tabs to split the report and the checkLink functions
+     * @return string
+     */
+    protected abstract function renderContent(): string;
 
     /**
      * Initializes the Module
@@ -239,12 +247,12 @@ abstract class QcInfoRightsReport
 
     /**
      * This function is used to get the pagination items
-     * @param $data
+     * @param QueryResultInterface $data
      * @param int $currentPage
      * @param int $itemsPerPage
      * @return array
      */
-    public function getPagination($data, int $currentPage, int $itemsPerPage): array
+    public function getPagination(QueryResultInterface $data, int $currentPage, int $itemsPerPage): array
     {
         // convert data to array
         $items = [];
@@ -260,10 +268,12 @@ abstract class QcInfoRightsReport
         ];
     }
 
-    /*
+
+    /**
+     * @return ModuleData
      * This Function is used to generate Demand Model from the Backend User Model Instance
-     * */
-    public function loadModuleData()
+     */
+    public function loadModuleData(): ModuleData
     {
         $moduleData = $this->getBackendUser()->getModuleData(self::KEY) ?? '';
         if ($moduleData !== '') {
@@ -292,18 +302,19 @@ abstract class QcInfoRightsReport
         return $GLOBALS['BE_USER'];
     }
 
+    /**
+     * This function is used to access to the ts config options
+     */
     protected function updateAccessByTsConfig()
     {
-        $this->showExportUsers = $this->checkShowTsConfig('showExportUsers');
-        $this->showExportGroups = $this->checkShowTsConfig('showExportGroups');
-        $this->showAdministratorUser = $this->checkShowTsConfig('showAdministratorUser');
+        $this->showExportUsers = (boolean) $this->checkShowTsConfig('showExportUsers');
+        $this->showExportGroups = (boolean) $this->checkShowTsConfig('showExportGroups');
+        $this->showAdministratorUser = (boolean) $this->checkShowTsConfig('showAdministratorUser');
     }
 
     /**
      * This function to check if get default or Custom Value
-     *
      * @param string $value
-     *
      * @return string
      */
     protected function checkShowTsConfig(string $value): string

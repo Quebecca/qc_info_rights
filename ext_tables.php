@@ -3,7 +3,6 @@ defined('TYPO3_MODE') || die();
 
 use Qc\QcInfoRights\Report\AccessRightsReport;
 use Qc\QcInfoRights\Report\GroupsReport;
-use Qc\QcInfoRights\Report\QcInfoRightsReport;
 use Qc\QcInfoRights\Report\UsersReport;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
@@ -43,10 +42,6 @@ if($modTSconfig['showTabUsers'] == 1 && $modTSconfig['showMenuUsers'] == 1){
         'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_users'
     );
 }
-
-
-
-
 
 // Initialize Context Sensitive Help (CSH)
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr(

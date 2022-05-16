@@ -19,11 +19,15 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Info\Controller\InfoModuleController;
 
 class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
 {
     protected $pageInfo;
 
+    /**
+     * @param InfoModuleController $pObj
+     */
     public function init($pObj)
     {
         parent::init($pObj);
@@ -34,6 +38,7 @@ class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
     }
 
     /**
+     * @return string
      * Create tabs to split the report and the checkLink functions
      */
     protected function renderContent(): string
@@ -57,9 +62,8 @@ class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
     }
 
     /**
-     * Displays the View of Access and Rights
-     *
      * @return StandaloneView
+     * Displays the View of Access and Rights
      */
     protected function createViewForAccessRightsTab(): StandaloneView
     {

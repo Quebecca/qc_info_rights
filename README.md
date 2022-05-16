@@ -12,9 +12,11 @@ This extension add a new items to the Info Module in the BE with those features:
 ![Main functionnality](Documentation/Images/show-members-groups.png)
 
 Main function is to show the actual BE right to non-admins:
+
 ![Main functionnality](Documentation/Images/access-and-rights.png)
 
 BE users list with filters and CSV export button:
+
 ![BE users list with CSV button](Documentation/Images/backend-users-tab.png)
 
 
@@ -78,8 +80,6 @@ L'extension ajoute des nouveaux items de menu au module Info en BE avec les fonc
 1. Affichage des droits BE des pages (comme dans le module Access) mais pour les édimestres (lecture seulement)
 2. Affichage des Utilisateurs BE (sauf si le nom débute par "_" comme "\_cli\_) avec filtre et exportation en CSV (masqué par défaut)
 3. Affichage des Groupes BE avec filtre et exportation en CSV (masqué par défaut), avec l'option qui permet d'afficher la liste des membres de groupes sélectionnés.
-
-![Main functionnality](Documentation/Images/show-members-groups-option.png)
 
 L'extension offre plusieurs options pour masquer des colonnes ou fonctionnalités.
 

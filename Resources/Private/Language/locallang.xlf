@@ -13,10 +13,10 @@
 				<source>Access and rights</source>
 			</trans-unit>
 			<trans-unit id="mod_users" resname="mod_users">
-				<source>Users (For the all site)</source>
+				<source>Users BE (For the all site)</source>
 			</trans-unit>
 			<trans-unit id="mod_groups" resname="mod_groups">
-				<source>Groups (For the all site)</source>
+				<source>Groups BE (For the all site)</source>
 			</trans-unit>
 			<trans-unit id="export_csv" resname="export_csv">
 				<source>Export CSV</source>

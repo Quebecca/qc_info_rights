@@ -16,6 +16,12 @@
 			<trans-unit id="accessRights" resname="accessRights">
 				<source>Access and rights</source>
 			</trans-unit>
+			<trans-unit id="users" resname="users">
+				<source>Users</source>
+			</trans-unit>
+			<trans-unit id="groups" resname="groups">
+				<source>Groups</source>
+			</trans-unit>
 			<trans-unit id="beUserGroupsLists" resname="beUserGroupsLists">
 				<source>Backend user groups list</source>
 			</trans-unit>
@@ -102,6 +108,12 @@
 			</trans-unit>
 			<trans-unit id="never" resname="never">
 				<source>Never</source>
+			</trans-unit>
+			<trans-unit id="show" resname="show">
+				<source>(show)</source>
+			</trans-unit>
+			<trans-unit id="hide" resname="hide">
+				<source>(hide)</source>
 			</trans-unit>
 		</body>
 	</file>

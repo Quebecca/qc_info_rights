@@ -21,50 +21,52 @@ if($GLOBALS['BE_USER'] === null) {
 }
 
 //Render user TsConfig
-$userTS = $GLOBALS['BE_USER']->getTSConfig()['mod.']['qcinforights.'];
+$userTS = $GLOBALS['BE_USER']!= null ? $GLOBALS['BE_USER']->getTSConfig()['mod.']['qcinforights.'] : null;
 
 //Rendere Page TsConfig by default get first page
 $modTSconfig = BackendUtility::getPagesTSconfig(1)['mod.']['qcinforights.'];
 
-//Checking about access
-$showMenuAccess =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuAccess');
-$showMenuGroups =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuGroups');
-$showMenuUsers  =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuUsers');
+if(is_array($userTS) && is_array($modTSconfig)){
+    //Checking about access
+    $showMenuAccess =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuAccess');
+    $showMenuGroups =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuGroups');
+    $showMenuUsers =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuUsers');
 
+    //@deprecated will removed in the next update v1.3.0
+    $showTabAccess =   (int)checkShowTsConfig($userTS,$modTSconfig,'showTabAccess');
+    $showTabGroups =  (int)checkShowTsConfig($userTS,$modTSconfig,'showTabGroups');
+    $showTabUsers =  (int)checkShowTsConfig($userTS,$modTSconfig,'showTabUsers');
 
-//@deprecated will removed in the next update v1.3.0
-$showTabAccess =   (int)checkShowTsConfig($userTS,$modTSconfig,'showTabAccess');
-$showTabGroups =   (int)checkShowTsConfig($userTS,$modTSconfig,'showTabGroups');
-$showTabUsers  =    (int)checkShowTsConfig($userTS,$modTSconfig,'showTabUsers');
+    if($showMenuAccess || $showTabAccess) {
+        // Extend Module INFO with new Element for access and rights tab
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+            'web_info',
+            AccessRightsReport::class,
+            '',
+            'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_qcInfoRight'
+        );
+    }
 
-if($showMenuAccess || $showTabAccess) {
-    // Extend Module INFO with new Element for access and rights tab
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-        'web_info',
-        AccessRightsReport::class,
-        '',
-        'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_qcInfoRight'
-    );
-}
+    // Extend Module INFO for Groups tab
+    if($showTabGroups || $showMenuGroups) {
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+            'web_info',
+            GroupsReport::class,
+            '',
+            'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_groups'
+        );
+    }
 
-// Extend Module INFO for Groups tab
-if($showTabGroups || $showMenuGroups) {
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-        'web_info',
-        GroupsReport::class,
-        '',
-        'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_groups'
-    );
-}
+    // Extend Module INFO For Users tab
+    if($showTabUsers || $showMenuUsers){
+        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
+            'web_info',
+            UsersReport::class,
+            '',
+            'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_users'
+        );
+    }
 
-// Extend Module INFO For Users tab
-if($showTabUsers || $showMenuUsers){
-    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
-        'web_info',
-        UsersReport::class,
-        '',
-        'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:mod_users'
-    );
 }
 
 // Initialize Context Sensitive Help (CSH)

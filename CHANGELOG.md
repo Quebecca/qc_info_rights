@@ -1,4 +1,8 @@
 # Info Rights
+## Change log v1.2.3
+### Bug Fix
+
+- 2022-05-18 [BUGFIX] Solve minor issue to verify active session backend
 ## Change log v1.2.2
 ### Bug Fix
 

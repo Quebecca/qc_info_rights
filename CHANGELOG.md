@@ -1,4 +1,8 @@
 # Info Rights
+## Change log v1.2.2
+### Bug Fix
+
+- 2022-05-18 [BUGFIX] Solve minor issue 
 ## Change log v1.2.1
 ### Bug Fix
 
@@ -6,6 +10,7 @@
 ### Breaking
 
 - 2022-05-16 [!!!][TASK]  Replace TsConfig showTabAccess,showTabUsers,showTabGroups with the new showMenuAccess,showMenuUsers, and showMenuGroups. The old TSconfig keyes will be removed in next update v 1.3.0
+
 
 ## Change log  v1.2.0
 - 2022-05-16 [Feature] We replace the 2 tabs (user list and group list) with menu items.    

@@ -11,14 +11,14 @@
  ***************************************************************/
 
 $EM_CONF[$_EXTKEY] = [
-    'title' => 'qc_info_rights',
+    'title' => 'Qc info right',
     'description' => 'Gives editors a view of BE users and group rights like the Access module but in read-only. Also provides BE users and BE User Groups list with CSV export.',
     'category' => 'module',
     'author' => 'Quebec.ca/',
     'author_email' => '',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
-    'version' => '1.2.0',
+    'version' => '1.2.1',
     'autoload' => [
         'psr-4' => [
             'Qc\QcInfoRights\\' => 'Classes',

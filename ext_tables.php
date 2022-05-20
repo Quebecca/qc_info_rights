@@ -6,6 +6,28 @@ use Qc\QcInfoRights\Report\GroupsReport;
 use Qc\QcInfoRights\Report\UsersReport;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 
+
+if(!function_exists("checkShowTsConfig")){
+    /**
+     * PHP function to check and validate the access&right for each mo
+     *
+     * @param array|null $userTS
+     * @param array |null     $modTSconfig
+     * @param string |null    $value
+     *
+     * @return string
+     */
+    function checkShowTsConfig(array $userTS = NULL, array $modTSconfig = NULL, string $value = NULL): string
+    {
+        if (is_array($userTS) && array_key_exists($value, $userTS)) {
+            return $userTS[$value];
+        } else if (is_array($modTSconfig) && array_key_exists($value, $modTSconfig)) {
+            return $modTSconfig[$value];
+        }
+        return '';
+    }
+}
+
 call_user_func(static function() {
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addLLrefForTCAdescr('tx_qcinforights_domain_model_qcinforights', 'EXT:qc_info_rights/Resources/Private/Language/locallang_csh_tx_qcinforights_domain_model_qcinforights.xlf');
     \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::allowTableOnStandardPages('tx_qcinforights_domain_model_qcinforights');
@@ -26,7 +48,7 @@ $userTS = $GLOBALS['BE_USER']!= null ? $GLOBALS['BE_USER']->getTSConfig()['mod.'
 //Rendere Page TsConfig by default get first page
 $modTSconfig = BackendUtility::getPagesTSconfig(1)['mod.']['qcinforights.'];
 
-if(is_array($userTS) && is_array($modTSconfig)){
+if(is_array($userTS) || is_array($modTSconfig)){
     //Checking about access
     $showMenuAccess =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuAccess');
     $showMenuGroups =  (int)checkShowTsConfig($userTS,$modTSconfig,'showMenuGroups');
@@ -36,7 +58,7 @@ if(is_array($userTS) && is_array($modTSconfig)){
     $showTabAccess =   (int)checkShowTsConfig($userTS,$modTSconfig,'showTabAccess');
     $showTabGroups =  (int)checkShowTsConfig($userTS,$modTSconfig,'showTabGroups');
     $showTabUsers =  (int)checkShowTsConfig($userTS,$modTSconfig,'showTabUsers');
-
+    
     if($showMenuAccess || $showTabAccess) {
         // Extend Module INFO with new Element for access and rights tab
         \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::insertModuleFunction(
@@ -74,21 +96,3 @@ if(is_array($userTS) && is_array($modTSconfig)){
     'qcinforights',
     'EXT:qc_info_rights/Resources/Private/Language/Module/locallang_csh.xlf'
 );
-
-/**
- * PHP function to check and validate the access&right for each mo
- * @param array  $userTS
- * @param array  $modTSconfig
- * @param string $value
- *
- * @return string
- */
-function checkShowTsConfig(array $userTS, array $modTSconfig, string $value): string
-{
-    if (is_array($userTS) && array_key_exists($value, $userTS)) {
-        return $userTS[$value];
-    } else if (is_array($modTSconfig) && array_key_exists($value, $modTSconfig)) {
-        return $modTSconfig[$value];
-    }
-    return '';
-}

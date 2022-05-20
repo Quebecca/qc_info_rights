@@ -2,6 +2,10 @@
 ## Change log v1.2.3
 ### Bug Fix
 
+- 2022-05-20 [BUGFIX] Solve minor issue of redeclare function checking Ts config since are declared into cache file of ext_table
+## Change log v1.2.3
+### Bug Fix
+
 - 2022-05-18 [BUGFIX] Solve minor issue to verify active session backend
 ## Change log v1.2.2
 ### Bug Fix

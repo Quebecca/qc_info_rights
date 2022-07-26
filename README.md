@@ -74,7 +74,7 @@ Default values:
 
 1. Quotes (basic.quote): " (quotation mark)
 2. Delimiter (basic.delimiter): , (comma)
-
+```
 -----------
 [Version française]
 ## Documentation Info Droits

@@ -6,7 +6,6 @@ use Qc\QcInfoRights\Report\AccessRightsReport;
 use Qc\QcInfoRights\Report\GroupsReport;
 use Qc\QcInfoRights\Report\UsersReport;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Utility\DebugUtility;
 
 /**
  * Class QcInfoModuleController

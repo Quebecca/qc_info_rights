@@ -1,4 +1,8 @@
 # Info Rights
+## Change log v1.2.5
+### Bug Fix
+- 2022-08-05 [BUGFIX]  Solve authentification session problem by extending infoModuleController
+
 ## Change log v1.2.3
 ### Bug Fix
 

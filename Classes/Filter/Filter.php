@@ -187,13 +187,13 @@ class Filter implements Arrayable
     public static function getInstanceFromArray(array $values)
     {
         $filter =  new Filter();
-        $filter->setUsername(self::KEY_USERNAME);
-        $filter->setMail(self::KEY_MAIL);
-        $filter->setHideInactiveUsers(intval(self::KEY_HIDEINACTIVEUSERES));
-        $filter->setCurrentUsersTabPage(intval(self::KEY_CURRENTUSERSTABPAGE));
-        $filter->setCurrentGroupsTabPage(intval(self::KEY_CURRENTGROUPSTABPAGE));
-        $filter->setOrderArray([self::KEY_ORDERARRAY]);
-        $filter->setRejectUserStartWith(self::KEY_REJECTUSERSTARTWITH);
+        $filter->setUsername($values[self::KEY_USERNAME]);
+        $filter->setMail($values[self::KEY_MAIL]);
+        $filter->setHideInactiveUsers(intval($values[self::KEY_HIDEINACTIVEUSERES]));
+        $filter->setCurrentUsersTabPage(intval($values[self::KEY_CURRENTUSERSTABPAGE]));
+        $filter->setCurrentGroupsTabPage(intval($values[self::KEY_CURRENTGROUPSTABPAGE]));
+        $filter->setOrderArray($values[self::KEY_ORDERARRAY]);
+        $filter->setRejectUserStartWith($values[self::KEY_REJECTUSERSTARTWITH]);
         return $filter;
     }
 }

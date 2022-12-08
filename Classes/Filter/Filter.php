@@ -12,8 +12,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 namespace Qc\QcInfoRights\Filter;
-class Filter
+use Qc\QcInfoRights\Util\Arrayable;
+
+class Filter implements Arrayable
 {
+    protected const KEY_USERNAME = 'username';
+    protected const KEY_MAIL = 'mail';
+    protected const KEY_HIDEINACTIVEUSERES = 'hideInactiveUsers';
+    protected const KEY_CURRENTUSERSTABPAGE = 'currentUsersTabPage';
+    protected const KEY_ORDERARRAY = 'orderArray';
+    protected const KEY_REJECTUSERSTARTWITH = 'rejectUserStartWith';
+    protected const KEY_CURRENTGROUPSTABPAGE = 'currentGroupsTabPage';
+
     /**
      * @var string
      */
@@ -161,4 +171,29 @@ class Filter
         $this->hideInactiveUsers = $hideInactiveUsers;
     }
 
+    public function toArray()
+    {
+        return [
+            self::KEY_USERNAME => $this->getUsername(),
+            self::KEY_MAIL => $this->getMail(),
+            self::KEY_HIDEINACTIVEUSERES => $this->getHideInactiveUsers(),
+            self::KEY_CURRENTUSERSTABPAGE => $this->getCurrentUsersTabPage(),
+            self::KEY_ORDERARRAY => $this->getOrderArray(),
+            self::KEY_REJECTUSERSTARTWITH => $this->getRejectUserStartWith(),
+            self::KEY_CURRENTGROUPSTABPAGE => $this->getCurrentGroupsTabPage()
+        ];
+    }
+
+    public static function getInstanceFromArray(array $values)
+    {
+        $filter =  new Filter();
+        $filter->setUsername(self::KEY_USERNAME);
+        $filter->setMail(self::KEY_MAIL);
+        $filter->setHideInactiveUsers(intval(self::KEY_HIDEINACTIVEUSERES));
+        $filter->setCurrentUsersTabPage(intval(self::KEY_CURRENTUSERSTABPAGE));
+        $filter->setCurrentGroupsTabPage(intval(self::KEY_CURRENTGROUPSTABPAGE));
+        $filter->setOrderArray([self::KEY_ORDERARRAY]);
+        $filter->setRejectUserStartWith(self::KEY_REJECTUSERSTARTWITH);
+        return $filter;
+    }
 }

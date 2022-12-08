@@ -7,6 +7,7 @@ use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
 use TYPO3\CMS\Extbase\Persistence\Generic\QueryResult;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
@@ -48,12 +49,17 @@ class BackendUserRepository extends  Repository{
     }
 
     /**
-     * Find Backend Users matching to Demand object properties
      *
      * @param Demand $demand
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\QueryResult
+     * @return QueryResult
      */
-    public function findDemanded(Demand $demand)
+    /**
+     * Find Backend Users matching to Demand object properties
+     * @param Demand $demand
+     * @return QueryResult
+     * @throws InvalidQueryException
+     */
+    public function findDemanded(Demand $demand): QueryResult
     {
         $constraints = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');

@@ -257,7 +257,7 @@ abstract class QcInfoRightsReport
         // convert data to array
         $items = [];
         foreach ($data as $row) {
-            array_push($items, $row);
+            $items[] = $row;
         }
         $paginator = GeneralUtility::makeInstance(ArrayPaginator::class, $items, $currentPage, $itemsPerPage);
         $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);

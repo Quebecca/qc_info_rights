@@ -21,6 +21,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -142,6 +144,16 @@ abstract class QcInfoRightsReport
     protected BackendSession $backendSession;
 
     /**
+     * @var Icon
+     */
+    protected $icon;
+
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
      * QcInfoRightsReport constructor.
      *
      */
@@ -158,6 +170,8 @@ abstract class QcInfoRightsReport
         $this->filter = GeneralUtility::makeInstance(Filter::class);
         $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
 
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
     }
 
     /**
@@ -197,7 +211,10 @@ abstract class QcInfoRightsReport
         $view->setPartialRootPaths(['EXT:qc_info_rights/Resources/Private/Partials']);
         $view->setTemplateRootPaths(['EXT:qc_info_rights/Resources/Private/Templates/Backend']);
         $view->setTemplate($templateName);
-        $view->assign('pageId', $this->id);
+        $view->assignMultiple([
+            'pageId' => $this->id,
+            'icon' => $this->icon]
+        );
         return $view;
     }
 

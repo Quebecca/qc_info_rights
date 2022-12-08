@@ -37,3 +37,10 @@
     text-decoration: underline;
 }
 
+#hide-inactif {
+    margin-top : 30px;
+}
+
+#filter-button {
+    margin-top : 20px;
+}

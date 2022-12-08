@@ -31,6 +31,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
+use TYPO3\CMS\Core\Information\Typo3Version;
+
 /**
  * Module 'Qc info rights' as sub module of Web -> Info
  *
@@ -154,6 +156,11 @@ abstract class QcInfoRightsReport
     protected $iconFactory;
 
     /**
+     * @var int
+     */
+    protected int $typoVersion;
+
+    /**
      * QcInfoRightsReport constructor.
      *
      */
@@ -169,7 +176,7 @@ abstract class QcInfoRightsReport
         $this->updateAccessByTsConfig();
         $this->filter = GeneralUtility::makeInstance(Filter::class);
         $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
-
+        $this->typoVersion = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
     }
@@ -211,10 +218,14 @@ abstract class QcInfoRightsReport
         $view->setPartialRootPaths(['EXT:qc_info_rights/Resources/Private/Partials']);
         $view->setTemplateRootPaths(['EXT:qc_info_rights/Resources/Private/Templates/Backend']);
         $view->setTemplate($templateName);
+        $hideInactifId = $this->typoVersion == 11 ? 'hide-inactif' : '';
+        $filterButtonId = $this->typoVersion == 11 ? 'filter-button' : '';
         $view->assignMultiple([
             'pageId' => $this->id,
-            'icon' => $this->icon]
-        );
+            'icon' => $this->icon,
+            'hideInactifId' => $hideInactifId,
+            'filterButtonId' => $filterButtonId,
+        ]);
         return $view;
     }
 

@@ -36,7 +36,9 @@
 .showUsersLink {
     text-decoration: underline;
 }
-
+#filter-block {
+    margin-top : -9px;
+}
 #hide-inactif {
     margin-top : 30px;
 }

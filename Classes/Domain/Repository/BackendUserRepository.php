@@ -1,6 +1,15 @@
 <?php
 namespace Qc\QcInfoRights\Domain\Repository;
-
+/***
+ *
+ * This file is part of Qc Info rights project.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
 use Qc\QcInfoRights\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;

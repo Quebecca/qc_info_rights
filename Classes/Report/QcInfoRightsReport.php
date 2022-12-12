@@ -217,15 +217,10 @@ abstract class QcInfoRightsReport
         $view->setTemplateRootPaths(['EXT:qc_info_rights/Resources/Private/Templates/Backend']);
         $view->setTemplate($templateName);
 
-        // FE ids for v10 and v11 compatibility
-        $filterBlockId = $this->typoVersion == 11 ? '' : 'filter-block';
-        $exportBlockId = $this->typoVersion == 11 ? '' : 'export-block';
-
         $view->assignMultiple([
             'pageId' => $this->id,
             'icon' => $this->icon,
-            'filterBlockId' => $filterBlockId,
-            'exportBlockId' => $exportBlockId
+            'typoVersion' =>  $this->typoVersion
         ]);
         return $view;
     }

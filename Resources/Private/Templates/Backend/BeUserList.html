@@ -5,8 +5,14 @@
     <h2 class="mb-10"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserLists.header" /></h2>
 </f:section>
 <f:section name="Main">
-
-    <f:render partial="BeUserList/Filter" arguments="{_all}"/>
+    <f:if condition="{typoVersion} == 10">
+        <f:then>
+            <f:render partial="BeUserList/FilterV10" arguments="{_all}"/>
+        </f:then>
+        <f:else>
+            <f:render partial="BeUserList/Filter" arguments="{_all}"/>
+        </f:else>
+    </f:if>
 
     <f:if condition="{showExportUsers}">
        <f:variable name="params" value="{f:if(condition: args, then:args, else:'{0:\'\'}')}"/>

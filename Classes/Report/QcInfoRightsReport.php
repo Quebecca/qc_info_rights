@@ -218,16 +218,14 @@ abstract class QcInfoRightsReport
         $view->setTemplate($templateName);
 
         // FE ids for v10 and v11 compatibility
-        $hideInactifId = $this->typoVersion == 11 ? 'hide-inactif' : '';
-        $filterButtonId = $this->typoVersion == 11 ? 'filter-button' : '';
         $filterBlockId = $this->typoVersion == 11 ? '' : 'filter-block';
+        $exportBlockId = $this->typoVersion == 11 ? '' : 'export-block';
 
         $view->assignMultiple([
             'pageId' => $this->id,
             'icon' => $this->icon,
-            'hideInactifId' => $hideInactifId,
-            'filterButtonId' => $filterButtonId,
             'filterBlockId' => $filterBlockId,
+            'exportBlockId' => $exportBlockId
         ]);
         return $view;
     }

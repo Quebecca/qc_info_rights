@@ -5,8 +5,8 @@
   <h2 class="mb-10"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserGroupsLists.header" /></h2>
 </f:section>
 <f:section name="Main">
-    <div class="row">
-        <div class="col-2 form-group">
+    <div class="row row-cols-auto">
+        <div class="col form-group">
                 <label for="selectColumn"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:selectMembersInfo" /></label>
                 <select id="selectColumn" onchange="submitSelectedColumn()" class="form-select form-control">
                     <option value="username"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName" /></option>
@@ -15,7 +15,7 @@
                 </select>
         </div>
         <f:if condition="{showExportGroups}">
-            <div class="col-10" id="export-block">
+            <div class="col-12" id="{exportBlockId}">
                     <br>
                     <div class="typo3-csvLink">
                         <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_group_list')}">

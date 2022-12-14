@@ -1,16 +1,14 @@
 <?php
-/*
- * This file is part of the TYPO3 CMS project.
+/***
  *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of Qc Info rights project.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * The TYPO3 project - inspiring people to share!
-*/
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
 
 namespace Qc\QcInfoRights\Report;
 
@@ -21,6 +19,8 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
+use TYPO3\CMS\Core\Information\Typo3Version;
+
 /**
  * Module 'Qc info rights' as sub module of Web -> Info
  *
@@ -142,6 +144,21 @@ abstract class QcInfoRightsReport
     protected BackendSession $backendSession;
 
     /**
+     * @var Icon
+     */
+    protected $icon;
+
+    /**
+     * @var IconFactory
+     */
+    protected $iconFactory;
+
+    /**
+     * @var int
+     */
+    protected int $typoVersion;
+
+    /**
      * QcInfoRightsReport constructor.
      *
      */
@@ -157,7 +174,9 @@ abstract class QcInfoRightsReport
         $this->updateAccessByTsConfig();
         $this->filter = GeneralUtility::makeInstance(Filter::class);
         $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
-
+        $this->typoVersion = GeneralUtility::makeInstance(Typo3Version::class)->getMajorVersion();
+        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->icon = $this->iconFactory->getIcon('actions-document-export-csv', Icon::SIZE_SMALL);
     }
 
     /**
@@ -197,7 +216,12 @@ abstract class QcInfoRightsReport
         $view->setPartialRootPaths(['EXT:qc_info_rights/Resources/Private/Partials']);
         $view->setTemplateRootPaths(['EXT:qc_info_rights/Resources/Private/Templates/Backend']);
         $view->setTemplate($templateName);
-        $view->assign('pageId', $this->id);
+
+        $view->assignMultiple([
+            'pageId' => $this->id,
+            'icon' => $this->icon,
+            'typoVersion' =>  $this->typoVersion
+        ]);
         return $view;
     }
 
@@ -257,7 +281,7 @@ abstract class QcInfoRightsReport
         // convert data to array
         $items = [];
         foreach ($data as $row) {
-            array_push($items, $row);
+            $items[] = $row;
         }
         $paginator = GeneralUtility::makeInstance(ArrayPaginator::class, $items, $currentPage, $itemsPerPage);
         $pagination = GeneralUtility::makeInstance(SimplePagination::class, $paginator);

@@ -1,19 +1,27 @@
 <?php
-/*
- * This file is part of the TYPO3 CMS project.
+/***
  *
- * It is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License, either version 2
- * of the License, or any later version.
+ * This file is part of Qc Info rights project.
  *
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- * The TYPO3 project - inspiring people to share!
- */
+ *  (c) 2022 <techno@quebec.ca>
+ *
+ ***/
 namespace Qc\QcInfoRights\Filter;
-class Filter
+use Qc\QcInfoRights\Util\Arrayable;
+
+class Filter implements Arrayable
 {
+    protected const KEY_USERNAME = 'username';
+    protected const KEY_MAIL = 'mail';
+    protected const KEY_HIDEINACTIVEUSERES = 'hideInactiveUsers';
+    protected const KEY_CURRENTUSERSTABPAGE = 'currentUsersTabPage';
+    protected const KEY_ORDERARRAY = 'orderArray';
+    protected const KEY_REJECTUSERSTARTWITH = 'rejectUserStartWith';
+    protected const KEY_CURRENTGROUPSTABPAGE = 'currentGroupsTabPage';
+
     /**
      * @var string
      */
@@ -161,4 +169,29 @@ class Filter
         $this->hideInactiveUsers = $hideInactiveUsers;
     }
 
+    public function toArray()
+    {
+        return [
+            self::KEY_USERNAME => $this->getUsername(),
+            self::KEY_MAIL => $this->getMail(),
+            self::KEY_HIDEINACTIVEUSERES => $this->getHideInactiveUsers(),
+            self::KEY_CURRENTUSERSTABPAGE => $this->getCurrentUsersTabPage(),
+            self::KEY_ORDERARRAY => $this->getOrderArray(),
+            self::KEY_REJECTUSERSTARTWITH => $this->getRejectUserStartWith(),
+            self::KEY_CURRENTGROUPSTABPAGE => $this->getCurrentGroupsTabPage()
+        ];
+    }
+
+    public static function getInstanceFromArray(array $values)
+    {
+        $filter =  new Filter();
+        $filter->setUsername($values[self::KEY_USERNAME]);
+        $filter->setMail($values[self::KEY_MAIL]);
+        $filter->setHideInactiveUsers(intval($values[self::KEY_HIDEINACTIVEUSERES]));
+        $filter->setCurrentUsersTabPage(intval($values[self::KEY_CURRENTUSERSTABPAGE]));
+        $filter->setCurrentGroupsTabPage(intval($values[self::KEY_CURRENTGROUPSTABPAGE]));
+        $filter->setOrderArray($values[self::KEY_ORDERARRAY]);
+        $filter->setRejectUserStartWith($values[self::KEY_REJECTUSERSTARTWITH]);
+        return $filter;
+    }
 }

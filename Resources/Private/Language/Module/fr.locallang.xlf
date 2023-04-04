@@ -86,6 +86,10 @@
 				<source>Last Login</source>
 				<target>Dernière connexion</target>
 			</trans-unit>
+			<trans-unit id="csvHeader.crdate">
+				<source>Creation date</source>
+				<target>Date de création</target>
+			</trans-unit>
 			<trans-unit id="members" resname="members">
 				<source>Members</source>
 				<target>Membres</target>

@@ -207,14 +207,16 @@ class BackendController
         foreach ($beUser as $item) {
             //Get TimeStamp of last Login and convert to custom Format
             $LastLogin = $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'never');
+            $format = $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'dateFormat');
+
             if (!is_null($item->getLastLoginDateAndTime())) {
                 $timeStamp = $item->getLastLoginDateAndTime()->getTimestamp();
-                $LastLogin = date("Y/d/m H:i", $timeStamp);
+                $LastLogin = date($format, $timeStamp);
             }
+
             $crdate = BackendUtility::getRecord('be_users', $item->getUid(), 'crdate', 'true')['crdate'];
-            $formattedCrDate = date(
-                $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] .' ' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
-                intval($crdate));
+            $formattedCrDate = date($format, intval($crdate));
+
             //Fill Array of User by Data
             $arrayData = [];
             $arrayData[] = $item->getUid();

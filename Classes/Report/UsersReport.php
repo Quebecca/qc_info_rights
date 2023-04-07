@@ -197,8 +197,6 @@ class UsersReport extends QcInfoRightsReport
         $view->assignMultiple([
             'prefix' => 'beUserList',
             'backendUsers' => $pagination['paginatedData'],
-            'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
-            'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'showExportUsers' => $this->showExportUsers,
             'args' => $filterArgs,
             'tabHeader' => $tabHeaders,

@@ -1,5 +1,9 @@
 # Info Rights
 
+## Change log v1.2.7
+### Feature
+- 2023-04-07 [FEATURE]  Add and export "Crdate" column from the users list of qc_info_rights backend module
+
 ## Change log v1.2.6
 ### Bug Fix
 - 2022-12-09 [BUGFIX]  Solve session handling bug for typo3 v11

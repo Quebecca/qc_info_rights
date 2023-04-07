@@ -76,6 +76,9 @@
 			<trans-unit id="csvHeader.lastLogin" resname="csvHeader.lastLogin">
 				<source>Last login</source>
 			</trans-unit>
+			<trans-unit id="csvHeader.crdate">
+				<source>Creation date</source>
+			</trans-unit>
 			<trans-unit id="members" resname="members">
 				<source>Members</source>
 			</trans-unit>
@@ -114,6 +117,9 @@
 			</trans-unit>
 			<trans-unit id="hide" resname="hide">
 				<source>(hide)</source>
+			</trans-unit>
+			<trans-unit id="dateFormat" resname="hide">
+				<source>d-m-y H:i</source>
 			</trans-unit>
 		</body>
 	</file>

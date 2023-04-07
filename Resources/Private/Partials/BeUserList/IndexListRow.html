@@ -25,7 +25,7 @@
         <td>
             <f:if condition="{backendUser.lastLoginDateAndTime}">
                 <f:then>
-                    <f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>
+                    <f:format.date format="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:dateFormat')}">{backendUser.lastLoginDateAndTime}</f:format.date>
                 </f:then>
                 <f:else>
                     <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:never" />
@@ -42,6 +42,7 @@
                 </f:else>
             </f:if>
         </td>
+        <td>  <f:format.date format="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:dateFormat')}">{backendUser.crdate}</f:format.date> </td>
     </tr>
 </f:section>
 </html>

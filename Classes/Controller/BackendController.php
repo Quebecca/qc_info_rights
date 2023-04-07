@@ -153,7 +153,16 @@ class BackendController
         );
 
         //Implement Array Contains Key of the Lang File To regenerate an Array For CSV Header
-        $LangArrayHeader = ['csvHeader.uid', 'csvHeader.userName', 'csvHeader.fullName', 'csvHeader.mail', 'csvHeader.lastLogin', 'csvHeader.isHidden', 'csvHeader.isAdmin'];
+        $LangArrayHeader = [
+            'csvHeader.uid',
+            'csvHeader.userName',
+            'csvHeader.fullName',
+            'csvHeader.mail',
+            'csvHeader.lastLogin',
+            'csvHeader.isHidden',
+            'csvHeader.isAdmin',
+            'csvHeader.crdate'
+        ];
 
         //CSV HEADERS Using Translate File and respecting UTF-8 Charset for Special Char
         $headerCsv = $this->generateCsvHeaderArray($LangArrayHeader);
@@ -198,10 +207,16 @@ class BackendController
         foreach ($beUser as $item) {
             //Get TimeStamp of last Login and convert to custom Format
             $LastLogin = $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'never');
+            $format = $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'dateFormat');
+
             if (!is_null($item->getLastLoginDateAndTime())) {
                 $timeStamp = $item->getLastLoginDateAndTime()->getTimestamp();
-                $LastLogin = date("Y/d/m H:i", $timeStamp);
+                $LastLogin = date($format, $timeStamp);
             }
+
+            $crdate = BackendUtility::getRecord('be_users', $item->getUid(), 'crdate', 'true')['crdate'];
+            $formattedCrDate = date($format, intval($crdate));
+
             //Fill Array of User by Data
             $arrayData = [];
             $arrayData[] = $item->getUid();
@@ -211,6 +226,7 @@ class BackendController
             $arrayData[] = $LastLogin;
             $arrayData[] = $item->getIsDisabled() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
             $arrayData[] = $item->getIsAdministrator() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
+            $arrayData[] = $formattedCrDate;
 
 
             //Write Inside Our CSV File

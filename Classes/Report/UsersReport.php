@@ -189,11 +189,14 @@ class UsersReport extends QcInfoRightsReport
         $tabHeaders = $this->getVariablesForTableHeader($sortActions);
         $pagination = $this->getPagination($this->backendUserRepository->findDemanded($demand), $userPaginationCurrentPage,$this->usersPerPage );// we assign the groupsCurrentPaginationPage and usersCurrentPaginationPage to keep the pagination for each tab separated
 
+        foreach ($pagination['paginatedData'] as $item){
+            $crdate = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord	('be_users', $item->getUid(), 'crdate', 'true')['crdate'];
+            $item->setCrdate($crdate);
+        }
+
         $view->assignMultiple([
             'prefix' => 'beUserList',
             'backendUsers' => $pagination['paginatedData'],
-            'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
-            'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'showExportUsers' => $this->showExportUsers,
             'args' => $filterArgs,
             'tabHeader' => $tabHeaders,

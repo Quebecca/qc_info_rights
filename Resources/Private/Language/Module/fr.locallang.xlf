@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" target-language="fr_CA" datatype="plaintext" original="messages" date="2021-09-16UTC15:45:380">
+	<file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2021-09-16UTC15:45:380">
 		<header>
 			<authorName>Taieb Rekik</authorName>
 		</header>
@@ -86,6 +86,10 @@
 				<source>Last Login</source>
 				<target>Dernière connexion</target>
 			</trans-unit>
+			<trans-unit id="csvHeader.crdate">
+				<source>Creation date</source>
+				<target>Date de création</target>
+			</trans-unit>
 			<trans-unit id="members" resname="members">
 				<source>Members</source>
 				<target>Membres</target>
@@ -137,6 +141,10 @@
 			<trans-unit id="hide" resname="hide">
 				<source>(hide)</source>
 				<target>(masquer)</target>
+			</trans-unit>
+			<trans-unit id="dateFormat" resname="hide">
+				<source>d-m-y H:i</source>
+				<target>d-m-y H:i</target>
 			</trans-unit>
 		</body>
 	</file>

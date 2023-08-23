@@ -23,7 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  */
 class QcInfoModuleController extends \TYPO3\CMS\Info\Controller\InfoModuleController
 {
-    const QC_PREFIX = "Qc\QcInfoRights\Report";
+    final public const QC_PREFIX = "Qc\QcInfoRights\Report";
 
     /**
      * Generate the ModuleMenu
@@ -65,7 +65,7 @@ class QcInfoModuleController extends \TYPO3\CMS\Info\Controller\InfoModuleContro
      */
     protected function setQcInfoRightsMenu(&$menuItems){
         //Render user TsConfig
-        $userTS = $GLOBALS['BE_USER']!= null ? $GLOBALS['BE_USER']->getTSConfig()['mod.']['qcinforights.'] : null;
+        $userTS = $GLOBALS['BE_USER']!= null ? $GLOBALS['BE_USER']->getTSConfig()['mod.']['qcinforights.'] ?? null : null;
 
         //Rendere Page TsConfig by default get first page
         $modTSconfig = BackendUtility::getPagesTSconfig(1)['mod.']['qcinforights.'];

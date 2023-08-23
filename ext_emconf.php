@@ -18,7 +18,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_email' => '',
     'state' => 'beta',
     'clearCacheOnLoad' => 0,
-    'version' => '1.2.7',
+    'version' => '1.3',
     'autoload' => [
         'psr-4' => [
             'Qc\QcInfoRights\\' => 'Classes',
@@ -26,6 +26,7 @@ $EM_CONF[$_EXTKEY] = [
     ],
     'constraints' => [
         'depends' => [
+            'php' => '8.2',
             'typo3' => '10.4.0-11.5.99',
         ],
         'conflicts' => [],

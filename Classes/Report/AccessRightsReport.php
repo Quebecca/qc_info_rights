@@ -139,15 +139,14 @@ class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
      * Generate configuration for field selection
      *
      * @param int $pageId current page id
-     * @param ServerRequestInterface $request
      */
     protected function fillFieldConfiguration(int $pageId, ServerRequestInterface $request)
     {
         $modTSconfig = BackendUtility::getPagesTSconfig($pageId)['mod.']['web_info.']['fieldDefinitions.'] ?? [];
         foreach ($modTSconfig as $key => $item) {
-            $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), $item['fields']);
+            $fieldList = str_replace('###ALL_TABLES###', $this->cleanTableNames(), (string) $item['fields']);
             $fields = GeneralUtility::trimExplode(',', $fieldList, true);
-            $key = trim($key, '.');
+            $key = trim((string) $key, '.');
             $this->fieldConfiguration[$key] = [
                 'label' => $item['label'] ? $this->getLanguageService()->sL($item['label']) : $key,
                 'fields' => $fields
@@ -177,7 +176,8 @@ class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
         // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
         if (is_array($tableNames)) {
             foreach ($tableNames as $k => $v) {
-                if (!$GLOBALS['TCA'][$k]['ctrl']['hideTable'] && $this->getBackendUser()->check('tables_select', $k)) {
+                if (!($GLOBALS['TCA'][$k]['ctrl']['hideTable'] ?? false)
+                    && $this->getBackendUser()->check('tables_select', $k)) {
                     $allowedTableNames['table_' . $k] = $k;
                 }
             }
@@ -188,13 +188,13 @@ class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
     /**
      * This function to check if get default or Custom Value
      *
-     * @param string $value
      *
      * @return string
      */
     protected function checkShowColumnTsConfig(string $value): string
     {
-        if (is_array($this->userTS['qcinforights.']) && array_key_exists($value, $this->userTS['qcinforights.']['hideAccessRights.'])) {
+        if (is_array($this->userTS['qcinforights.'] ?? null)
+            && array_key_exists($value, $this->userTS['qcinforights.']['hideAccessRights.'] ?? [])) {
             return $this->userTS['qcinforights.']['hideAccessRights.'][$value];
         } else if (is_array($this->modTSconfig['properties']) && array_key_exists($value, $this->modTSconfig['properties']['hideAccessRights.'])) {
             return $this->modTSconfig['properties']['hideAccessRights.'][$value];

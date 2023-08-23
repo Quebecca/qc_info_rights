@@ -6,6 +6,4 @@ defined('TYPO3') or die();
     "@import 'EXT:qc_info_rights/Configuration/TsConfig/pageconfig.tsconfig'"
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Info\\Controller\\InfoModuleController'] = array(
-    'className' => 'Qc\\QcInfoRights\\Controller\\QcInfoModuleController'
-);
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Info\Controller\InfoModuleController::class] = ['className' => \Qc\QcInfoRights\Controller\QcInfoModuleController::class];

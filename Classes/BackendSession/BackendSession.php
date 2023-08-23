@@ -57,8 +57,6 @@ class BackendSession
 
     /**
      * This function is used to register keys
-     * @param string $key
-     * @param string $class
      */
     public function registerFilterKey(string $key, string $class): void
     {
@@ -70,8 +68,6 @@ class BackendSession
 
     /**
      * This function is used to verify if the class implements the interface Arrayable
-     * @param string $class
-     * @param string $interface
      * @return bool
      */
     protected function isClassImplementsInterface(string $class, string $interface): bool
@@ -93,11 +89,8 @@ class BackendSession
 
     /**
      * Store a value in the session
-     *
-     * @param string $key
-     * @param mixed $value
      */
-    public function store(string $key, $value)
+    public function store(string $key, mixed $value)
     {
 
         if (!isset($this->registeredKeys[$key])) {
@@ -115,8 +108,6 @@ class BackendSession
 
     /**
      * Delete a value from the session
-     *
-     * @param string $key
      */
     public function delete(string $key)
     {
@@ -126,7 +117,6 @@ class BackendSession
     }
 
     /**
-     * @param string $key
      * @return false|mixed|Arrayable|null
      */
     public function get(string $key)

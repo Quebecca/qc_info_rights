@@ -138,27 +138,27 @@ class UsersReport extends QcInfoRightsReport
         }
 
         // Filter
-        if($this->set['username'] != null && !empty($this->set['username'])){
+        if($this->set['username'] ?? false){
             $this->filter->setUsername($this->set['username']);
             $this->filter->setCurrentUsersTabPage(1);
         }
-        if($this->set['mail'] != null && !empty($this->set['mail'])){
+        if($this->set['mail'] ?? false){
             $this->filter->setMail($this->set['mail']);
             $this->filter->setCurrentUsersTabPage(1);
         }
-        if(!empty($this->set['hideInactif']) && (int)($this->set['hideInactif']) == 1){
+        if(($this->set['hideInactif'] ?? -1) == 1){
             $this->filter->setHideInactiveUsers(Demand::STATUS_ACTIVE);
         }
 
         // Reset from form
-        if($this->set['filterSearch'] == 1){
-            if(empty($this->set['username'])){
+        if(($this->set['filterSearch'] ?? -1) == 1){
+            if(empty($this->set['username'] ?? '')){
                 $this->filter->setUsername('');
             }
-            if(empty($this->set['mail'])){
+            if(empty($this->set['mail'] ?? '')){
                 $this->filter->setMail('');
             }
-            if(empty($this->set['hideInactif'])){
+            if(empty($this->set['hideInactif'] ?? 0)){
                 $this->filter->setHideInactiveUsers(0);
             }
             $this->filter->setCurrentUsersTabPage(1);
@@ -209,7 +209,6 @@ class UsersReport extends QcInfoRightsReport
     /**
      * This function is used to construct the backend uri
      * @param array<string,mixed> $additionalQueryParameters
-     * @param string $route
      * @return string
      * @throws RouteNotFoundException
      */
@@ -218,14 +217,14 @@ class UsersReport extends QcInfoRightsReport
         $parameters = [
             'id' => $this->id,
             'orderBy' => $this->orderBy,
-            self::prefix_filter.'_SET[username]' => $this->set['username'],
-            self::prefix_filter.'_SET[mail]' => $this->set['mail'],
-            self::prefix_filter.'_SET[hideInactif]' => $this->set['hideInactif'],
-            self::prefix_filter.'_SET[filterSearch]' => $this->set['filterSearch'],
+            self::prefix_filter.'_SET[username]' => $this->set['username'] ?? null,
+            self::prefix_filter.'_SET[mail]' => $this->set['mail'] ?? null,
+            self::prefix_filter.'_SET[hideInactif]' => $this->set['hideInactif'] ?? null,
+            self::prefix_filter.'_SET[filterSearch]' => $this->set['filterSearch'] ?? null,
         ];
 
         // if same key, additionalQueryParameters should overwrite parameters
-        $parameters = array_merge($parameters, $additionalQueryParameters);
+        $parameters = [...$parameters, ...$additionalQueryParameters];
 
         /**
          * @var UriBuilder $uriBuilder
@@ -256,15 +255,15 @@ class UsersReport extends QcInfoRightsReport
             $tableHeadData[$key]['label'] = $languageService->sL(self::prefix_be_user_lang.$key);
             if (isset($sortActions[$key])) {
                 // sorting available, add url
-                if ($this->orderBy === $key) {
-                    $tableHeadData[$key]['url'] = $sortActions[$key . '_reverse'] ?? '';
-                } else {
-                    $tableHeadData[$key]['url'] = $sortActions[$key] ?? '';
-                }
+                $tableHeadData[$key]['url'] =
+                    $this->orderBy === $key
+                    ? $sortActions[$key . '_reverse'] ?? ''
+                    : $sortActions[$key] ?? ''
+                    ;
 
                 // add icon only if this is the selected sort order
                 if ($this->orderBy === $key) {
-                    $tableHeadData[$key]['icon'] = 'status-status-sorting-asc';
+                     'status-status-sorting-asc';
                 }elseif ($this->orderBy === $key . '_reverse') {
                     $tableHeadData[$key]['icon'] = 'status-status-sorting-desc';
                 }

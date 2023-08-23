@@ -65,9 +65,6 @@ class Filter implements Arrayable
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     */
     public function setUsername(string $username): void
     {
         $this->username = $username;
@@ -81,9 +78,6 @@ class Filter implements Arrayable
         return $this->mail;
     }
 
-    /**
-     * @param string $mail
-     */
     public function setMail(string $mail): void
     {
         $this->mail = $mail;
@@ -97,9 +91,6 @@ class Filter implements Arrayable
         return $this->currentUsersTabPage;
     }
 
-    /**
-     * @param int $currentUsersTabPage
-     */
     public function setCurrentUsersTabPage(int $currentUsersTabPage): void
     {
         $this->currentUsersTabPage = $currentUsersTabPage >= 1  ? $currentUsersTabPage : 1;
@@ -113,9 +104,6 @@ class Filter implements Arrayable
         return $this->currentGroupsTabPage;
     }
 
-    /**
-     * @param int $currentGroupsTabPage
-     */
     public function setCurrentGroupsTabPage(int $currentGroupsTabPage): void
     {
         $this->currentGroupsTabPage = $currentGroupsTabPage >= 1 ? $currentGroupsTabPage : 1;
@@ -129,9 +117,6 @@ class Filter implements Arrayable
         return $this->orderArray;
     }
 
-    /**
-     * @param array $orderArray
-     */
     public function setOrderArray(array $orderArray): void
     {
         $this->orderArray = $orderArray;
@@ -145,9 +130,6 @@ class Filter implements Arrayable
         return $this->rejectUserStartWith;
     }
 
-    /**
-     * @param string $rejectUserStartWith
-     */
     public function setRejectUserStartWith(string $rejectUserStartWith): void
     {
         $this->rejectUserStartWith = $rejectUserStartWith;
@@ -161,9 +143,6 @@ class Filter implements Arrayable
         return $this->hideInactiveUsers;
     }
 
-    /**
-     * @param int $hideInactiveUsers
-     */
     public function setHideInactiveUsers(int $hideInactiveUsers): void
     {
         $this->hideInactiveUsers = $hideInactiveUsers;

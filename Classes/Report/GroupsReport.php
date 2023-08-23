@@ -135,7 +135,6 @@ class GroupsReport extends QcInfoRightsReport
     // show members
     /**
      * This Function is delete the selected excluded link
-     * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function showMembers(ServerRequestInterface $request): ResponseInterface{

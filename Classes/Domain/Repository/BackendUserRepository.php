@@ -64,7 +64,6 @@ class BackendUserRepository extends  Repository{
      */
     /**
      * Find Backend Users matching to Demand object properties
-     * @param Demand $demand
      * @return QueryResult
      * @throws InvalidQueryException
      */
@@ -158,8 +157,6 @@ class BackendUserRepository extends  Repository{
 
     /**
      * This Function is used to render the members of the selected group
-     * @param string $selectedColumn
-     * @param  int $groupUid
      * @return array
      */
     public function getGroupMembers(int $groupUid, string $selectedColumn = 'username'): array

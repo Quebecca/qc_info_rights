@@ -36,12 +36,12 @@ class BackendController
     /**
      * @var string
      */
-    const KEY = 'tx_beuser';
+    final public const KEY = 'tx_beuser';
 
     /**
      * @var string
      */
-    const MODULE_LANG_FILE = "LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:";
+    final public const MODULE_LANG_FILE = "LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:";
 
     /**
      * TSconfig of the current module
@@ -113,7 +113,7 @@ class BackendController
 
         //Initialize Repository Backend user
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\Persistence\\Generic\\PersistenceManager');
+        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
         $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $this->objectManager);
         $this->backendUserRepository->injectPersistenceManager($persistenceManager);
 
@@ -134,7 +134,6 @@ class BackendController
 
     /**
      * This Action is to export Backend user as a CSV Files
-     * @param \Psr\Http\Message\ServerRequestInterface $request
      *
      * @return \Psr\Http\Message\ResponseInterface
      */
@@ -285,7 +284,6 @@ class BackendController
     /**
      * This Function to Generate an array for Header CSV Based on Language file get as parameter and array of key of language file "LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf"
      *
-     * @param array $itemsArray
      *
      * @return array
      */
@@ -330,7 +328,6 @@ class BackendController
     /**
      * This function to check if get default or Custom Value
      *
-     * @param string $value
      *
      * @return string
      */

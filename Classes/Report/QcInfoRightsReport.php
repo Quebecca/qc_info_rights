@@ -41,22 +41,22 @@ abstract class QcInfoRightsReport
     /**
      * @var string
      */
-    const KEY = 'tx_beuser';
+    public const KEY = 'tx_beuser';
 
     /**
      * @var string
      */
-    const prefix_be_user_lang = 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:';
+    public const prefix_be_user_lang = 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:';
 
     /**
      * @var string
      */
-    const prefix_core_lang = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:';
+    public const prefix_core_lang = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:';
 
     /***
      * @var  string
      */
-    const prefix_filter = 'user';
+    public const prefix_filter = 'user';
 
     /**
      * @var ModuleData
@@ -206,7 +206,6 @@ abstract class QcInfoRightsReport
     }
 
     /**
-     * @param string $templateName
      * @return StandaloneView
      */
     protected function createView(string $templateName): StandaloneView
@@ -271,9 +270,6 @@ abstract class QcInfoRightsReport
 
     /**
      * This function is used to get the pagination items
-     * @param QueryResultInterface $data
-     * @param int $currentPage
-     * @param int $itemsPerPage
      * @return array
      */
     public function getPagination(QueryResultInterface $data, int $currentPage, int $itemsPerPage): array
@@ -300,7 +296,7 @@ abstract class QcInfoRightsReport
     public function loadModuleData(): ModuleData
     {
         $moduleData = $this->getBackendUser()->getModuleData(self::KEY) ?? '';
-        if ($moduleData !== '') {
+        if ($moduleData !== '' && is_string($moduleData)) {
             $moduleData = @unserialize($moduleData, ['allowed_classes' => [ModuleData::class, Demand::class]]);
             if ($moduleData instanceof ModuleData) {
                 return $moduleData;
@@ -338,12 +334,12 @@ abstract class QcInfoRightsReport
 
     /**
      * This function to check if get default or Custom Value
-     * @param string $value
      * @return string
      */
     protected function checkShowTsConfig(string $value): string
     {
-        if (is_array($this->userTS['qcinforights.']) && array_key_exists($value, $this->userTS['qcinforights.'])) {
+        if (is_array($this->userTS['qcinforights.'] ?? null)
+            && array_key_exists($value, $this->userTS['qcinforights.'] ?? [])) {
             return $this->userTS['qcinforights.'][$value];
         } else if (is_array($this->modTSconfig['properties']) && array_key_exists($value, $this->modTSconfig['properties'])) {
             return $this->modTSconfig['properties'][$value];
@@ -353,7 +349,6 @@ abstract class QcInfoRightsReport
 
     /**
      * This function is used to map the filter to Demand object
-     * @param Filter $filter
      * @return Demand
      */
     public function mapFilterToDemand(Filter  $filter) : Demand {

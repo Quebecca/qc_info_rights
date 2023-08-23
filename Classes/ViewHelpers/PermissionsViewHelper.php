@@ -81,8 +81,8 @@ class PermissionsViewHelper extends AbstractViewHelper
 
             $label = static::$permissionLabels[$mask];
             $icon .= '<span'
-                . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($arguments['scope']) . '"'
-                . ' title="' . htmlspecialchars($label) . '"'
+                . ' aria-label="' . htmlspecialchars((string) $label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars((string) $arguments['scope']) . '"'
+                . ' title="' . htmlspecialchars((string) $label) . '"'
                 . ' class="t3-icon change-permission fa ' . htmlspecialchars($permissionClass) . '"></span>';
         }
 

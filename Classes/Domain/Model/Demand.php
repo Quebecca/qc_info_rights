@@ -45,9 +45,6 @@ class Demand extends \TYPO3\CMS\Beuser\Domain\Model\Demand{
         return $this->rejectUserStartWith;
     }
 
-    /**
-     * @param string $email
-     */
     public function setEmail(string $email)
     {
         $this->email = $email;
@@ -69,9 +66,6 @@ class Demand extends \TYPO3\CMS\Beuser\Domain\Model\Demand{
         return $this->orderArray;
     }
 
-    /**
-     * @param array $orderArray
-     */
     public function setOrderArray(array $orderArray): void
     {
         $this->orderArray = $orderArray;

@@ -12,6 +12,7 @@
 
 namespace Qc\QcInfoRights\Report;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use Qc\QcInfoRights\BackendSession\BackendSession;
 use Qc\QcInfoRights\Domain\Model\ModuleData;
 use Qc\QcInfoRights\Filter\Filter;
@@ -162,7 +163,7 @@ abstract class QcInfoRightsReport
      * QcInfoRightsReport constructor.
      *
      */
-    public function __construct()
+    public function __construct(private PageRenderer $pageRenderer)
     {
         /*Initialize the TsConfig Array*/
         $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['qcinforights.'] ?? [];
@@ -263,7 +264,7 @@ abstract class QcInfoRightsReport
         if ($this->getBackendUser()->workspace !== 0) {
             $this->isAccessibleForCurrentUser = false;
         }
-        $pageRenderer = $this->moduleTemplate->getPageRenderer();
+        $pageRenderer = $this->pageRenderer;
         $pageRenderer->addCssFile('EXT:qc_info_rights/Resources/Public/Css/qcinforights.css', 'stylesheet', 'all');
         $pageRenderer->addInlineLanguageLabelFile('EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf');
     }

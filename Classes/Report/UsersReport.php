@@ -11,6 +11,8 @@
  ***/
 namespace Qc\QcInfoRights\Report;
 
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use Qc\QcInfoRights\Domain\Repository\BackendUserRepository;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -104,7 +106,7 @@ class UsersReport extends QcInfoRightsReport
             $this->moduleTemplate->addFlashMessage(
                 $this->getLanguageService()->getLL('no.access'),
                 $this->getLanguageService()->getLL('no.access.title'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
             return '';
         }
@@ -190,7 +192,7 @@ class UsersReport extends QcInfoRightsReport
         $pagination = $this->getPagination($this->backendUserRepository->findDemanded($demand), $userPaginationCurrentPage,$this->usersPerPage );// we assign the groupsCurrentPaginationPage and usersCurrentPaginationPage to keep the pagination for each tab separated
 
         foreach ($pagination['paginatedData'] as $item){
-            $crdate = \TYPO3\CMS\Backend\Utility\BackendUtility::getRecord	('be_users', $item->getUid(), 'crdate', 'true')['crdate'];
+            $crdate = BackendUtility::getRecord	('be_users', $item->getUid(), 'crdate', 'true')['crdate'];
             $item->setCrdate($crdate);
         }
 

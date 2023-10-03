@@ -17,7 +17,6 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Quebec.ca',
     'author_email' => '',
     'state' => 'beta',
-    'clearCacheOnLoad' => 0,
     'version' => '1.3',
     'autoload' => [
         'psr-4' => [

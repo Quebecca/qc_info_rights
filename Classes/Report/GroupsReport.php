@@ -11,6 +11,8 @@
  ***/
 namespace Qc\QcInfoRights\Report;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcInfoRights\Domain\Repository\BackendUserRepository;
@@ -41,7 +43,7 @@ class GroupsReport extends QcInfoRightsReport
     protected int  $groupsPerPage = 100;
 
 
-    public function __construct()
+    public function __construct(private PageRenderer $pageRenderer)
     {
         parent::__construct();
         $this->backendUserGroupRepository = GeneralUtility::makeInstance(BackendUserGroupRepository::class);
@@ -55,7 +57,7 @@ class GroupsReport extends QcInfoRightsReport
     protected function initialize()
     {
         parent::initialize();
-        $pageRenderer = $this->moduleTemplate->getPageRenderer();
+        $pageRenderer = $this->pageRenderer;
         $pageRenderer->loadRequireJsModule('TYPO3/CMS/QcInfoRights/ShowMembers');
     }
 
@@ -79,7 +81,7 @@ class GroupsReport extends QcInfoRightsReport
             $this->moduleTemplate->addFlashMessage(
                 $this->getLanguageService()->getLL('no.access'),
                 $this->getLanguageService()->getLL('no.access.title'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
             return '';
         }

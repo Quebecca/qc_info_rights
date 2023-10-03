@@ -11,6 +11,7 @@
  ***/
 namespace Qc\QcInfoRights\Controller;
 
+use TYPO3\CMS\Info\Controller\InfoModuleController;
 use Qc\QcInfoRights\Report\AccessRightsReport;
 use Qc\QcInfoRights\Report\GroupsReport;
 use Qc\QcInfoRights\Report\UsersReport;
@@ -21,7 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
  *
  * @package \Qc\QcInfoRights\Report
  */
-class QcInfoModuleController extends \TYPO3\CMS\Info\Controller\InfoModuleController
+class QcInfoModuleController extends InfoModuleController
 {
     final public const QC_PREFIX = "Qc\QcInfoRights\Report";
 

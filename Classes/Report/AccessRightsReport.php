@@ -11,6 +11,7 @@
  ***/
 namespace Qc\QcInfoRights\Report;
 
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -19,7 +20,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Info\Controller\InfoModuleController;
 
-class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
+class AccessRightsReport extends QcInfoRightsReport
 {
     protected $pageInfo;
 
@@ -46,7 +47,7 @@ class AccessRightsReport extends \Qc\QcInfoRights\Report\QcInfoRightsReport
             $this->moduleTemplate->addFlashMessage(
                 $this->getLanguageService()->getLL('no.access'),
                 $this->getLanguageService()->getLL('no.access.title'),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
             return '';
         }

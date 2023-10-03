@@ -173,9 +173,7 @@ class BackendUserRepository extends  Repository{
             ->from('be_users')
             ->where(
                 $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupUid, \PDO::PARAM_INT))
-            )
-            ->orderBy($selectedColumn)
-            ->execute();
+            )->orderBy($selectedColumn)->executeQuery();
         while ($row = $statement->fetch()) {
             array_push($groupMembers, [
                 'uid' => $row['uid'],

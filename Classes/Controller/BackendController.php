@@ -11,6 +11,7 @@
  ***/
 namespace Qc\QcInfoRights\Controller;
 
+use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Qc\QcInfoRights\Domain\Model\ModuleData;
@@ -96,9 +97,9 @@ class BackendController
     /**
      * BackendController constructor.
      *
-     * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository|null $backendUserGroupRepository
-     * @param \TYPO3\CMS\Extbase\Utility\LocalizationUtility|null                 $localizationUtility
-     * @param \TYPO3\CMS\Core\Charset\CharsetConverter|null                       $charsetConverter
+     * @param BackendUserGroupRepository|null $backendUserGroupRepository
+     * @param LocalizationUtility|null $localizationUtility
+     * @param CharsetConverter|null $charsetConverter
      */
     public function __construct(
         BackendUserGroupRepository $backendUserGroupRepository = null,
@@ -113,7 +114,7 @@ class BackendController
 
         //Initialize Repository Backend user
         $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $persistenceManager = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager::class);
+        $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
         $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $this->objectManager);
         $this->backendUserRepository->injectPersistenceManager($persistenceManager);
 
@@ -135,7 +136,7 @@ class BackendController
     /**
      * This Action is to export Backend user as a CSV Files
      *
-     * @return \Psr\Http\Message\ResponseInterface
+     * @return ResponseInterface
      */
     public function exportBackendUserListAction(ServerRequestInterface $request): ResponseInterface
     {

@@ -69,7 +69,11 @@ class BackendUserRepository extends  Repository{
      */
     public function findDemanded(Demand $demand): QueryResult
     {
-        $constraints = [];
+        # Breaking change
+        # https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-96044-HardenMethodSignatureOfLogicalAndAndLogicalOr.html
+        # logicalAnd n'accepte plus les array
+
+        $constraints = "";
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $query = $this->createQuery();
         $query->setOrderings($this->defaultOrderings);
@@ -85,71 +89,70 @@ class BackendUserRepository extends  Repository{
 
         // Username
         if ($demand->getUserName() !== '') {
-            $searchConstraints = [];
+            $searchConstraints = "";
             foreach (['userName', 'realName'] as $field) {
-                $searchConstraints[] = $query->like(
+                $searchConstraints .= $query->like(
                     $field,
                     '%' . $queryBuilder->escapeLikeWildcards($demand->getUserName()) . '%'
                 );
             }
             if (MathUtility::canBeInterpretedAsInteger($demand->getUserName())) {
-                $searchConstraints[] = $query->equals('uid', (int)$demand->getUserName());
+                $searchConstraints .= $query->equals('uid', (int)$demand->getUserName());
             }
-            $constraints[] = $query->logicalOr($searchConstraints);
+            $constraints = $query->logicalOr($searchConstraints);
         }
 
         /**Check if reject User start with Special char like "_cli_"*/
 
         if($demand->getRejectUserStartWith() != ''){
-            $constraints[] = $query->logicalNot(
+            $constraints .= $query->logicalNot(
                 $query->like('userName',  $queryBuilder->escapeLikeWildcards($demand->getRejectUserStartWith()).'%'),
             );
-            $constraints[] = $query->logicalNot(
+            $constraints .= $query->logicalNot(
                 $query->like('realName',  $queryBuilder->escapeLikeWildcards($demand->getRejectUserStartWith()).'%')
             );
         }
 
         if($demand->getEmail() != ''){
-            $constraints[] = $query->like('email', '%' . $queryBuilder->escapeLikeWildcards(str_replace(' ', '', $demand->getEmail())) . '%');
+            $constraints .= $query->like('email', '%' . $queryBuilder->escapeLikeWildcards(str_replace(' ', '', $demand->getEmail())) . '%');
         }
 
         // Only display admin users
         if ($demand->getUserType() == Demand::USERTYPE_ADMINONLY) {
-            $constraints[] = $query->equals('admin', 1);
+            $constraints .= $query->equals('admin', 1);
         }
         // Only display non-admin users
         if ($demand->getUserType() == Demand::USERTYPE_USERONLY) {
-            $constraints[] = $query->equals('admin', 0);
+            $constraints .= $query->equals('admin', 0);
         }
         // Only display active users
         if ($demand->getStatus() == Demand::STATUS_ACTIVE) {
-            $constraints[] = $query->equals('disable', 0);
+            $constraints .= $query->equals('disable', 0);
         }
         // Only display in-active users
         if ($demand->getStatus() == Demand::STATUS_INACTIVE) {
-            $constraints[] = $query->logicalOr($query->equals('disable', 1));
+            $constraints .= $query->logicalOr($query->equals('disable', 1));
         }
         // Not logged in before
         if ($demand->getLogins() == Demand::LOGIN_NONE) {
-            $constraints[] = $query->equals('lastlogin', 0);
+            $constraints .= $query->equals('lastlogin', 0);
         }
         // At least one login
         if ($demand->getLogins() == Demand::LOGIN_SOME) {
-            $constraints[] = $query->logicalNot($query->equals('lastlogin', 0));
+            $constraints .= $query->logicalNot($query->equals('lastlogin', 0));
         }
         // In backend user group
         // @TODO: Refactor for real n:m relations
         if ($demand->getBackendUserGroup()) {
-            $constraints[] = $query->logicalOr([
+            $constraints .= $query->logicalOr(
                 $query->equals('usergroup', (int)$demand->getBackendUserGroup()),
                 $query->like('usergroup', (int)$demand->getBackendUserGroup() . ',%'),
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()),
                 $query->like('usergroup', '%' . (int)$demand->getBackendUserGroup() . ',%')
-            ]);
+            );
         }
-        if ($constraints !== []) {
-            $query->matching($query->logicalAnd($constraints));
-        }
+        $query->matching($query->logicalAnd($constraints));
+
         /** @var QueryResult $result */
         $result = $query->execute();
         return $result;

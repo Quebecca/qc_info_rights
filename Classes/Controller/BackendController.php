@@ -113,9 +113,8 @@ class BackendController
         $this->charsetConverter = $charsetConverter ?? GeneralUtility::makeInstance(CharsetConverter::class);
 
         //Initialize Repository Backend user
-        $this->objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
-        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class, $this->objectManager);
+        $this->backendUserRepository = GeneralUtility::makeInstance(BackendUserRepository::class);
         $this->backendUserRepository->injectPersistenceManager($persistenceManager);
 
         //Render configuration from ext_conf_template file for quote and delimter

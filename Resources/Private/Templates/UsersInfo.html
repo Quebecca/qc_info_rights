@@ -1,0 +1,41 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module"/>
+
+<f:section name="Content">
+    <f:asset.css identifier="qc_info_right_groups" href="EXT:qc_info_rights/Resources/Public/Css/qcinforights.css"/>
+    <f:asset.script identifier="qc_info_right_groups_js"
+                    src="EXT:qc_info_rights/Resources/Public/JavaScript/ShowMembers.js"></f:asset.script>
+    <h2 class="mb-10">
+        <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserLists.header"/>
+    </h2>
+
+    <form action="{f:be.uri(route: 'web_qcInfoRightsQcInfoRightsbe_users', parameters: '{id: pageUid}')}" method="post">
+        <f:render partial="BeUserList/Filter" arguments="{_all}"/>
+    </form>
+
+    <f:if condition="{showExportUsers}">
+        <f:variable name="params" value="{f:if(condition: args, then:args, else:'{0:\'\'}')}"/>
+        <div class="typo3-csvLink">
+            <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_list',  parameters: '{params}')}">
+                <core:icon identifier="actions-document-export-csv" size="small"/>
+                <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv"/>
+            </a>
+        </div>
+    </f:if>
+
+    <f:render partial="BeUserList/PaginatedListWidgetBody" arguments="{_all}"/>
+
+    <f:render partial="SimplePagination" arguments="{paginator:paginator, pagination:pagination, currentview:'web_qcInfoRightsQcInfoRightsbe_users'}"/>
+
+    <f:comment>
+        <f:render partial="Pagination"
+                  arguments="{pagination: pagination, currentPage: currentPage, currentTab : 'BeUserList', args : args}"/>
+    </f:comment>
+
+</f:section>
+
+</html>

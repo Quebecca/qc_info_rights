@@ -9,6 +9,9 @@
 			<trans-unit id="tx_qcinforights_domain_model_qcinforights.id" resname="tx_qcinforights_domain_model_qcinforights.id">
 				<source>Id</source>
 			</trans-unit>
+			<trans-unit id="module_title" resname="module_title">
+				<source>Access info</source>
+			</trans-unit>
 			<trans-unit id="mod_qcInfoRight" resname="mod_qcInfoRight">
 				<source>Access and rights</source>
 			</trans-unit>

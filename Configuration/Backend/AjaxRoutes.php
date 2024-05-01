@@ -10,6 +10,6 @@ return [
     // Delete Exclude Link
     'show_members' => [
         'path' => '/show_members',
-        'target' =>  Qc\QcInfoRights\Report\GroupsReport::class . '::showMembers'
+        'target' =>  Qc\QcInfoRights\Controller\GroupsController::class . '::showMembers'
     ],
 ];

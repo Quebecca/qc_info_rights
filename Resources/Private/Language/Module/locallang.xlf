@@ -121,6 +121,29 @@
 			<trans-unit id="dateFormat" resname="hide">
 				<source>d-m-y H:i</source>
 			</trans-unit>
+
+
+			<trans-unit id="pagination.previous" resname="pagination.previous" approved="yes">
+				<source>previous</source>
+			</trans-unit>
+			<trans-unit id="pagination.next" resname="pagination.next" approved="yes">
+				<source>next</source>
+			</trans-unit>
+			<trans-unit id="pagination.first" resname="pagination.first" approved="yes">
+				<source>first</source>
+			</trans-unit>
+			<trans-unit id="pagination.last" resname="pagination.last" approved="yes">
+				<source>last</source>
+			</trans-unit>
+			<trans-unit id="pagination.records" resname="pagination.records" approved="yes">
+				<source>Records</source>
+			</trans-unit>
+			<trans-unit id="pagination.page" resname="pagination.page" approved="yes">
+				<source>Page</source>
+			</trans-unit>
+			<trans-unit id="pagination.refresh" resname="pagination.refresh" approved="yes">
+				<source>Refresh</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

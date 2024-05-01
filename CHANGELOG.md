@@ -1,5 +1,13 @@
 # Info Rights
 
+## Change log v2.0.0
+### Breaking
+
+- 2024-05-01 [FEATURE] New Typo3 admin module backend and not under the Info module of Typo3
+- 2024-05-01 [FEATURE] Add support Typo3 version 12 LTS
+- 2024-05-01 [!!!][TASK] Replace TsConfig showTabAccess,showTabUsers,showTabGroups and showMenuAccess,showMenuUsers, and showMenuGroups with the backend user group or the backend user module access
+
+
 ## Change log v1.2.7
 ### Feature
 - 2023-04-07 [FEATURE]  Add and export "Crdate" column from the users list of qc_info_rights backend module

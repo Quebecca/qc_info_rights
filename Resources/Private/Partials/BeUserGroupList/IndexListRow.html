@@ -22,7 +22,7 @@
                 <f:if condition="{backendUserGroup.numberOfUsers} != 0">
                     <f:then>
                         <br>
-                        <a href="#" class="showUsersLink" onclick="showMembers(event, '{group.uid}')" >
+                        <a href="#" class="showUsersLink btn-showeInfo" data-group-uid="{group.uid}">
                             {backendUserGroup.numberOfUsers} <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:users" />
                             <span id="showMembersControl{group.uid}"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:show" /></span>
                             <span id="hideMembersControl{group.uid}" class="hidden"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:hide" /></span>

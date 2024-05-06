@@ -84,7 +84,7 @@ Default values:
 
 **IMPORTANT:**
 
-Avec la version 2.0.x (compatibilité à TYPO3 v12), l'extension a maintenant son propre module "Info Accès". La gestion des accès aux sous-modules qui se faisait par TSconfig a été remplacée par la configuration Groupe ou utilisateurs, onglet "Liste d'accès".
+Avec la version 2.0.x (compatibilité à TYPO3 v12), l'extension a maintenant son propre module "Info Accès". La gestion des accès aux sous-modules qui se faisait par TSconfig a été remplacée par la configuration Groupe ou utilisateurs, onglet "Droits d'accès".
 
 Si vous devez utiliser TYPO3 v11, installer la version 1.x de cette extension.
 

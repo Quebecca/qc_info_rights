@@ -3,8 +3,9 @@
 *La [version française](#documentation-info-rights) de la documentation suit le texte anglais*
 
 **IMPORTANT:**
-We moved tabs to menus and changed TSconfig options accordingly but the old one is still working(but on menu items). The old TSconfig compatibility will be removed in next version: 1.3.
+In version 2.0.x (making it TYPO3 v12 compatible) we moved out from the Info module to its own: "Access Info". Access to sub-modules that were set using TSconfig is now managed with users and groups tab "Access Rights".
 
+If you need it for TYPO3 v11 you need 1.x version of this extension.
 
 ### About
 This extension add a new items to the Info Module in the BE with those features:
@@ -79,10 +80,14 @@ Default values:
 ```
 -----------
 [Version française]
-## Documentation Info Droits
+## Documentation Info Accès
 
 **IMPORTANT:**
-Nous avons déplacé les écrans d'onglets vers des menus et avons changé le TSconfig pour reflèter ce changement. L'ancien TSconfig est encore valide (pour les menus) pour cette version mais sera retiré dans la prochaine version: 1.3.
+
+Avec la version 2.0.x (compatibilité à TYPO3 v12), l'extension a maintenant son propre module "Info Accès". La gestion des accès aux sous-modules qui se faisait par TSconfig a été remplacée par la configuration Groupe ou utilisateurs, onglet "Liste d'accès".
+
+Si vous devez utiliser TYPO3 v11, installer la version 1.x de cette extension.
+
 
 ### À propos
 L'extension ajoute des nouveaux items de menu au module Info en BE avec les fonctionnalités suivantes:

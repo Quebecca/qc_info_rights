@@ -14,6 +14,7 @@ use Qc\QcInfoRights\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\Utility\DebugUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
@@ -58,17 +59,17 @@ class BackendUserRepository extends  Repository{
     }
 
     /**
-     *
-     * @param Demand $demand
-     * @return QueryResult
-     */
-    /**
      * Find Backend Users matching to Demand object properties
+     * @param Demand $demand
      * @return QueryResult
      * @throws InvalidQueryException
      */
     public function findDemanded(Demand $demand): QueryResult
     {
+        # Breaking change
+        # https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/12.0/Breaking-96044-HardenMethodSignatureOfLogicalAndAndLogicalOr.html
+        # logicalAnd n'accepte plus les array
+
         $constraints = [];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $query = $this->createQuery();
@@ -95,11 +96,10 @@ class BackendUserRepository extends  Repository{
             if (MathUtility::canBeInterpretedAsInteger($demand->getUserName())) {
                 $searchConstraints[] = $query->equals('uid', (int)$demand->getUserName());
             }
-            $constraints[] = $query->logicalOr($searchConstraints);
+            $constraints[] = $query->logicalOr(...$searchConstraints);
         }
 
         /**Check if reject User start with Special char like "_cli_"*/
-
         if($demand->getRejectUserStartWith() != ''){
             $constraints[] = $query->logicalNot(
                 $query->like('userName',  $queryBuilder->escapeLikeWildcards($demand->getRejectUserStartWith()).'%'),
@@ -140,16 +140,15 @@ class BackendUserRepository extends  Repository{
         // In backend user group
         // @TODO: Refactor for real n:m relations
         if ($demand->getBackendUserGroup()) {
-            $constraints[] = $query->logicalOr([
+            $constraints[] = $query->logicalOr(
                 $query->equals('usergroup', (int)$demand->getBackendUserGroup()),
                 $query->like('usergroup', (int)$demand->getBackendUserGroup() . ',%'),
                 $query->like('usergroup', '%,' . (int)$demand->getBackendUserGroup()),
                 $query->like('usergroup', '%' . (int)$demand->getBackendUserGroup() . ',%')
-            ]);
+            );
         }
-        if ($constraints !== []) {
-            $query->matching($query->logicalAnd($constraints));
-        }
+        $query->matching($query->logicalAnd(...$constraints));
+
         /** @var QueryResult $result */
         $result = $query->execute();
         return $result;
@@ -173,10 +172,8 @@ class BackendUserRepository extends  Repository{
             ->from('be_users')
             ->where(
                 $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupUid, \PDO::PARAM_INT))
-            )
-            ->orderBy($selectedColumn)
-            ->execute();
-        while ($row = $statement->fetch()) {
+            )->orderBy($selectedColumn)->executeQuery();
+        while ($row = $statement->fetchAssociative()) {
             array_push($groupMembers, [
                 'uid' => $row['uid'],
                 'username' => $row['username'],

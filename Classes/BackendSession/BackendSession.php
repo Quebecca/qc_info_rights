@@ -34,6 +34,7 @@ class BackendSession
 
     /** @var string[] */
     protected $registeredKeys = [];
+
     /**
      * @var int
      */
@@ -97,7 +98,7 @@ class BackendSession
             throw new \InvalidArgumentException('Unknown key ' . $key);
         }
         $sessionData = $this->sessionObject->getSessionData($this->storageKey);
-        if ($this->typoVersion == 11) {
+        if ($this->typoVersion >= 11 && isset($this->registeredKeys[$key])) {
             $valueArray = $value->toArray();
             $sessionData[$key] = $valueArray;
         } else {

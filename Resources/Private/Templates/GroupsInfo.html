@@ -1,0 +1,60 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true">
+
+<f:layout name="Module"/>
+<f:section name="Content">
+    <f:be.pageRenderer
+        pageTitle="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserGroupsLists.header"
+        includeCssFiles="{0: 'EXT:qc_info_rights/Resources/Public/Css/qcinforights.css'}"
+        includeJavaScriptModules="{
+         0: '@qc/qc-info-rights/ShowMembers.js'
+      }"
+    />
+
+    <h2>
+        <f:translate
+            key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:beUserGroupsLists.header"/>
+    </h2>
+
+    <div class="row row-cols-auto">
+
+        <f:if condition="{showMembersColumn} == 1">
+            <div class="col form-group">
+                <b><label for="selectColumn">
+                    <f:translate
+                        key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:selectMembersInfo"/>
+                </label></b>
+                <select id="selectColumn" onchange="submitSelectedColumn()" class="form-select form-control">
+                    <option value="username">
+                        <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:userName"/>
+                    </option>
+                    <option value="realName">
+                        <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:realName"/>
+                    </option>
+                    <option value="email">
+                        <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:email"/>
+                    </option>
+                </select>
+            </div>
+        </f:if>
+
+        <f:if condition="{showExportGroups}">
+            <div class="col-12" id="{exportBlockId}">
+                <br>
+                <div class="typo3-csvLink">
+                    <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_group_list')}">
+                        <core:icon identifier="actions-document-export-csv" size="small"/>
+                        <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv"/>
+                    </a>
+                </div>
+            </div>
+        </f:if>
+    </div>
+
+    <f:render partial="BeUserGroupList/PaginatedListWidgetBody" arguments="{_all}"/>
+    <f:render partial="Pagination"
+              arguments="{pagination: pagination, currentPage: currentPage, currentTab : 'BeGroupUserList'}"/>
+
+</f:section>
+
+</html>

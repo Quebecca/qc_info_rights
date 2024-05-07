@@ -11,13 +11,13 @@ return [
     'export_be_user_list' => [
         'path' => '/export-be-user',
         'referrer' => 'required,refresh-empty',
-        'target' =>  Controller\BackendController::class . '::exportBackendUserListAction'
+        'target' =>  Controller\UsersInfoController::class . '::exportBackendUserListAction'
     ],
 
     //Backend Route link To Export Backend Group user list
     'export_be_user_group_list' => [
         'path' => '/export-be-user-group',
         'referrer' => 'required,refresh-empty',
-        'target' =>  Controller\BackendController::class . '::exportBackendUserGroupListAction'
+        'target' =>  Controller\GroupsController::class . '::exportBackendUserGroupListAction'
     ],
 ];

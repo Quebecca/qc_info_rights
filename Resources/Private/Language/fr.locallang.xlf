@@ -11,6 +11,10 @@
 				<source>Id</source>
 				<target>Id</target>
 			</trans-unit>
+			<trans-unit id="module_title" resname="module_title">
+				<source>Access info</source>
+				<target>Info accès</target>
+			</trans-unit>
 			<trans-unit id="mod_qcInfoRight" resname="mod_qcInfoRight">
 				<source>Access and rights</source>
 				<target>Accès et droits</target>

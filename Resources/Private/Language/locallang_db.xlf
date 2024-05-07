@@ -9,6 +9,12 @@
 			<trans-unit id="tx_qcinforights_domain_model_qcinforights.id" resname="tx_qcinforights_domain_model_qcinforights.id">
 				<source>Id</source>
 			</trans-unit>
+			<trans-unit id="mlang_tabs_tab">
+				<source>Qc Info rights</source>
+			</trans-unit>
+			<trans-unit id="mlang_labels_tabdescr">
+				<source>Qc Info rights</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

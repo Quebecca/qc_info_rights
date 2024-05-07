@@ -146,6 +146,35 @@
 				<source>d-m-y H:i</source>
 				<target>d-m-y H:i</target>
 			</trans-unit>
+
+			<trans-unit id="pagination.previous" resname="pagination.previous" approved="yes">
+				<source>previous</source>
+				<target state="final">précédent</target>
+			</trans-unit>
+			<trans-unit id="pagination.next" resname="pagination.next" approved="yes">
+				<source>next</source>
+				<target state="final">suivant</target>
+			</trans-unit>
+			<trans-unit id="pagination.first" resname="pagination.first" approved="yes">
+				<source>first</source>
+				<target state="final">premier</target>
+			</trans-unit>
+			<trans-unit id="pagination.last" resname="pagination.last" approved="yes">
+				<source>last</source>
+				<target state="final">dernier</target>
+			</trans-unit>
+			<trans-unit id="pagination.records" resname="pagination.records" approved="yes">
+				<source>Records</source>
+				<target state="final">Enregistrements</target>
+			</trans-unit>
+			<trans-unit id="pagination.page" resname="pagination.page" approved="yes">
+				<source>Page</source>
+				<target state="final">Page</target>
+			</trans-unit>
+			<trans-unit id="pagination.refresh" resname="pagination.refresh" approved="yes">
+				<source>Refresh</source>
+				<target state="final">ِActualiser</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

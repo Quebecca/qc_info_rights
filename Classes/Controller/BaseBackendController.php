@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Pagination\SimplePagination;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\QueryResultInterface;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -220,8 +219,6 @@ class BaseBackendController
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
         $this->filter = GeneralUtility::makeInstance(Filter::class);
-
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
         $this->view->setTitle(
             $this->getLanguageService()->sL($this->currentModule->getTitle()),
             $this->id !== 0 && isset($this->pageinfo['title']) ? $this->pageinfo['title'] : ''

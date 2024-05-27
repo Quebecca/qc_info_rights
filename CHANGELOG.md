@@ -1,5 +1,9 @@
 # Info Rights
 
+## Change log v2.0.1
+### Bug Fix
+- 2024-05-27 [!!!][TASK] Solve warning message with module acces info and replace deprecated function
+
 ## Change log v2.0.0
 ### Breaking
 

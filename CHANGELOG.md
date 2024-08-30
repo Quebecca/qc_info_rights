@@ -1,5 +1,9 @@
 # Info Rights
 
+## Change log v2.0.3
+### Bug Fix
+- 2024-08-30 [!!!][BUGFIX] Fix configuration file.
+
 ## Change log v2.0.2
 ### Bug Fix
 - 2024-08-26 [!!!][BUGFIX] Fix the "Show members" functionality in the Groups BE submodule.

@@ -13,7 +13,6 @@ use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Pagination\QueryResultPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
-use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 
 /**
  * Class UsersInfoController
@@ -96,6 +95,10 @@ class UsersInfoController extends BaseBackendController
     {
         $this->init($request);
 
+        if(isset($request->getQueryParams()['orderBy'])){
+            $this->orderBy = $request->getQueryParams()['orderBy'];
+        }
+
         $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
 
         $demand = $this->moduleData->getDemand();
@@ -137,8 +140,8 @@ class UsersInfoController extends BaseBackendController
             $this->filter->setCurrentUsersTabPage(1);
         }
 
-        if (GeneralUtility::_GP('userPaginationPage') != null ){
-            $userPaginationCurrentPage = (int)GeneralUtility::_GP('userPaginationPage');
+        if (isset($request->getQueryParams()['userPaginationPage'])){
+            $userPaginationCurrentPage = (int)$request->getQueryParams()['userPaginationPage'];
             // Store the current page on session
             $this->filter->setCurrentUsersTabPage($userPaginationCurrentPage);
         }
@@ -164,6 +167,8 @@ class UsersInfoController extends BaseBackendController
         foreach (array_keys(self::ORDER_BY_VALUES) as $key) {
             $sortActions[$key] = $this->constructBackendUri(['orderBy' => $key]);
         }
+
+
         $tabHeaders = $this->getVariablesForTableHeader($sortActions);
         //$pagination = $this->getPagination($this->backendUserRepository->findDemanded($demand), $userPaginationCurrentPage,$this->usersPerPage );// we assign the groupsCurrentPaginationPage and usersCurrentPaginationPage to keep the pagination for each tab separated
 
@@ -185,8 +190,6 @@ class UsersInfoController extends BaseBackendController
             'showExportUsers' => $this->showExportUsers,
             'args' => $filterArgs,
             'tabHeader' => $tabHeaders,
-
-
             'currentPage' => $this->id
         ]);
 
@@ -199,7 +202,7 @@ class UsersInfoController extends BaseBackendController
      * @return string
      * @throws RouteNotFoundException
      */
-    protected function constructBackendUri(array $additionalQueryParameters = [], string $route = 'web_info'): string
+    protected function constructBackendUri(array $additionalQueryParameters = [], string $route = 'web_qcInfoRightsQcInfoRightsbe_users'): string
     {
         $parameters = [
             'id' => $this->id,
@@ -237,16 +240,15 @@ class UsersInfoController extends BaseBackendController
         ];
 
         $tableHeadData = [];
-
         foreach ($headers as $key) {
             $tableHeadData[$key]['label'] = $languageService->sL(self::prefix_be_user_lang.$key);
+
             if (isset($sortActions[$key])) {
                 // sorting available, add url
                 $tableHeadData[$key]['url'] =
                     $this->orderBy === $key
                         ? $sortActions[$key . '_reverse'] ?? ''
-                        : $sortActions[$key] ?? ''
-                ;
+                        : $sortActions[$key] ?? '';
 
                 // add icon only if this is the selected sort order
                 if ($this->orderBy === $key) {

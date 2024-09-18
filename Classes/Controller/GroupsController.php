@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-
+use TYPO3\CMS\Core\Http\JsonResponse;
 /**
  * Class GroupsController
  *
@@ -105,5 +105,16 @@ class GroupsController extends BaseBackendController
         fclose($fp);
 
         return $response;
+    }
+
+    /**
+     * This function is used to get the members details for the "Members" column
+     * @param ServerRequestInterface $request
+     * @return ResponseInterface
+     */
+    public function showMembers(ServerRequestInterface $request): ResponseInterface{
+        $urlParam = $request->getQueryParams();
+        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
+        return new JsonResponse($members);
     }
 }

@@ -7,6 +7,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -19,15 +21,11 @@ class AccessRightsInfoController extends BaseBackendController
 {
 
     /**
-     * @var
-     */
-    protected $pageInfo;
-
-    /**
      * This function is used to handle requests, when no action selected
      */
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {
+
         $this->init($request);
 
         $allowedModuleOptions = $this->getAllowedModuleOptions();
@@ -49,10 +47,14 @@ class AccessRightsInfoController extends BaseBackendController
         $tree->addField('endtime');
         $tree->addField('editlock');
 
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
         if ($this->id) {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getIcon([$this->id])];
-        } else {
-            $tree->tree[] = ['row' => $this->pageInfo, 'HTML' => $tree->getRootIcon($this->pageInfo)];
+            $title = $tree->getTitleAttrib($this->pageinfo);
+            $icon = $this->pageinfo['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($tree->table, $this->pageinfo, Icon::SIZE_SMALL);
+            $tree->tree[] = ['row' => $this->pageinfo, 'HTML' => $icon->setTitle($title)->render()];
+        }else{
+            $tree->tree[] = ['row' => $this->pageinfo, 'HTML' => $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render()];
         }
 
         $tree->getTree($this->id, $depth);

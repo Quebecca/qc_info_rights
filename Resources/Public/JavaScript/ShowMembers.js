@@ -51,12 +51,16 @@ class ShowMembres {
           });
       }
     })
-
+    $('#selectColumn').on('change', function(){
+      submitSelectedColumn()
+    })
   }
 }
 
-function submitSelectedColumn() {
-  console.log("TEST JQUERY")
+/**
+ * This function is used to change the user information showed in the "Members" column
+ */
+function submitSelectedColumn(){
   var showingElements = [];
   showingElements = $('.d-block');
   for (var i = 0; i < showingElements.length; i++) {
@@ -71,7 +75,11 @@ function submitSelectedColumn() {
   }
 }
 
-
+/**
+ * Thus function is used to show the users of the "Members" column
+ * @param e
+ * @param groupUid
+ */
 function showMembers(e, groupUid) {
   e.preventDefault()
   const show = resetShowMemberVisibility(groupUid);

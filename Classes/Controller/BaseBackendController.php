@@ -219,8 +219,6 @@ class BaseBackendController
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
 
         $this->filter = GeneralUtility::makeInstance(Filter::class);
-
-        $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
         $this->view->setTitle(
             $this->getLanguageService()->sL($this->currentModule->getTitle()),
             $this->id !== 0 && isset($this->pageinfo['title']) ? $this->pageinfo['title'] : ''

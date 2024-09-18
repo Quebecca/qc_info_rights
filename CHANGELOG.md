@@ -1,5 +1,11 @@
 # Info Rights
 
+## Change log v2.0.4
+### Bug Fix
+- 2024-09-18 [BUGFIX] Solve tri issues for user backed info
+- 2024-09-18 [BUGFIX] Solve route web_info issues
+-
+
 ## Change log v2.0.3
 ### Bug Fix
 - 2024-08-30 [!!!][BUGFIX] Fix configuration file.

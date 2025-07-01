@@ -68,6 +68,7 @@ qcinforights{
     //To show Administrator in the list of backend user
     showAdministratorUser = 1
 }
+```
 
 ### Global options - CSV
 
@@ -77,7 +78,7 @@ Default values:
 
 1. Quotes (basic.quote): " (quotation mark)
 2. Delimiter (basic.delimiter): , (comma)
-```
+
 -----------
 [Version française]
 ## Documentation Info Accès

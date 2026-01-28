@@ -1,5 +1,6 @@
 <?php
 namespace Qc\QcInfoRights\Domain\Repository;
+
 /***
  *
  * This file is part of Qc Info rights project.
@@ -7,13 +8,15 @@ namespace Qc\QcInfoRights\Domain\Repository;
  * For the full copyright and license information, please read the
  * LICENSE.txt file that was distributed with this source code.
  *
- *  (c) 2022 <techno@quebec.ca>
+ *  (c) 2026 <techno@quebec.ca>
  *
  ***/
+
 use Qc\QcInfoRights\Domain\Model\Demand;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\InvalidQueryException;
@@ -170,7 +173,7 @@ class BackendUserRepository extends  Repository{
             ->select('uid','username','email','realName')
             ->from('be_users')
             ->where(
-                $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupUid, \PDO::PARAM_INT))
+                $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupUid, Connection::PARAM_INT))
             )->orderBy($selectedColumn)->executeQuery();
         while ($row = $statement->fetchAssociative()) {
             array_push($groupMembers, [

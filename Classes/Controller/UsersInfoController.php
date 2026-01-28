@@ -29,12 +29,7 @@ class UsersInfoController extends BaseBackendController
     /**
      * @var string
      */
-    public const prefix_be_user_lang = 'LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:';
-
-    /**
-     * @var string
-     */
-    public const prefix_core_lang = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:';
+    public const prefix_qc_user_lang = 'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:';
 
     /***
      * @var  string
@@ -99,7 +94,7 @@ class UsersInfoController extends BaseBackendController
             $this->orderBy = $request->getQueryParams()['orderBy'];
         }
 
-        $this->set =  $request->getParsedBody()[self::prefix_filter . '_SET'];
+        $this->set = ($request->getParsedBody()[self::prefix_filter . '_SET'] ?? null);
 
         $demand = $this->moduleData->getDemand();
         $demand->setRejectUserStartWith('_');
@@ -241,7 +236,7 @@ class UsersInfoController extends BaseBackendController
 
         $tableHeadData = [];
         foreach ($headers as $key) {
-            $tableHeadData[$key]['label'] = $languageService->sL(self::prefix_be_user_lang.$key);
+            $tableHeadData[$key]['label'] = $languageService->sL(self::prefix_qc_user_lang.$key);
 
             if (isset($sortActions[$key])) {
                 // sorting available, add url

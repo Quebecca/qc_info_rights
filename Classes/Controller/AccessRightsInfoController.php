@@ -50,8 +50,8 @@ class AccessRightsInfoController extends BaseBackendController
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         if ($this->id) {
-            $title = $tree->getTitleAttrib($this->pageinfo);
-            $icon = $this->pageinfo['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord($tree->table, $this->pageinfo, Icon::SIZE_SMALL);
+            $title =htmlspecialchars($this->pageinfo['title']);
+            $icon = $this->pageinfo['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord('pages', $this->pageinfo, Icon::SIZE_SMALL);
             $tree->tree[] = ['row' => $this->pageinfo, 'HTML' => $icon->setTitle($title)->render()];
         }else{
             $tree->tree[] = ['row' => $this->pageinfo, 'HTML' => $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render()];

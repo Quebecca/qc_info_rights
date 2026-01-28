@@ -204,7 +204,7 @@ class BaseBackendController
         $this->backendSession = GeneralUtility::makeInstance(BackendSession::class);
 
         /*Initialize the TsConfing mod of the current Backend user */
-        $this->userTS = $this->getBackendUser()->getTSConfig()['mod.'];
+        $this->userTS = ($this->getBackendUser()->getTSConfig()['mod.'] ?? []);
 
         /*Initialize variable of access from TsConfig Array*/
         $this->updateAccessByTsConfig();

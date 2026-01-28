@@ -144,6 +144,43 @@
 			<trans-unit id="pagination.refresh" resname="pagination.refresh" approved="yes">
 				<source>Refresh</source>
 			</trans-unit>
+
+			<trans-unit id="subGroups" resname="subGroups">
+				<source>Sub Groups</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroup" resname="backendUserGroup">
+				<source>User group</source>
+			</trans-unit>
+			<trans-unit id="backendUserGroups" resname="backendUserGroups">
+				<source>Member of groups</source>
+			</trans-unit>
+			<trans-unit id="disable_compare" resname="disable_compare">
+				<source>Is active?</source>
+			</trans-unit>
+			<trans-unit id="lastLogin" resname="lastLogin">
+				<source>Last login</source>
+			</trans-unit>
+			<trans-unit id="userName" resname="userName">
+				<source>Username</source>
+			</trans-unit>
+			<trans-unit id="email" resname="email">
+				<source>Email</source>
+			</trans-unit>
+			<trans-unit id="realName" resname="realName">
+				<source>Real Name</source>
+			</trans-unit>
+			<trans-unit id="filter" resname="filter">
+				<source>Filter</source>
+			</trans-unit>
+			<trans-unit id="never" resname="never">
+				<source>Never</source>
+			</trans-unit>
+			<trans-unit id="online" resname="online">
+				<source>online</source>
+			</trans-unit>
+			<trans-unit id="users" resname="users">
+				<source>Users</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -175,6 +175,55 @@
 				<source>Refresh</source>
 				<target state="final">ِActualiser</target>
 			</trans-unit>
+
+			<trans-unit id="subGroups" resname="subGroups">
+				<source>Sub Groups</source>
+				<target>Sous-groupes</target>
+			</trans-unit>
+			<trans-unit id="backendUserGroup" resname="backendUserGroup">
+				<source>User group</source>
+				<target>Groupe d'utilisateurs</target>
+			</trans-unit>
+			<trans-unit id="backendUserGroups" resname="backendUserGroups">
+				<source>Member of groups</source>
+				<target>Membre de groupes</target>
+			</trans-unit>
+			<trans-unit id="disable_compare" resname="disable_compare">
+				<source>Is active?</source>
+				<target>Est-il actif ?</target>
+			</trans-unit>
+			<trans-unit id="lastLogin" resname="lastLogin">
+				<source>Last login</source>
+				<target>Dernière connexion</target>
+			</trans-unit>
+			<trans-unit id="userName" resname="userName">
+				<source>Username</source>
+				<target>Nom d'utilisateur</target>
+			</trans-unit>
+			<trans-unit id="email" resname="email">
+				<source>Email</source>
+				<target>Courriel</target>
+			</trans-unit>
+			<trans-unit id="realName" resname="realName">
+				<source>Real Name</source>
+				<target>Nom réel</target>
+			</trans-unit>
+			<trans-unit id="filter" resname="filter">
+				<source>Filter</source>
+				<target>Filtre</target>
+			</trans-unit>
+			<trans-unit id="never" resname="never">
+				<source>Never</source>
+				<target>Jamais</target>
+			</trans-unit>
+			<trans-unit id="online" resname="online">
+				<source>online</source>
+				<target>en ligne</target>
+			</trans-unit>
+			<trans-unit id="users" resname="users">
+				<source>Users</source>
+				<target>Utilisateurs</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

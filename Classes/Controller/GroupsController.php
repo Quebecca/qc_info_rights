@@ -5,7 +5,6 @@ namespace Qc\QcInfoRights\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\Response;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Http\JsonResponse;
 /**
  * Class GroupsController
@@ -27,12 +26,13 @@ class GroupsController extends BaseBackendController
     {
         $this->init($request);
         //$this->filter = $this->backendSession->get('qc_info_rights_key');
-        if (GeneralUtility::_GP('groupPaginationPage') != null ){
-            $groupPaginationCurrentPage = (int)GeneralUtility::_GP('groupPaginationPage');
-           // Store the current page on session
-           // $this->filter = $this->backendSession->get('qc_info_rights_key');
-           // $this->filter->setCurrentGroupsTabPage($groupPaginationCurrentPage);
-           // $this->updateFilter();
+        $requestGroupPaginationPage = $request->getParsedBody()['groupPaginationPage'] ?? $request->getQueryParams()['groupPaginationPage'] ?? null;
+        if ($requestGroupPaginationPage != null ){
+            $groupPaginationCurrentPage = (int)$requestGroupPaginationPage;
+            // Store the current page on session
+            // $this->filter = $this->backendSession->get('qc_info_rights_key');
+            // $this->filter->setCurrentGroupsTabPage($groupPaginationCurrentPage);
+            // $this->updateFilter();
         }
         else{
             // read from Session

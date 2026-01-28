@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = [
     'author' => 'Quebec.ca',
     'author_email' => '',
     'state' => 'beta',
-    'version' => '2.0.4',
+    'version' => '3.0.0',
     'autoload' => [
         'psr-4' => [
             'Qc\QcInfoRights\\' => 'Classes',
@@ -26,7 +26,7 @@ $EM_CONF[$_EXTKEY] = [
     'constraints' => [
         'depends' => [
             'php' => '8.1-8.3',
-            'typo3' => '12.0.0-12.4.99',
+            'typo3' => '12.0.0-13.4.99',
         ],
         'conflicts' => [],
         'suggests' => [],

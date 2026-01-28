@@ -10,7 +10,7 @@
         <td class="col-title">
             <b>{backendUser.userName}</b>
             <f:if condition="{onlineBackendUsers.{backendUser.uid}}">
-                <span class="label label-success"><f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:online" /></span>
+                <span class="label label-success"><f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:online" /></span>
             </f:if>
             <br />
             <f:if condition="{backendUser.realName}">
@@ -28,7 +28,7 @@
                     <f:format.date format="{f:translate(key:'LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:dateFormat')}">{backendUser.lastLoginDateAndTime}</f:format.date>
                 </f:then>
                 <f:else>
-                    <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:never" />
+                    <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/Module/locallang.xlf:never" />
                 </f:else>
             </f:if>
         </td>

@@ -99,7 +99,7 @@ class UsersInfoController extends BaseBackendController
             $this->orderBy = $request->getQueryParams()['orderBy'];
         }
 
-        $this->set =  GeneralUtility::_GP(self::prefix_filter . '_SET');
+        $this->set =  $request->getParsedBody()[self::prefix_filter . '_SET'];
 
         $demand = $this->moduleData->getDemand();
         $demand->setRejectUserStartWith('_');

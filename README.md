@@ -11,8 +11,8 @@ If you need it for TYPO3 v11 you need 1.x version of this extension.
 This extension add a new items to the Info Module in the BE with those features:
 
 1. Shows BE rights for the pages (like in the Access Module) but for editors (as read-only)
-2. Show a list of all BE Users (except if it begins with a "_" like "\_cli\_") with a filter and export as CSV(hidden by default)
-3. Show a list of all BE User Groups with a filter and export to CSV (hidden by default),with an option that will return the list of members that are contained in these groups.
+2. Show a list of all BE Users (except if it begins with a "_" like "\_cli\_") with a filter and export as CSV or XLSX (hidden by default, XLSX disabled by default)
+3. Show a list of all BE User Groups with a filter and export to CSV or XLSX (hidden by default, XLSX disabled by default), with an option that will return the list of members that are contained in these groups.
 
 ![Main functionnality](Documentation/Images/show-members-groups.png)
 
@@ -65,10 +65,35 @@ qcinforights{
     showExportUsers  = 1
     showExportGroups = 1
 
+    //To show XLSX Export option (disabled by default, requires phpoffice/phpspreadsheet)
+    showExportXlsxUsers  = 0
+    showExportXlsxGroups = 0
+
     //To show Administrator in the list of backend user
     showAdministratorUser = 1
 }
 ```
+
+### XLSX Export (Disabled by Default)
+
+> **⚠️ XLSX export is disabled by default.** You must explicitly enable it via TSconfig AND install the required library.
+
+To enable XLSX export for backend user lists or backend user group lists, two steps are required:
+
+**1. Install the PhpSpreadsheet library:**
+
+```bash
+composer require phpoffice/phpspreadsheet
+```
+
+**2. Enable the TSconfig options:**
+
+```
+mod.qcinforights.showExportXlsxUsers = 1
+mod.qcinforights.showExportXlsxGroups = 1
+```
+
+The XLSX export button will only appear if **both** conditions are met: the TSconfig option is enabled AND `phpoffice/phpspreadsheet` is installed. If the library is not present, the button remains hidden regardless of TSconfig.
 
 ### Global options - CSV
 
@@ -94,8 +119,8 @@ Si vous devez utiliser TYPO3 v11, installer la version 1.x de cette extension.
 L'extension ajoute des nouveaux items de menu au module Info en BE avec les fonctionnalités suivantes:
 
 1. Affichage des droits BE des pages (comme dans le module Access) mais pour les édimestres (lecture seulement)
-2. Affichage des Utilisateurs BE (sauf si le nom débute par "_" comme "\_cli\_) avec filtre et exportation en CSV (masqué par défaut)
-3. Affichage des Groupes BE avec filtre et exportation en CSV (masqué par défaut), avec l'option qui permet d'afficher la liste des membres de groupes sélectionnés.
+2. Affichage des Utilisateurs BE (sauf si le nom débute par "_" comme "\_cli\_) avec filtre et exportation en CSV ou XLSX (masqué par défaut, XLSX désactivé par défaut)
+3. Affichage des Groupes BE avec filtre et exportation en CSV ou XLSX (masqué par défaut, XLSX désactivé par défaut), avec l'option qui permet d'afficher la liste des membres de groupes sélectionnés.
 
 L'extension offre plusieurs options pour masquer des colonnes ou fonctionnalités.
 
@@ -136,10 +161,35 @@ qcinforights{
     showExportUsers  = 1
     showExportGroups = 1
 
+    //Masquer ou afficher les boutons d'exportation XLSX (désactivé par défaut, nécessite phpoffice/phpspreadsheet)
+    showExportXlsxUsers  = 0
+    showExportXlsxGroups = 0
+
     //Masquer ou afficher les comptes BE des administrateurs. Visibles par défaut.
     showAdministratorUser = 1
 }
 ```
+
+### Export XLSX (Désactivé par défaut)
+
+> **⚠️ L'export XLSX est désactivé par défaut.** Vous devez l'activer explicitement via TSconfig ET installer la librairie requise.
+
+Pour activer l'export XLSX des listes d'utilisateurs BE ou de groupes d'utilisateurs BE, deux étapes sont nécessaires :
+
+**1. Installer la librairie PhpSpreadsheet :**
+
+```bash
+composer require phpoffice/phpspreadsheet
+```
+
+**2. Activer les options TSconfig :**
+
+```
+mod.qcinforights.showExportXlsxUsers = 1
+mod.qcinforights.showExportXlsxGroups = 1
+```
+
+Le bouton d'export XLSX n'apparaîtra que si **les deux** conditions sont remplies : l'option TSconfig est activée ET `phpoffice/phpspreadsheet` est installé. Si la librairie n'est pas présente, le bouton reste masqué peu importe la valeur du TSconfig.
 
 ### Options globales - CSV
 

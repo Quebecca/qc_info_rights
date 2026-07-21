@@ -1,0 +1,607 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 4
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Cannot call method toArray\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\BackendSession\\BackendSession\:\:delete\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\BackendSession\\BackendSession\:\:setStorageKey\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\BackendSession\\BackendSession\:\:setStorageKey\(\) has parameter \$storageKey with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\BackendSession\\BackendSession\:\:store\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function call_user_func expects callable\(\)\: mixed, array\{string, ''getInstanceFromArray''\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\BackendSession\\BackendSession\:\:\$sessionObject \(TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Classes/BackendSession/BackendSession.php
+
+		-
+			message: '#^Cannot call method assignMultiple\(\) on TYPO3\\CMS\\Backend\\Template\\ModuleTemplate\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Cannot call method get\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Cannot call method renderResponse\(\) on TYPO3\\CMS\\Backend\\Template\\ModuleTemplate\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\AccessRightsInfoController\:\:checkShowColumnTsConfig\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\AccessRightsInfoController\:\:getAllowedModuleOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\AccessRightsInfoController\:\:getBackendUser\(\) should return TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\AccessRightsInfoController\:\:getLanguageService\(\) should return TYPO3\\CMS\\Core\\Localization\\LanguageService but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_key_exists expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Classes/Controller/AccessRightsInfoController.php
+
+		-
+			message: '#^Cannot access offset ''id'' on array\|object\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Cannot call method renderResponse\(\) on TYPO3\\CMS\\Backend\\Template\\ModuleTemplate\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:checkShowTsConfig\(\) should return string but returns mixed\.$#'
+			identifier: return.type
+			count: 2
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:generateCsvHeaderArray\(\) has parameter \$itemsArray with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:generateCsvHeaderArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:getBackendUser\(\) should return TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:getLanguageService\(\) should return TYPO3\\CMS\\Core\\Localization\\LanguageService but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:getPagination\(\) has parameter \$data with generic interface TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:getPagination\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:updateAccessByTsConfig\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:updateFilter\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:\$currentModule \(TYPO3\\CMS\\Backend\\Module\\ModuleInterface\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:\$delimiter \(string\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:\$modTS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:\$modTSconfig type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:\$pageinfo type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:\$quote \(string\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:\$userTS type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/BaseBackendController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getDescription\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getHidden\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getTitle\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getUid\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Cannot access offset ''groupPaginationPage'' on array\|object\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Cannot call method assignMultiple\(\) on TYPO3\\CMS\\Backend\\Template\\ModuleTemplate\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Cannot call method renderResponse\(\) on TYPO3\\CMS\\Backend\\Template\\ModuleTemplate\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Parameter \#1 \$data of method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:getPagination\(\) expects TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface, iterable\<TYPO3\\CMS\\Beuser\\Domain\\Model\\BackendUserGroup\>\|TYPO3\\CMS\\Extbase\\Persistence\\QueryResultInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Parameter \#1 \$headers of method Qc\\QcInfoRights\\Service\\XlsxExportService\:\:generateResponse\(\) expects array\<string\>, array\<int, string\|null\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fputcsv expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Parameter \#2 \$fields of function fputcsv expects array\<int\|string, bool\|float\|int\|string\|null\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/GroupsController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getEmail\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getIsAdministrator\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getIsDisabled\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getLastLoginDateAndTime\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getRealName\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getUid\(\)\.$#'
+			identifier: method.notFound
+			count: 4
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Call to an undefined method object\:\:getUserName\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Cannot access offset ''user_SET'' on array\|object\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Cannot call method assignMultiple\(\) on TYPO3\\CMS\\Backend\\Template\\ModuleTemplate\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Cannot call method getHideInactiveUsers\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Cannot call method getMail\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Cannot call method getUsername\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Cannot call method renderResponse\(\) on TYPO3\\CMS\\Backend\\Template\\ModuleTemplate\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Expression "''status\-status\-sorting\-asc''" on a separate line does not do anything\.$#'
+			identifier: expr.resultUnused
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Controller\\UsersInfoController\:\:getVariablesForTableHeader\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Offset ''crdate'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 3
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$demand of method Qc\\QcInfoRights\\Domain\\Repository\\BackendUserRepository\:\:findDemanded\(\) expects Qc\\QcInfoRights\\Domain\\Model\\Demand, TYPO3\\CMS\\Beuser\\Domain\\Model\\Demand given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$email of method Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:setEmail\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$filter of method Qc\\QcInfoRights\\Controller\\BaseBackendController\:\:mapFilterToDemand\(\) expects Qc\\QcInfoRights\\Filter\\Filter, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$format of function date expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 4
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$headers of method Qc\\QcInfoRights\\Service\\XlsxExportService\:\:generateResponse\(\) expects array\<string\>, array\<int, string\|null\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fclose expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$stream of function fputcsv expects resource, resource\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#1 \$userName of method TYPO3\\CMS\\Beuser\\Domain\\Model\\Demand\:\:setUserName\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Parameter \#2 \$fields of function fputcsv expects array\<int\|string, bool\|float\|int\|string\|null\>, array\<int, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Controller\\UsersInfoController\:\:\$set type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Controller/UsersInfoController.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:getOrderArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Domain/Model/Demand.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:setEmail\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/Domain/Model/Demand.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:setOrderArray\(\) has parameter \$orderArray with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Domain/Model/Demand.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:setRejectUserStartWith\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/Domain/Model/Demand.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:\$email has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: Classes/Domain/Model/Demand.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:\$orderArray type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Domain/Model/Demand.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Domain\\Model\\Demand\:\:\$rejectUserStartWith has no type specified\.$#'
+			identifier: missingType.property
+			count: 1
+			path: Classes/Domain/Model/Demand.php
+
+		-
+			message: '#^Class Qc\\QcInfoRights\\Domain\\Repository\\BackendUserRepository extends generic class TYPO3\\CMS\\Extbase\\Persistence\\Repository but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: Classes/Domain/Repository/BackendUserRepository.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Domain\\Repository\\BackendUserRepository\:\:createQuery\(\) return type with generic interface TYPO3\\CMS\\Extbase\\Persistence\\QueryInterface does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: Classes/Domain/Repository/BackendUserRepository.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Domain\\Repository\\BackendUserRepository\:\:findDemanded\(\) return type with generic class TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: Classes/Domain/Repository/BackendUserRepository.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Domain\\Repository\\BackendUserRepository\:\:getGroupMembers\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Domain/Repository/BackendUserRepository.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$result contains generic class TYPO3\\CMS\\Extbase\\Persistence\\Generic\\QueryResult but does not specify its types\: TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: Classes/Domain/Repository/BackendUserRepository.php
+
+		-
+			message: '#^PHPDoc type array of property Qc\\QcInfoRights\\Domain\\Repository\\BackendUserRepository\:\:\$defaultOrderings is not covariant with PHPDoc type array\<non\-empty\-string, ''ASC''\|''DESC''\> of overridden property TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface\>\:\:\$defaultOrderings\.$#'
+			identifier: property.phpDocType
+			count: 1
+			path: Classes/Domain/Repository/BackendUserRepository.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Domain\\Repository\\BackendUserRepository\:\:\$defaultOrderings type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Domain/Repository/BackendUserRepository.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Filter\\Filter\:\:getOrderArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\Filter\\Filter\:\:setOrderArray\(\) has parameter \$orderArray with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Parameter \#1 \$mail of method Qc\\QcInfoRights\\Filter\\Filter\:\:setMail\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Parameter \#1 \$orderArray of method Qc\\QcInfoRights\\Filter\\Filter\:\:setOrderArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Parameter \#1 \$rejectUserStartWith of method Qc\\QcInfoRights\\Filter\\Filter\:\:setRejectUserStartWith\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Parameter \#1 \$username of method Qc\\QcInfoRights\\Filter\\Filter\:\:setUsername\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Parameter \#1 \$value of function intval expects array\|bool\|float\|GMP\|int\|resource\|SimpleXMLElement\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\Filter\\Filter\:\:\$orderArray type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/Filter/Filter.php
+
+		-
+			message: '#^Parameter \#1 \$string of function strlen expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Service/XlsxExportService.php
+
+		-
+			message: '#^Parameter \#1 \$string of method Psr\\Http\\Message\\StreamInterface\:\:write\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: Classes/Service/XlsxExportService.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\ViewHelpers\\PermissionsViewHelper\:\:initializeArguments\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: Classes/ViewHelpers/PermissionsViewHelper.php
+
+		-
+			message: '#^Method Qc\\QcInfoRights\\ViewHelpers\\PermissionsViewHelper\:\:renderStatic\(\) has parameter \$arguments with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/ViewHelpers/PermissionsViewHelper.php
+
+		-
+			message: '#^Property Qc\\QcInfoRights\\ViewHelpers\\PermissionsViewHelper\:\:\$permissionLabels type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: Classes/ViewHelpers/PermissionsViewHelper.php

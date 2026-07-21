@@ -20,4 +20,18 @@ return [
         'referrer' => 'required,refresh-empty',
         'target' =>  Controller\GroupsController::class . '::exportBackendUserGroupListAction'
     ],
+
+    //Backend Route link To Export Backend user list as XLSX
+    'export_be_user_list_xlsx' => [
+        'path' => '/export-be-user-xlsx',
+        'referrer' => 'required,refresh-empty',
+        'target' =>  Controller\UsersInfoController::class . '::exportBackendUserListXlsxAction'
+    ],
+
+    //Backend Route link To Export Backend Group user list as XLSX
+    'export_be_user_group_list_xlsx' => [
+        'path' => '/export-be-user-group-xlsx',
+        'referrer' => 'required,refresh-empty',
+        'target' =>  Controller\GroupsController::class . '::exportBackendUserGroupListXlsxAction'
+    ],
 ];

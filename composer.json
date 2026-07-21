@@ -1,7 +1,7 @@
 {
     "name": "qc/qc-info-rights",
     "type": "typo3-cms-extension",
-    "description": "This Extension is to help user to check user and group list with possibility to Export into CSV file.",
+    "description": "Gives editors a view of BE users and group rights like the Access module but in read-only. Also provides BE users and BE User Groups list with CSV and XLSX export.",
     "authors": [],
 	"keywords": [
 		"TYPO3 CMS",
@@ -13,11 +13,16 @@
 	   ],
     "license": "GPL-2.0-or-later",
     "require": {
-		"php" : "^8.1",
-        "typo3/cms-core": "^12.4 || ^13.4"
+		"php" : "^8.2",
+        "typo3/cms-core": "^13.4 || ^14.0"
     },
     "require-dev": {
-        "typo3/testing-framework": "@dev"
+        "typo3/testing-framework": "@dev",
+        "phpstan/phpstan": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.0"
+    },
+    "suggest": {
+        "phpoffice/phpspreadsheet": "Required for XLSX export functionality (^1.29 || ^2.0)"
     },
     "autoload": {
         "psr-4": {

@@ -38,17 +38,20 @@
             </div>
         </f:if>
 
-        <f:if condition="{showExportGroups}">
-            <div class="col-12" id="{exportBlockId}">
-                <br>
-                <div class="typo3-csvLink">
-                    <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_group_list')}">
-                        <core:icon identifier="actions-document-export-csv" size="small"/>
-                        <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv"/>
-                    </a>
-                </div>
-            </div>
-        </f:if>
+        <div class="col-12" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 0.5em; margin-bottom: 1.5em;">
+            <f:if condition="{showExportGroups}">
+                <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_group_list')}">
+                    <core:icon identifier="actions-document-export-csv" size="small"/>
+                    <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv"/>
+                </a>
+            </f:if>
+            <f:if condition="{showExportXlsxGroups}">
+                <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_group_list_xlsx')}">
+                    <core:icon identifier="actions-document-export-csv" size="small"/>
+                    <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_xlsx"/>
+                </a>
+            </f:if>
+        </div>
     </div>
 
     <f:render partial="BeUserGroupList/PaginatedListWidgetBody" arguments="{_all}"/>

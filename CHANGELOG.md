@@ -1,5 +1,23 @@
 # Info Rights
 
+## Change log v4.0.0
+### Breaking
+- 2025-07-20 [!!!][TASK] Drop TYPO3 v12 support. Minimum TYPO3 v13.4 required.
+- 2025-07-20 [!!!][TASK] Drop PHP 8.1 support. Minimum PHP 8.2 required.
+- 2025-07-20 [!!!][TASK] Remove deprecated CharsetConverter usage, replaced with mb_convert_encoding().
+
+### Features
+- 2025-07-20 [FEATURE] Add XLSX export for backend user list and backend user group list (disabled by default via TSconfig).
+- 2025-07-20 [FEATURE] XLSX export requires phpoffice/phpspreadsheet (suggested dependency).
+- 2025-07-20 [FEATURE] New TSconfig options: showExportXlsxUsers, showExportXlsxGroups (default: 0).
+
+### Improvements
+- 2025-07-20 [TASK] Add declare(strict_types=1) to all PHP files.
+- 2025-07-20 [TASK] Add TYPO3 v14 compatibility.
+- 2025-07-20 [TASK] Reload TSconfig in init() for proper page-level configuration.
+- 2025-07-20 [TASK] Export buttons now displayed side by side with 12px gap.
+- 2025-07-20 [TASK] Remove deprecated navigationComponent from module registration.
+
 ## Change log v2.0.5
 ### Bug Fix
 - 2026-01-28 [BUGFIX] Add Support Typo3 version 13

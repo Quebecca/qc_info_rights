@@ -12,12 +12,12 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Qc Info Rights',
-    'description' => 'Gives editors a view of BE users and group rights like the Access module but in read-only. Also provides BE users and BE User Groups list with CSV export.',
+    'description' => 'Gives editors a view of BE users and group rights like the Access module but in read-only. Also provides BE users and BE User Groups list with CSV and XLSX export.',
     'category' => 'module',
     'author' => 'Quebec.ca',
     'author_email' => '',
     'state' => 'beta',
-    'version' => '3.0.0',
+    'version' => '4.0.0',
     'autoload' => [
         'psr-4' => [
             'Qc\QcInfoRights\\' => 'Classes',
@@ -25,8 +25,8 @@ $EM_CONF[$_EXTKEY] = [
     ],
     'constraints' => [
         'depends' => [
-            'php' => '8.1-8.3',
-            'typo3' => '12.0.0-13.4.99',
+            'php' => '8.2.0-8.4.99',
+            'typo3' => '13.4.0-14.99.99',
         ],
         'conflicts' => [],
         'suggests' => [],

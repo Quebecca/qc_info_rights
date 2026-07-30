@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Imaging\Icon;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -52,10 +52,10 @@ class AccessRightsInfoController extends BaseBackendController
 
         if ($this->id) {
             $title =htmlspecialchars($this->pageinfo['title']);
-            $icon = $this->pageinfo['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', Icon::SIZE_SMALL) : $iconFactory->getIconForRecord('pages', $this->pageinfo, Icon::SIZE_SMALL);
+            $icon = $this->pageinfo['is_siteroot'] ? $iconFactory->getIcon('apps-pagetree-folder-root', IconSize::SMALL) : $iconFactory->getIconForRecord('pages', $this->pageinfo, IconSize::SMALL);
             $tree->tree[] = ['row' => $this->pageinfo, 'HTML' => $icon->setTitle($title)->render()];
         }else{
-            $tree->tree[] = ['row' => $this->pageinfo, 'HTML' => $iconFactory->getIcon('apps-pagetree-root', Icon::SIZE_SMALL)->render()];
+            $tree->tree[] = ['row' => $this->pageinfo, 'HTML' => $iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL)->render()];
         }
 
         $tree->getTree($this->id, $depth);

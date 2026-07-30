@@ -185,9 +185,9 @@ class BaseBackendController
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
     public function __construct(
-        BackendUserGroupRepository $backendUserGroupRepository = null,
-        LocalizationUtility $localizationUtility = null,
-        XlsxExportService $xlsxExportService = null
+        ?BackendUserGroupRepository $backendUserGroupRepository = null,
+        ?LocalizationUtility $localizationUtility = null,
+        ?XlsxExportService $xlsxExportService = null
     )
     {
         $this->moduleData = $this->loadModuleData();

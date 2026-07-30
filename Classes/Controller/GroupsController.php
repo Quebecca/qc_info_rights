@@ -150,7 +150,7 @@ class GroupsController extends BaseBackendController
      */
     public function showMembers(ServerRequestInterface $request): ResponseInterface{
         $urlParam = $request->getQueryParams();
-        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
+        $members = $this->backendUserRepository->getGroupMembers((int)$urlParam['groupUid'], $urlParam['selectedColumn']);
         return new JsonResponse($members);
     }
 }

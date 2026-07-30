@@ -14,16 +14,15 @@
     "license": "GPL-2.0-or-later",
     "require": {
 		"php" : "^8.2",
-        "typo3/cms-core": "^13.4 || ^14.0"
+        "typo3/cms-core": "^13.4 || ^14.0",
+        "phpoffice/phpspreadsheet": "^1.29 || ^2.0"
     },
     "require-dev": {
         "typo3/testing-framework": "@dev",
         "phpstan/phpstan": "^2.0",
         "friendsofphp/php-cs-fixer": "^3.0"
     },
-    "suggest": {
-        "phpoffice/phpspreadsheet": "Required for XLSX export functionality (^1.29 || ^2.0)"
-    },
+
     "autoload": {
         "psr-4": {
             "Qc\\QcInfoRights\\": "Classes"

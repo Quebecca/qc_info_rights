@@ -309,33 +309,7 @@ class UsersInfoController extends BaseBackendController
         //CSV HEADERS Using Translate File and respecting UTF-8 Charset for Special Char
         $headerCsv = $this->generateCsvHeaderArray($LangArrayHeader);
 
-        $demand = $this->loadModuleData()->getDemand();
-        $demand->setRejectUserStartWith('_');
-
-        if(!$this->showAdministratorUser){
-            $demand->setUserType(Demand::USERTYPE_USERONLY);
-        }
-
-        /**Verification of Filter Element*/
-        $UriParam= $request->getQueryParams();
-
-        /**Check if exist Params to execute Instruction*/
-        if(is_array($UriParam)){
-            //Filter for user name
-            if(!empty($UriParam['username'])){
-                $demand->setUserName($UriParam['username']);
-            }
-
-            //Filter for address mail
-            if(!empty($UriParam['mail'])){
-                $demand->setEmail($UriParam['mail']);
-            }
-
-            //Filter if user want to hide inactive User
-            if(!empty($UriParam['hideInactif']) && (int)($UriParam['hideInactif']) == 1){
-                $demand->setStatus(Demand::STATUS_ACTIVE);
-            }
-        }
+        $demand = $this->buildExportDemand($request->getQueryParams());
 
         //Render All Backend User
         $beUser = $this->backendUserRepository->findDemanded($demand);
@@ -401,25 +375,8 @@ class UsersInfoController extends BaseBackendController
             $langKeys
         );
 
-        // Build demand with filters (same logic as CSV export)
-        $demand = $this->loadModuleData()->getDemand();
-        $demand->setRejectUserStartWith('_');
-
-        if (!$this->showAdministratorUser) {
-            $demand->setUserType(Demand::USERTYPE_USERONLY);
-        }
-
-        // Apply filter params from query string
-        $uriParams = $request->getQueryParams();
-        if (!empty($uriParams['username'])) {
-            $demand->setUserName($uriParams['username']);
-        }
-        if (!empty($uriParams['mail'])) {
-            $demand->setEmail($uriParams['mail']);
-        }
-        if (!empty($uriParams['hideInactif']) && (int)$uriParams['hideInactif'] === 1) {
-            $demand->setStatus(Demand::STATUS_ACTIVE);
-        }
+        // Build demand with filters
+        $demand = $this->buildExportDemand($request->getQueryParams());
 
         // Fetch backend users
         $beUsers = $this->backendUserRepository->findDemanded($demand);

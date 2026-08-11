@@ -371,6 +371,37 @@ class BaseBackendController
     }
 
     /**
+     * Build a Demand object pre-configured for export actions.
+     *
+     * Applies base filters (reject users starting with '_', optionally hide admins)
+     * and optional query-string filters (username, mail, hideInactif).
+     *
+     * @param array<string,mixed> $uriParams Query parameters from the request (optional)
+     * @return Demand
+     */
+    protected function buildExportDemand(array $uriParams = []): Demand
+    {
+        $demand = $this->moduleData->getDemand();
+        $demand->setRejectUserStartWith('_');
+
+        if (!$this->showAdministratorUser) {
+            $demand->setUserType(Demand::USERTYPE_USERONLY);
+        }
+
+        if (!empty($uriParams['username'])) {
+            $demand->setUserName($uriParams['username']);
+        }
+        if (!empty($uriParams['mail'])) {
+            $demand->setEmail($uriParams['mail']);
+        }
+        if (!empty($uriParams['hideInactif']) && (int)$uriParams['hideInactif'] === 1) {
+            $demand->setStatus(Demand::STATUS_ACTIVE);
+        }
+
+        return $demand;
+    }
+
+    /**
      * @return BackendUserAuthentication
      */
     protected function getBackendUser(): BackendUserAuthentication

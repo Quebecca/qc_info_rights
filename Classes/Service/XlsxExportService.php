@@ -52,11 +52,18 @@ class XlsxExportService
 
         // Write to temp file
         $tempFile = tempnam(sys_get_temp_dir(), 'xlsx_export_');
+        if ($tempFile === false) {
+            throw new \RuntimeException(
+                'Unable to create temporary file for XLSX export.'
+            );
+        }
         $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
-        $writer->save($tempFile);
-
-        $fileContent = file_get_contents($tempFile);
-        unlink($tempFile);
+        try {
+            $writer->save($tempFile);
+            $fileContent = file_get_contents($tempFile);
+        } finally {
+            @unlink($tempFile);
+        }
 
         $response = new Response('php://temp', 200, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

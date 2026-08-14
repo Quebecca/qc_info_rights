@@ -2,22 +2,31 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
-    public: true
+    public: false
 
   Qc\QcInfoRights\:
     resource: '../Classes/*'
+    exclude:
+      - '../Classes/Domain/Model/*'
 
   Qc\QcInfoRights\Domain\Repository\BackendUserRepository:
     public: true
 
   Qc\QcInfoRights\Controller\BaseBackendController:
+    public: true
     tags: [ 'backend.controller' ]
 
   Qc\QcInfoRights\Controller\GroupsController:
+    public: true
     tags: [ 'backend.controller' ]
 
   Qc\QcInfoRights\Controller\AccessRightsInfoController:
+    public: true
     tags: [ 'backend.controller' ]
 
   Qc\QcInfoRights\Controller\UsersInfoController:
+    public: true
     tags: [ 'backend.controller' ]
+
+  Qc\QcInfoRights\Service\XlsxExportService:
+    public: true

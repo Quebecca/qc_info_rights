@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Qc\QcInfoRights\Controller;
 
@@ -53,6 +54,7 @@ class GroupsController extends BaseBackendController
             'prefix' => 'beUserGroupList',
             'backendUserGroups' => $groupsWithNumberOfUsers,
             'showExportGroups' => $this->showExportGroups,
+            'showExportXlsxGroups' => $this->showExportXlsxGroups && $this->xlsxExportService->isAvailable(),
             'showMembersColumn' => $this->checkShowTsConfig('showMembersColumn'),
             'pagination' => $pagination['pagination'],
             'currentPage' => $this->id,
@@ -96,8 +98,8 @@ class GroupsController extends BaseBackendController
             //Fill Array of User by Data
             $arrayData = [];
             $arrayData[] = $item->getUid();
-            $arrayData[] = $this->charsetConverter->conv($item->getTitle(), 'utf-8', 'iso-8859-15');
-            $arrayData[] = $this->charsetConverter->conv($item->getDescription(), 'utf-8', 'iso-8859-15');
+            $arrayData[] = mb_convert_encoding($item->getTitle(), 'ISO-8859-15', 'UTF-8');
+            $arrayData[] = mb_convert_encoding($item->getDescription(), 'ISO-8859-15', 'UTF-8');
             $arrayData[] = $item->getHidden() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
             //Write Inside Our CSV File
             fputcsv($fp, $arrayData, $this->delimiter, $this->quote);
@@ -108,13 +110,47 @@ class GroupsController extends BaseBackendController
     }
 
     /**
+     * Export Backend user group list as XLSX file.
+     *
+     * @return ResponseInterface
+     */
+    public function exportBackendUserGroupListXlsxAction(): ResponseInterface
+    {
+        $filename = 'Backend-user-group-list-Export-' . date('Y-m-d_H-i') . '.xlsx';
+
+        // Translated headers (UTF-8, no charset conversion)
+        $langKeys = ['csvHeader.uid', 'csvHeader.title', 'csvHeader.description', 'csvHeader.isHidden'];
+        $headers = array_map(
+            fn(string $key) => $this->localizationUtility->translate(self::MODULE_LANG_FILE . $key),
+            $langKeys
+        );
+
+        // Render full list of Backend User Groups
+        $beUserGroups = $this->backendUserGroupRepository->findAll();
+
+        $rows = [];
+        foreach ($beUserGroups as $item) {
+            $rows[] = [
+                $item->getUid(),
+                $item->getTitle(),
+                $item->getDescription(),
+                $item->getHidden()
+                    ? $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'yes')
+                    : $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'no'),
+            ];
+        }
+
+        return $this->xlsxExportService->generateResponse($headers, $rows, $filename);
+    }
+
+    /**
      * This function is used to get the members details for the "Members" column
      * @param ServerRequestInterface $request
      * @return ResponseInterface
      */
     public function showMembers(ServerRequestInterface $request): ResponseInterface{
         $urlParam = $request->getQueryParams();
-        $members = $this->backendUserRepository->getGroupMembers($urlParam['groupUid'], $urlParam['selectedColumn']);
+        $members = $this->backendUserRepository->getGroupMembers((int)$urlParam['groupUid'], $urlParam['selectedColumn']);
         return new JsonResponse($members);
     }
 }

@@ -31,6 +31,10 @@
 				<source>Export CSV</source>
 				<target>Exportation CSV</target>
 			</trans-unit>
+			<trans-unit id="export_xlsx" resname="export_xlsx">
+				<source>Export XLSX</source>
+				<target>Exporter XLSX</target>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

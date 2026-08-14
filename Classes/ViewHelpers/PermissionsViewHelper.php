@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /***
  *
  * This file is part of Qc Info rights project.
@@ -11,11 +12,8 @@
  ***/
 namespace Qc\QcInfoRights\ViewHelpers;
 
-use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
-use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
-use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
 
 /**
  * Class PermissionsViewHelper
@@ -24,8 +22,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  */
 class PermissionsViewHelper extends AbstractViewHelper
 {
-    use CompileWithRenderStatic;
-
     /**
      * As this ViewHelper renders HTML, the output must not be escaped.
      *
@@ -36,12 +32,12 @@ class PermissionsViewHelper extends AbstractViewHelper
     /**
      * @var array Cached labels for a single permission mask like "Delete page"
      */
-    protected static $permissionLabels = [];
+    protected static array $permissionLabels = [];
 
     /**
      * Initializes the arguments
      */
-    public function initializeArguments()
+    public function initializeArguments(): void
     {
         $this->registerArgument('permission', 'int', 'Current permission', true);
         $this->registerArgument('scope', 'string', '"user" / "group" / "everybody"', true);
@@ -51,14 +47,11 @@ class PermissionsViewHelper extends AbstractViewHelper
     /**
      * Return permissions.
      *
-     * @param array $arguments
-     * @param \Closure $renderChildrenClosure
-     * @param RenderingContextInterface $renderingContext
      * @return string
-     * @throws Exception
      */
-    public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext)
+    public function render(): string
     {
+        $arguments = $this->arguments;
         $masks = [1, 16, 2, 4, 8];
 
         if (empty(static::$permissionLabels)) {

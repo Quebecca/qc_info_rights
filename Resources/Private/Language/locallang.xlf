@@ -24,6 +24,9 @@
 			<trans-unit id="export_csv" resname="export_csv">
 				<source>Export CSV</source>
 			</trans-unit>
+			<trans-unit id="export_xlsx" resname="export_xlsx">
+				<source>Export XLSX</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -1,0 +1,10 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 9
+    paths:
+        - Classes
+    excludePaths:
+        - Classes/Domain/Model/ModuleData.php
+    treatPhpDocTypesAsCertain: false

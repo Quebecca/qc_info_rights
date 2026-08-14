@@ -15,7 +15,6 @@ return [
         'labels' => [
             'title' => 'LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:module_title',
         ],        'extensionName' => 'QcInfoRights',
-        'navigationComponent' => '@typo3/backend/page-tree/page-tree-element',
         'routes' => [
             '_default' => [
                 'target' => BaseBackendController::class . '::handleRequests',

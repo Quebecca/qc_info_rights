@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Qc\QcInfoRights\Controller;
 
@@ -174,7 +175,7 @@ class UsersInfoController extends BaseBackendController
 
         foreach ($paginator->getPaginatedItems() as $item){
             $crdate = BackendUtility::getRecord	('be_users', $item->getUid(), 'crdate', 'true')['crdate'];
-            $item->setCrdate($crdate);
+            $item->setCrdate((string)$crdate);
         }
 
         $this->view->assignMultiple([
@@ -183,6 +184,7 @@ class UsersInfoController extends BaseBackendController
             'pagination' => $pagination,
             'backendUsers' => $paginator->getPaginatedItems(),
             'showExportUsers' => $this->showExportUsers,
+            'showExportXlsxUsers' => $this->showExportXlsxUsers && $this->xlsxExportService->isAvailable(),
             'args' => $filterArgs,
             'tabHeader' => $tabHeaders,
             'currentPage' => $this->id
@@ -307,33 +309,7 @@ class UsersInfoController extends BaseBackendController
         //CSV HEADERS Using Translate File and respecting UTF-8 Charset for Special Char
         $headerCsv = $this->generateCsvHeaderArray($LangArrayHeader);
 
-        $demand = $this->loadModuleData()->getDemand();
-        $demand->setRejectUserStartWith('_');
-
-        if(!$this->showAdministratorUser){
-            $demand->setUserType(Demand::USERTYPE_USERONLY);
-        }
-
-        /**Verification of Filter Element*/
-        $UriParam= $request->getQueryParams();
-
-        /**Check if exist Params to execute Instruction*/
-        if(is_array($UriParam)){
-            //Filter for user name
-            if(!empty($UriParam['username'])){
-                $demand->setUserName($UriParam['username']);
-            }
-
-            //Filter for address mail
-            if(!empty($UriParam['mail'])){
-                $demand->setEmail($UriParam['mail']);
-            }
-
-            //Filter if user want to hide inactive User
-            if(!empty($UriParam['hideInactif']) && (int)($UriParam['hideInactif']) == 1){
-                $demand->setStatus(Demand::STATUS_ACTIVE);
-            }
-        }
+        $demand = $this->buildExportDemand($request->getQueryParams());
 
         //Render All Backend User
         $beUser = $this->backendUserRepository->findDemanded($demand);
@@ -359,9 +335,9 @@ class UsersInfoController extends BaseBackendController
             //Fill Array of User by Data
             $arrayData = [];
             $arrayData[] = $item->getUid();
-            $arrayData[] = $this->charsetConverter->conv($item->getUserName(), 'utf-8', 'iso-8859-15');
-            $arrayData[] = $this->charsetConverter->conv($item->getRealName(), 'utf-8', 'iso-8859-15');
-            $arrayData[] = $this->charsetConverter->conv($item->getEmail(), 'utf-8', 'iso-8859-15');
+            $arrayData[] = mb_convert_encoding($item->getUserName(), 'ISO-8859-15', 'UTF-8');
+            $arrayData[] = mb_convert_encoding($item->getRealName(), 'ISO-8859-15', 'UTF-8');
+            $arrayData[] = mb_convert_encoding($item->getEmail(), 'ISO-8859-15', 'UTF-8');
             $arrayData[] = $LastLogin;
             $arrayData[] = $item->getIsDisabled() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
             $arrayData[] = $item->getIsAdministrator() ? $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'yes') : $this->localizationUtility->translate(Self::MODULE_LANG_FILE . 'no');
@@ -372,5 +348,66 @@ class UsersInfoController extends BaseBackendController
         }
         fclose($fp);
         return $response;
+    }
+
+    /**
+     * Export Backend user list as XLSX file.
+     *
+     * @return ResponseInterface
+     */
+    public function exportBackendUserListXlsxAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $filename = 'Backend-user-list-Export-' . date('Y-m-d_H-i') . '.xlsx';
+
+        // Translated headers (UTF-8, no charset conversion)
+        $langKeys = [
+            'csvHeader.uid',
+            'csvHeader.userName',
+            'csvHeader.fullName',
+            'csvHeader.mail',
+            'csvHeader.lastLogin',
+            'csvHeader.isHidden',
+            'csvHeader.isAdmin',
+            'csvHeader.crdate',
+        ];
+        $headers = array_map(
+            fn(string $key) => $this->localizationUtility->translate(self::MODULE_LANG_FILE . $key),
+            $langKeys
+        );
+
+        // Build demand with filters
+        $demand = $this->buildExportDemand($request->getQueryParams());
+
+        // Fetch backend users
+        $beUsers = $this->backendUserRepository->findDemanded($demand);
+
+        // Build data rows (UTF-8, no charset conversion)
+        $rows = [];
+        $format = $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'dateFormat');
+        foreach ($beUsers as $item) {
+            $lastLogin = $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'never');
+            if ($item->getLastLoginDateAndTime() !== null) {
+                $lastLogin = date($format, $item->getLastLoginDateAndTime()->getTimestamp());
+            }
+
+            $crdate = BackendUtility::getRecord('be_users', $item->getUid(), 'crdate', 'true')['crdate'];
+
+            $rows[] = [
+                $item->getUid(),
+                $item->getUserName(),
+                $item->getRealName(),
+                $item->getEmail(),
+                $lastLogin,
+                $item->getIsDisabled()
+                    ? $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'yes')
+                    : $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'no'),
+                $item->getIsAdministrator()
+                    ? $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'yes')
+                    : $this->localizationUtility->translate(self::MODULE_LANG_FILE . 'no'),
+                date($format, (int)$crdate),
+            ];
+        }
+
+        return $this->xlsxExportService->generateResponse($headers, $rows, $filename);
     }
 }

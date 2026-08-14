@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /***
  *
  * This file is part of Qc Info rights project.
@@ -24,11 +25,11 @@ class BackendUser extends \TYPO3\CMS\Beuser\Domain\Model\BackendUser{
     protected $crdate = '';
 
     /**
-     * @param string|null $crdate
+     * @param string|int $crdate
      */
-    public function setCrdate(string $crdate)
+    public function setCrdate(string|int $crdate): void
     {
-        $this->crdate = $crdate;
+        $this->crdate = (string)$crdate;
     }
 
     /**

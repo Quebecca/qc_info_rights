@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace Qc\QcInfoRights\Controller;
 
@@ -8,6 +9,7 @@ use Qc\QcInfoRights\BackendSession\BackendSession;
 use Qc\QcInfoRights\Domain\Model\ModuleData;
 use Qc\QcInfoRights\Domain\Repository\BackendUserRepository;
 use Qc\QcInfoRights\Filter\Filter;
+use Qc\QcInfoRights\Service\XlsxExportService;
 use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -15,7 +17,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Model\Demand;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
@@ -65,11 +66,6 @@ class BaseBackendController
      * @var BackendUserGroupRepository
      */
     protected $backendUserGroupRepository;
-
-    /**
-     * @var CharsetConverter
-     */
-    protected $charsetConverter;
 
     /**
      * @var LocalizationUtility
@@ -126,6 +122,21 @@ class BaseBackendController
     protected bool $showAdministratorUser;
 
     /**
+     * @var boolean
+     */
+    protected bool $showExportXlsxUsers = false;
+
+    /**
+     * @var boolean
+     */
+    protected bool $showExportXlsxGroups = false;
+
+    /**
+     * @var XlsxExportService
+     */
+    protected XlsxExportService $xlsxExportService;
+
+    /**
      * @var BackendSession
      */
     protected BackendSession $backendSession;
@@ -169,15 +180,14 @@ class BaseBackendController
     /**
      * @param \TYPO3\CMS\Beuser\Domain\Repository\BackendUserGroupRepository|null $backendUserGroupRepository
      * @param \TYPO3\CMS\Extbase\Utility\LocalizationUtility|null                 $localizationUtility
-     * @param \TYPO3\CMS\Core\Charset\CharsetConverter|null                       $charsetConverter
      *
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException
      * @throws \TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException
      */
     public function __construct(
-        BackendUserGroupRepository $backendUserGroupRepository = null,
-        LocalizationUtility $localizationUtility = null,
-        CharsetConverter $charsetConverter = null
+        ?BackendUserGroupRepository $backendUserGroupRepository = null,
+        ?LocalizationUtility $localizationUtility = null,
+        ?XlsxExportService $xlsxExportService = null
     )
     {
         $this->moduleData = $this->loadModuleData();
@@ -186,7 +196,7 @@ class BaseBackendController
         //Initialize Repository
         $this->backendUserGroupRepository = $backendUserGroupRepository ?? GeneralUtility::makeInstance(BackendUserGroupRepository::class);
         $this->localizationUtility = $localizationUtility ?? GeneralUtility::makeInstance(LocalizationUtility::class);
-        $this->charsetConverter = $charsetConverter ?? GeneralUtility::makeInstance(CharsetConverter::class);
+        $this->xlsxExportService = $xlsxExportService ?? GeneralUtility::makeInstance(XlsxExportService::class);
 
         //Initialize Repository Backend user
         $persistenceManager = GeneralUtility::makeInstance(PersistenceManager::class);
@@ -214,6 +224,11 @@ class BaseBackendController
     protected function init(ServerRequestInterface $request): void
     {
         $this->id = (int)($request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0);
+
+        // Reload TSconfig now that $this->id is known (constructor reads pid=0)
+        $this->modTSconfig['properties'] = BackendUtility::getPagesTSconfig($this->id)['mod.']['qcinforights.'] ?? [];
+        $this->updateAccessByTsConfig();
+
         $this->view = $this->moduleTemplateFactory->create($request);
         $this->currentModule = $request->getAttribute('module');
         $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)) ?: [];
@@ -246,6 +261,8 @@ class BaseBackendController
         $this->showExportUsers = (boolean) $this->checkShowTsConfig('showExportUsers');
         $this->showExportGroups = (boolean) $this->checkShowTsConfig('showExportGroups');
         $this->showAdministratorUser = (boolean) $this->checkShowTsConfig('showAdministratorUser');
+        $this->showExportXlsxUsers = (boolean) $this->checkShowTsConfig('showExportXlsxUsers');
+        $this->showExportXlsxGroups = (boolean) $this->checkShowTsConfig('showExportXlsxGroups');
     }
 
     /**
@@ -332,7 +349,11 @@ class BaseBackendController
     {
         $headerCsv = [];
         for ($i = 0; $i < count($itemsArray); $i++) {
-            $headerCsv[] = $this->charsetConverter->conv($this->localizationUtility->translate(Self::MODULE_LANG_FILE . $itemsArray[$i]), 'utf-8', 'iso-8859-15');
+            $headerCsv[] = mb_convert_encoding(
+                $this->localizationUtility->translate(self::MODULE_LANG_FILE . $itemsArray[$i]) ?? '',
+                'ISO-8859-15',
+                'UTF-8'
+            );
         }
         return $headerCsv;
     }
@@ -347,6 +368,37 @@ class BaseBackendController
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    /**
+     * Build a Demand object pre-configured for export actions.
+     *
+     * Applies base filters (reject users starting with '_', optionally hide admins)
+     * and optional query-string filters (username, mail, hideInactif).
+     *
+     * @param array<string,mixed> $uriParams Query parameters from the request (optional)
+     * @return Demand
+     */
+    protected function buildExportDemand(array $uriParams = []): Demand
+    {
+        $demand = $this->moduleData->getDemand();
+        $demand->setRejectUserStartWith('_');
+
+        if (!$this->showAdministratorUser) {
+            $demand->setUserType(Demand::USERTYPE_USERONLY);
+        }
+
+        if (!empty($uriParams['username'])) {
+            $demand->setUserName($uriParams['username']);
+        }
+        if (!empty($uriParams['mail'])) {
+            $demand->setEmail($uriParams['mail']);
+        }
+        if (!empty($uriParams['hideInactif']) && (int)$uriParams['hideInactif'] === 1) {
+            $demand->setStatus(Demand::STATUS_ACTIVE);
+        }
+
+        return $demand;
     }
 
     /**

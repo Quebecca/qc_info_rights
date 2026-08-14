@@ -17,15 +17,21 @@
         <f:render partial="BeUserList/Filter" arguments="{_all}"/>
     </form>
 
-    <f:if condition="{showExportUsers}">
-        <f:variable name="params" value="{f:if(condition: args, then:args, else:'{0:\'\'}')}"/>
-        <div class="typo3-csvLink">
-            <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_list',  parameters: '{params}')}">
+    <f:variable name="params" value="{f:if(condition: args, then:args, else:'{0:\'\'}')}"/>
+    <div style="display: flex; justify-content: flex-end; gap: 12px; margin-bottom: 1.5em;">
+        <f:if condition="{showExportUsers}">
+            <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_list', parameters: '{params}')}">
                 <core:icon identifier="actions-document-export-csv" size="small"/>
                 <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_csv"/>
             </a>
-        </div>
-    </f:if>
+        </f:if>
+        <f:if condition="{showExportXlsxUsers}">
+            <a class="btn btn-default" href="{f:be.uri(route: 'export_be_user_list_xlsx', parameters: '{params}')}">
+                <core:icon identifier="actions-document-export-csv" size="small"/>
+                <f:translate key="LLL:EXT:qc_info_rights/Resources/Private/Language/locallang.xlf:export_xlsx"/>
+            </a>
+        </f:if>
+    </div>
 
     <f:render partial="BeUserList/PaginatedListWidgetBody" arguments="{_all}"/>
 
